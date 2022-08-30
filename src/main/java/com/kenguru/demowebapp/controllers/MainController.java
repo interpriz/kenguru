@@ -16,10 +16,10 @@ import java.util.Set;
 public class MainController {
 
     @Autowired
-    private WordsPartOfSpeechRepository words_parts_of_speechRepository;
+    private WordsPartOfSpeechRepository wordsPartsOfSpeechRepository;
 
     @Autowired
-    private UsersWordsRepository users_wordsRepository;
+    private UsersWordsRepository usersWordsRepository;
 
     @Autowired
     private WordsRepository wordsRepository;
@@ -43,16 +43,16 @@ public class MainController {
     private UsersComparativeAdjectivesScoresRepository usersComparativeAdjectivesScoresRepository;
 
     @Autowired
-    private ComparativeAdjectivesRepository comparative_adjectivesRepository;
+    private ComparativeAdjectivesRepository comparativeAdjectivesRepository;
 
     @Autowired
     private UsersPhrasalVerbsScoresRepository usersPhrasalVerbsScoresRepository;
 
     @Autowired
-    private WordsTranslationsRepository words_translationsRepository;
+    private WordsTranslationsRepository wordsTranslationsRepository;
 
     @Autowired
-    private PhrasalVerbsRepository phrasal_verbsRepository;
+    private PhrasalVerbsRepository phrasalVerbsRepository;
 
     @Autowired
     private PhrasalVerbsTranslationsRepository phrasalVerbsTranslationsRepository;
@@ -69,10 +69,10 @@ public class MainController {
     public String history(Model model) {
         model.addAttribute("title", "История");
 
-        Iterable<WordsPartOfSpeech> wps = words_parts_of_speechRepository.findAll();
+        Iterable<WordsPartOfSpeech> wps = wordsPartsOfSpeechRepository.findAll();
         model.addAttribute("wps", wps);
 
-        Iterable<UsersWords> uw = users_wordsRepository.findByUser(new Users(1L,"u"));
+        Iterable<UsersWords> uw = usersWordsRepository.findByUser(new Users(1L,"u"));
         model.addAttribute("uw", uw);
 
         Iterable<UsersIrregularVerbsScores> uivs = usersIrregularVerbsScoresRepository.findByUser(new Users(1L,"u"));
@@ -95,7 +95,7 @@ public class MainController {
         model.addAttribute("ps", ps);
 
         Users usr  = usersRepository.getById(1L);
-        Iterable<Topics> topics = topicsRepository.findDistinctTopicsByUwIn(users_wordsRepository.findByUser(usr));
+        Iterable<Topics> topics = topicsRepository.findDistinctTopicsByUwIn(usersWordsRepository.findByUser(usr));
         model.addAttribute("topics", topics);
 
         return "addNewWord";
@@ -116,11 +116,11 @@ public class MainController {
 
     private WordsPartOfSpeech saveOrGetWPS(PartsOfSpeech pos, Words word){
         WordsPartOfSpeech wps;
-        List<WordsPartOfSpeech> wpsList =  words_parts_of_speechRepository.findWordsPartOfSpeechByPartOfSpeechAndWord(pos,word);
+        List<WordsPartOfSpeech> wpsList =  wordsPartsOfSpeechRepository.findWordsPartOfSpeechByPartOfSpeechAndWord(pos,word);
         if(wpsList.size()==0)
         {
             wps = new WordsPartOfSpeech(word,pos);
-            words_parts_of_speechRepository.save(wps);
+            wordsPartsOfSpeechRepository.save(wps);
         }else{
             wps = wpsList.get(0);
         }
@@ -129,11 +129,11 @@ public class MainController {
 
     private UsersWords saveOrGetUsersWord(WordsPartOfSpeech wps, Users usr){
         UsersWords uw;
-        List<UsersWords> uwList = users_wordsRepository.findUsersWordsByUserAndWps(usr,wps);
+        List<UsersWords> uwList = usersWordsRepository.findUsersWordsByUserAndWps(usr,wps);
         if(uwList.size()==0)
         {
             uw = new UsersWords(0,wps,usr);
-            users_wordsRepository.save(uw);
+            usersWordsRepository.save(uw);
         }else{
             uw = uwList.get(0);
         }
@@ -164,11 +164,11 @@ public class MainController {
         if(translation !="")
         {
             WordsTranslations wordTranslation;
-            List<WordsTranslations> translationsList = words_translationsRepository.findWordsTranslationsByName(translation);
+            List<WordsTranslations> translationsList = wordsTranslationsRepository.findWordsTranslationsByName(translation);
             if(translationsList.size()==0)
             {
                 wordTranslation = new WordsTranslations(translation);
-                words_translationsRepository.save(wordTranslation);
+                wordsTranslationsRepository.save(wordTranslation);
             }else{
                 wordTranslation = translationsList.get(0);
             }
@@ -177,7 +177,7 @@ public class MainController {
             if(!uwTranslations.contains((wordTranslation))){
                 uwTranslations.add(wordTranslation);
                 uw.setTranslations(uwTranslations);
-                users_wordsRepository.save(uw);
+                usersWordsRepository.save(uw);
             }
         }
 
@@ -197,7 +197,7 @@ public class MainController {
             if(!uwtTopics.contains(topic)){
                 uwtTopics.add(topic);
                 uw.setTopics(uwtTopics);
-                users_wordsRepository.save(uw);
+                usersWordsRepository.save(uw);
             }
         }
         return "redirect:/history";
@@ -233,11 +233,11 @@ public class MainController {
         UsersWords uw = saveOrGetUsersWord(wps, usr);
 
         PhrasalVerbs phrasalVerb;
-        List<PhrasalVerbs> pvList = phrasal_verbsRepository.findPhrasalVerbsByWpsAndPreposition(wps, preposition);
+        List<PhrasalVerbs> pvList = phrasalVerbsRepository.findPhrasalVerbsByWpsAndPreposition(wps, preposition);
         if(pvList.size()==0)
         {
             phrasalVerb = new PhrasalVerbs(preposition,wps);
-            phrasal_verbsRepository.save(phrasalVerb);
+            phrasalVerbsRepository.save(phrasalVerb);
         }else{
             phrasalVerb = pvList.get(0);
         }
@@ -355,11 +355,11 @@ public class MainController {
         UsersWords uw = saveOrGetUsersWord(wps, usr);
 
         ComparativeAdjectives comparativeAdjective;
-        List<ComparativeAdjectives> caList = comparative_adjectivesRepository.findComparativeAdjectivesByWps(wps);
+        List<ComparativeAdjectives> caList = comparativeAdjectivesRepository.findComparativeAdjectivesByWps(wps);
         if(caList.size()==0)
         {
             comparativeAdjective = new ComparativeAdjectives(comparative,superlative,wps);
-            comparative_adjectivesRepository.save(comparativeAdjective);
+            comparativeAdjectivesRepository.save(comparativeAdjective);
         }else{
             comparativeAdjective = caList.get(0);
         }
@@ -380,7 +380,7 @@ public class MainController {
     public String editWord( @RequestParam Long userWordId, Model model){
         model.addAttribute("title", "Редактирование слова");
 
-        UsersWords usersWord = users_wordsRepository.findUsersWordsById(userWordId);
+        UsersWords usersWord = usersWordsRepository.findUsersWordsById(userWordId);
 
         model.addAttribute("usersWord", usersWord);
 
