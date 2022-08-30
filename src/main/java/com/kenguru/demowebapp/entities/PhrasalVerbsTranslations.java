@@ -5,7 +5,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "phrasal_verbs_translations")
-public class Phrasal_verbs_translations {
+public class PhrasalVerbsTranslations {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
@@ -14,12 +14,12 @@ public class Phrasal_verbs_translations {
     private String name;
 
     @ManyToMany(mappedBy = "translations",fetch = FetchType.EAGER)
-    private Set<Users_phrasal_verbs_scores> upv;
+    private Set<UsersPhrasalVerbsScores> upv;
 
-    public Phrasal_verbs_translations() {
+    public PhrasalVerbsTranslations() {
     }
 
-    public Phrasal_verbs_translations(String name) {
+    public PhrasalVerbsTranslations(String name) {
         this.name = name;
     }
 
@@ -39,11 +39,11 @@ public class Phrasal_verbs_translations {
         this.name = name;
     }
 
-    public Set<Users_phrasal_verbs_scores> getUpv() {
+    public Set<UsersPhrasalVerbsScores> getUpv() {
         return upv;
     }
 
-    public void setUpv(Set<Users_phrasal_verbs_scores> upv) {
+    public void setUpv(Set<UsersPhrasalVerbsScores> upv) {
         this.upv = upv;
     }
 }

@@ -1,6 +1,5 @@
 package com.kenguru.demowebapp.controllers;
 
-import com.kenguru.demowebapp.dto.Users_word;
 import com.kenguru.demowebapp.entities.*;
 import com.kenguru.demowebapp.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -18,16 +16,16 @@ import java.util.Set;
 public class MainController {
 
     @Autowired
-    private Words_part_of_speechRepository words_parts_of_speechRepository;
+    private WordsPartOfSpeechRepository words_parts_of_speechRepository;
 
     @Autowired
-    private Users_wordsRepository users_wordsRepository;
+    private UsersWordsRepository users_wordsRepository;
 
     @Autowired
     private WordsRepository wordsRepository;
 
     @Autowired
-    private Parts_of_speechRepository parts_of_speechRepository;
+    private PartsOfSpeechRepository partsOfSpeechRepository;
 
     @Autowired
     private UsersRepository usersRepository;
@@ -36,28 +34,28 @@ public class MainController {
     private TopicsRepository topicsRepository;
 
     @Autowired
-    private Users_irregular_verbs_scoresRepository users_irregular_verbs_scoresRepository;
+    private UsersIrregularVerbsScoresRepository usersIrregularVerbsScoresRepository;
 
     @Autowired
-    private Irregular_verbsRepository irregular_verbsRepository;
+    private IrregularVerbsRepository irregular_verbsRepository;
 
     @Autowired
-    private Users_comparative_adjectives_scoresRepository users_comparative_adjectives_scoresRepository;
+    private UsersComparativeAdjectivesScoresRepository usersComparativeAdjectivesScoresRepository;
 
     @Autowired
-    private Comparative_adjectivesRepository comparative_adjectivesRepository;
+    private ComparativeAdjectivesRepository comparative_adjectivesRepository;
 
     @Autowired
-    private Users_phrasal_verbs_scoresRepository users_phrasal_verbs_scoresRepository;
+    private UsersPhrasalVerbsScoresRepository usersPhrasalVerbsScoresRepository;
 
     @Autowired
-    private Words_translationsRepository words_translationsRepository;
+    private WordsTranslationsRepository words_translationsRepository;
 
     @Autowired
-    private Phrasal_verbsRepository phrasal_verbsRepository;
+    private PhrasalVerbsRepository phrasal_verbsRepository;
 
     @Autowired
-    private Phrasal_verbs_translationsRepository phrasal_verbs_translationsRepository;
+    private PhrasalVerbsTranslationsRepository phrasalVerbsTranslationsRepository;
 
 
 
@@ -71,19 +69,19 @@ public class MainController {
     public String history(Model model) {
         model.addAttribute("title", "История");
 
-        Iterable<Words_part_of_speech> wps = words_parts_of_speechRepository.findAll();
+        Iterable<WordsPartOfSpeech> wps = words_parts_of_speechRepository.findAll();
         model.addAttribute("wps", wps);
 
-        Iterable<Users_words> uw = users_wordsRepository.findByUser(new Users(1L,"u"));
+        Iterable<UsersWords> uw = users_wordsRepository.findByUser(new Users(1L,"u"));
         model.addAttribute("uw", uw);
 
-        Iterable<Users_irregular_verbs_scores> uivs = users_irregular_verbs_scoresRepository.findByUser(new Users(1L,"u"));
+        Iterable<UsersIrregularVerbsScores> uivs = usersIrregularVerbsScoresRepository.findByUser(new Users(1L,"u"));
         model.addAttribute("uivs", uivs);
 
-        Iterable<Users_comparative_adjectives_scores> ucas = users_comparative_adjectives_scoresRepository.findByUser(new Users(1L,"u"));
+        Iterable<UsersComparativeAdjectivesScores> ucas = usersComparativeAdjectivesScoresRepository.findByUser(new Users(1L,"u"));
         model.addAttribute("ucas", ucas);
 
-        Iterable<Users_phrasal_verbs_scores> upv = users_phrasal_verbs_scoresRepository.findByUser(new Users(1L,"u"));
+        Iterable<UsersPhrasalVerbsScores> upv = usersPhrasalVerbsScoresRepository.findByUser(new Users(1L,"u"));
         model.addAttribute("upv", upv);
 
         return "history";
@@ -93,7 +91,7 @@ public class MainController {
     public String addNewWord(Model model) {
         model.addAttribute("title", "Добавление нового слова");
 
-        Iterable<Parts_of_speech> ps = parts_of_speechRepository.findAll();
+        Iterable<PartsOfSpeech> ps = partsOfSpeechRepository.findAll();
         model.addAttribute("ps", ps);
 
         Users usr  = usersRepository.getById(1L);
@@ -116,12 +114,12 @@ public class MainController {
         return word;
     }
 
-    private Words_part_of_speech saveOrGetWPS(Parts_of_speech pos, Words word){
-        Words_part_of_speech wps;
-        List<Words_part_of_speech> wpsList =  words_parts_of_speechRepository.findWords_part_of_speechByPartOfSpeechAndWord(pos,word);
+    private WordsPartOfSpeech saveOrGetWPS(PartsOfSpeech pos, Words word){
+        WordsPartOfSpeech wps;
+        List<WordsPartOfSpeech> wpsList =  words_parts_of_speechRepository.findWordsPartOfSpeechByPartOfSpeechAndWord(pos,word);
         if(wpsList.size()==0)
         {
-            wps = new Words_part_of_speech(word,pos);
+            wps = new WordsPartOfSpeech(word,pos);
             words_parts_of_speechRepository.save(wps);
         }else{
             wps = wpsList.get(0);
@@ -129,12 +127,12 @@ public class MainController {
         return wps;
     }
 
-    private Users_words saveOrGetUsersWord(Words_part_of_speech wps, Users usr){
-        Users_words uw;
-        List<Users_words> uwList = users_wordsRepository.findUsers_wordsByUserAndWps(usr,wps);
+    private UsersWords saveOrGetUsersWord(WordsPartOfSpeech wps, Users usr){
+        UsersWords uw;
+        List<UsersWords> uwList = users_wordsRepository.findUsersWordsByUserAndWps(usr,wps);
         if(uwList.size()==0)
         {
-            uw = new Users_words(0,wps,usr);
+            uw = new UsersWords(0,wps,usr);
             users_wordsRepository.save(uw);
         }else{
             uw = uwList.get(0);
@@ -153,29 +151,29 @@ public class MainController {
             Model model) {
 
 
-        Parts_of_speech pos = parts_of_speechRepository.findParts_of_speechByName(partOfSpeech);
+        PartsOfSpeech pos = partsOfSpeechRepository.findPartsOfSpeechByName(partOfSpeech);
         Users usr  = usersRepository.getById(1L);
 
         Words word = saveOrGetWord(wordName, transcription);
 
-        Words_part_of_speech wps = saveOrGetWPS(pos, word);
+        WordsPartOfSpeech wps = saveOrGetWPS(pos, word);
 
-        Users_words uw = saveOrGetUsersWord(wps, usr);
+        UsersWords uw = saveOrGetUsersWord(wps, usr);
 
 
         if(translation !="")
         {
-            Words_translations wordTranslation;
-            List<Words_translations> translationsList = words_translationsRepository.findWords_translationsByName(translation);
+            WordsTranslations wordTranslation;
+            List<WordsTranslations> translationsList = words_translationsRepository.findWordsTranslationsByName(translation);
             if(translationsList.size()==0)
             {
-                wordTranslation = new Words_translations(translation);
+                wordTranslation = new WordsTranslations(translation);
                 words_translationsRepository.save(wordTranslation);
             }else{
                 wordTranslation = translationsList.get(0);
             }
 
-            Set<Words_translations> uwTranslations = uw.getTranslations();
+            Set<WordsTranslations> uwTranslations = uw.getTranslations();
             if(!uwTranslations.contains((wordTranslation))){
                 uwTranslations.add(wordTranslation);
                 uw.setTranslations(uwTranslations);
@@ -225,54 +223,54 @@ public class MainController {
 
 
         String partOfSpeech = "verb";
-        Parts_of_speech pos = parts_of_speechRepository.findParts_of_speechByName(partOfSpeech);
+        PartsOfSpeech pos = partsOfSpeechRepository.findPartsOfSpeechByName(partOfSpeech);
         Users usr  = usersRepository.getById(1L);
 
         Words word = saveOrGetWord(wordName, transcription);
 
-        Words_part_of_speech wps = saveOrGetWPS(pos, word);
+        WordsPartOfSpeech wps = saveOrGetWPS(pos, word);
 
-        Users_words uw = saveOrGetUsersWord(wps, usr);
+        UsersWords uw = saveOrGetUsersWord(wps, usr);
 
-        Phrasal_verbs phrasalVerb;
-        List<Phrasal_verbs> pvList = phrasal_verbsRepository.findPhrasal_verbsByWpsAndPreposition(wps, preposition);
+        PhrasalVerbs phrasalVerb;
+        List<PhrasalVerbs> pvList = phrasal_verbsRepository.findPhrasalVerbsByWpsAndPreposition(wps, preposition);
         if(pvList.size()==0)
         {
-            phrasalVerb = new Phrasal_verbs(preposition,wps);
+            phrasalVerb = new PhrasalVerbs(preposition,wps);
             phrasal_verbsRepository.save(phrasalVerb);
         }else{
             phrasalVerb = pvList.get(0);
         }
 
-        Users_phrasal_verbs_scores usersPhrasalVerb;
-        List<Users_phrasal_verbs_scores> upvList = users_phrasal_verbs_scoresRepository.findUsers_phrasal_verbsByUserAndPhrasalVerb(usr,phrasalVerb);
+        UsersPhrasalVerbsScores usersPhrasalVerb;
+        List<UsersPhrasalVerbsScores> upvList = usersPhrasalVerbsScoresRepository.findUsersPhrasalVerbsByUserAndPhrasalVerb(usr,phrasalVerb);
         if(upvList.size()==0)
         {
-            usersPhrasalVerb = new Users_phrasal_verbs_scores(0,description,phrasalVerb,usr);
-            users_phrasal_verbs_scoresRepository.save(usersPhrasalVerb);
+            usersPhrasalVerb = new UsersPhrasalVerbsScores(0,description,phrasalVerb,usr);
+            usersPhrasalVerbsScoresRepository.save(usersPhrasalVerb);
         }else{
             usersPhrasalVerb = upvList.get(0);
         }
 
         if(translation !="")
         {
-            Phrasal_verbs_translations pvTranslation;
-            List<Phrasal_verbs_translations> pvtList = phrasal_verbs_translationsRepository.findPhrasal_verbs_translationsByName(translation);
+            PhrasalVerbsTranslations pvTranslation;
+            List<PhrasalVerbsTranslations> pvtList = phrasalVerbsTranslationsRepository.findPhrasal_verbs_translationsByName(translation);
             if(pvtList.size()==0)
             {
-                pvTranslation = new Phrasal_verbs_translations(translation);
-                phrasal_verbs_translationsRepository.save(pvTranslation);
+                pvTranslation = new PhrasalVerbsTranslations(translation);
+                phrasalVerbsTranslationsRepository.save(pvTranslation);
             }else{
                 pvTranslation = pvtList.get(0);
             }
 
 
 
-            Set<Phrasal_verbs_translations> pvTranslations = usersPhrasalVerb.getTranslations();
+            Set<PhrasalVerbsTranslations> pvTranslations = usersPhrasalVerb.getTranslations();
             if(!pvTranslations.contains(pvTranslation)){
                 pvTranslations.add(pvTranslation);
                 usersPhrasalVerb.setTranslations(pvTranslations);
-                users_phrasal_verbs_scoresRepository.save(usersPhrasalVerb);
+                usersPhrasalVerbsScoresRepository.save(usersPhrasalVerb);
             }
         }
         return "redirect:/history";
@@ -296,31 +294,31 @@ public class MainController {
 
 
         String partOfSpeech = "verb";
-        Parts_of_speech pos = parts_of_speechRepository.findParts_of_speechByName(partOfSpeech);
+        PartsOfSpeech pos = partsOfSpeechRepository.findPartsOfSpeechByName(partOfSpeech);
         Users usr  = usersRepository.getById(1L);
 
         Words word = saveOrGetWord(wordName, transcription);
 
-        Words_part_of_speech wps = saveOrGetWPS(pos, word);
+        WordsPartOfSpeech wps = saveOrGetWPS(pos, word);
 
-        Users_words uw = saveOrGetUsersWord(wps, usr);
+        UsersWords uw = saveOrGetUsersWord(wps, usr);
 
-        Irregular_verbs irregularVerb;
-        List<Irregular_verbs> ivList = irregular_verbsRepository.findIrregular_verbsByWps(wps);
+        IrregularVerbs irregularVerb;
+        List<IrregularVerbs> ivList = irregular_verbsRepository.findIrregularVerbsByWps(wps);
         if(ivList.size()==0)
         {
-            irregularVerb = new Irregular_verbs(secondForm,thirdForm,wps);
+            irregularVerb = new IrregularVerbs(secondForm,thirdForm,wps);
             irregular_verbsRepository.save(irregularVerb);
         }else{
             irregularVerb = ivList.get(0);
         }
 
-        Users_irregular_verbs_scores usersIrregularVerb;
-        List<Users_irregular_verbs_scores> uivList = users_irregular_verbs_scoresRepository.findByUserAndIrregularVerb(usr,irregularVerb);
+        UsersIrregularVerbsScores usersIrregularVerb;
+        List<UsersIrregularVerbsScores> uivList = usersIrregularVerbsScoresRepository.findByUserAndIrregularVerb(usr,irregularVerb);
         if(uivList.size()==0)
         {
-            usersIrregularVerb = new Users_irregular_verbs_scores(0,irregularVerb,usr);
-            users_irregular_verbs_scoresRepository.save(usersIrregularVerb);
+            usersIrregularVerb = new UsersIrregularVerbsScores(0,irregularVerb,usr);
+            usersIrregularVerbsScoresRepository.save(usersIrregularVerb);
         }else{
             usersIrregularVerb = uivList.get(0);
         }
@@ -347,31 +345,31 @@ public class MainController {
 
 
         String partOfSpeech = "adjective";
-        Parts_of_speech pos = parts_of_speechRepository.findParts_of_speechByName(partOfSpeech);
+        PartsOfSpeech pos = partsOfSpeechRepository.findPartsOfSpeechByName(partOfSpeech);
         Users usr  = usersRepository.getById(1L);
 
         Words word = saveOrGetWord(wordName, transcription);
 
-        Words_part_of_speech wps = saveOrGetWPS(pos, word);
+        WordsPartOfSpeech wps = saveOrGetWPS(pos, word);
 
-        Users_words uw = saveOrGetUsersWord(wps, usr);
+        UsersWords uw = saveOrGetUsersWord(wps, usr);
 
-        Comparative_adjectives comparativeAdjective;
-        List<Comparative_adjectives> caList = comparative_adjectivesRepository.findComparative_adjectivesByWps(wps);
+        ComparativeAdjectives comparativeAdjective;
+        List<ComparativeAdjectives> caList = comparative_adjectivesRepository.findComparativeAdjectivesByWps(wps);
         if(caList.size()==0)
         {
-            comparativeAdjective = new Comparative_adjectives(comparative,superlative,wps);
+            comparativeAdjective = new ComparativeAdjectives(comparative,superlative,wps);
             comparative_adjectivesRepository.save(comparativeAdjective);
         }else{
             comparativeAdjective = caList.get(0);
         }
 
-        Users_comparative_adjectives_scores usersComparativeAdjective;
-        List<Users_comparative_adjectives_scores> ucaList = users_comparative_adjectives_scoresRepository.findByUserAndComparativeAdjective(usr,comparativeAdjective);
+        UsersComparativeAdjectivesScores usersComparativeAdjective;
+        List<UsersComparativeAdjectivesScores> ucaList = usersComparativeAdjectivesScoresRepository.findByUserAndComparativeAdjective(usr,comparativeAdjective);
         if(ucaList.size()==0)
         {
-            usersComparativeAdjective = new Users_comparative_adjectives_scores(0,comparativeAdjective,usr);
-            users_comparative_adjectives_scoresRepository.save(usersComparativeAdjective);
+            usersComparativeAdjective = new UsersComparativeAdjectivesScores(0,comparativeAdjective,usr);
+            usersComparativeAdjectivesScoresRepository.save(usersComparativeAdjective);
         }else{
             usersComparativeAdjective = ucaList.get(0);
         }
@@ -382,7 +380,7 @@ public class MainController {
     public String editWord( @RequestParam Long userWordId, Model model){
         model.addAttribute("title", "Редактирование слова");
 
-        Users_words usersWord = users_wordsRepository.findUsers_wordsById(userWordId);
+        UsersWords usersWord = users_wordsRepository.findUsersWordsById(userWordId);
 
         model.addAttribute("usersWord", usersWord);
 

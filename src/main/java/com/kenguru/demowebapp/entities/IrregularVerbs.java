@@ -5,7 +5,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "irregular_verbs")
-public class Irregular_verbs {
+public class IrregularVerbs {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
@@ -18,15 +18,15 @@ public class Irregular_verbs {
 
     @OneToOne (cascade = CascadeType.ALL)
     @JoinColumn(name = "id_wps", nullable = false)
-    private Words_part_of_speech wps;
+    private WordsPartOfSpeech wps;
 
     @OneToMany(mappedBy = "irregularVerb")
-    private Set<Users_irregular_verbs_scores> usersIrregularVerbs;
+    private Set<UsersIrregularVerbsScores> usersIrregularVerbs;
 
-    public Irregular_verbs() {
+    public IrregularVerbs() {
     }
 
-    public Irregular_verbs(String second_form, String third_form, Words_part_of_speech wps) {
+    public IrregularVerbs(String second_form, String third_form, WordsPartOfSpeech wps) {
         this.second_form = second_form;
         this.third_form = third_form;
         this.wps = wps;
@@ -56,19 +56,19 @@ public class Irregular_verbs {
         this.third_form = third_form;
     }
 
-    public Words_part_of_speech getWps() {
+    public WordsPartOfSpeech getWps() {
         return wps;
     }
 
-    public void setWps(Words_part_of_speech wps) {
+    public void setWps(WordsPartOfSpeech wps) {
         this.wps = wps;
     }
 
-    public Set<Users_irregular_verbs_scores> getUsersIrregularVerbs() {
+    public Set<UsersIrregularVerbsScores> getUsersIrregularVerbs() {
         return usersIrregularVerbs;
     }
 
-    public void setUsersIrregularVerbs(Set<Users_irregular_verbs_scores> usersIrregularVerbs) {
+    public void setUsersIrregularVerbs(Set<UsersIrregularVerbsScores> usersIrregularVerbs) {
         this.usersIrregularVerbs = usersIrregularVerbs;
     }
 }

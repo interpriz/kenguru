@@ -6,7 +6,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "users_words")
-public class Users_words {
+public class UsersWords {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -17,7 +17,7 @@ public class Users_words {
 
     @ManyToOne (cascade = CascadeType.ALL)
     @JoinColumn(name = "id_wps", nullable = false)
-    private Words_part_of_speech wps;
+    private WordsPartOfSpeech wps;
 
     @ManyToOne (cascade = CascadeType.ALL)
     @JoinColumn(name = "id_user", nullable = false)
@@ -33,12 +33,12 @@ public class Users_words {
     @JoinTable(name = "users_words_translations",
             joinColumns = { @JoinColumn(name = "id_uw") },
             inverseJoinColumns = { @JoinColumn(name = "id_translation") })
-    private Set<Words_translations> translations;
+    private Set<WordsTranslations> translations;
 
-    public Users_words() {
+    public UsersWords() {
     }
 
-    public Users_words(String translation, int score, Words_part_of_speech wps, Users user, Set<Topics> topics) {
+    public UsersWords(String translation, int score, WordsPartOfSpeech wps, Users user, Set<Topics> topics) {
         this.score = score;
         this.wps = wps;
         this.user = user;
@@ -46,7 +46,7 @@ public class Users_words {
         this.translations = new HashSet<>();
     }
 
-    public Users_words(int score, Words_part_of_speech wps, Users user) {
+    public UsersWords(int score, WordsPartOfSpeech wps, Users user) {
         this.score = score;
         this.wps = wps;
         this.user = user;
@@ -78,11 +78,11 @@ public class Users_words {
         this.score = score;
     }
 
-    public Words_part_of_speech getWps() {
+    public WordsPartOfSpeech getWps() {
         return wps;
     }
 
-    public void setWps(Words_part_of_speech wps) {
+    public void setWps(WordsPartOfSpeech wps) {
         this.wps = wps;
     }
 
@@ -94,11 +94,11 @@ public class Users_words {
         this.topics = topics;
     }
 
-    public Set<Words_translations> getTranslations() {
+    public Set<WordsTranslations> getTranslations() {
         return translations;
     }
 
-    public void setTranslations(Set<Words_translations> translations) {
+    public void setTranslations(Set<WordsTranslations> translations) {
         this.translations = translations;
     }
 }

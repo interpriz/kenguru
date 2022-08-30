@@ -3,11 +3,9 @@ package com.kenguru.demowebapp.dto;
 import com.kenguru.demowebapp.entities.*;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
-public class Users_word {
+public class UsersWord {
 
     private Long id;
 
@@ -21,10 +19,10 @@ public class Users_word {
 
     private List<String> translations;
 
-    public Users_word() {
+    public UsersWord() {
     }
 
-    public Users_word(Users_words usersWord) {
+    public UsersWord(UsersWords usersWord) {
         this.id = usersWord.getId();
         this.score = usersWord.getScore();
         this.word = usersWord.getWps().getWord().getName();
@@ -34,7 +32,7 @@ public class Users_word {
             this.topics.add(top.getName());
         }
         this.translations = new ArrayList<>();
-        for(Words_translations trans : usersWord.getTranslations()){
+        for(WordsTranslations trans : usersWord.getTranslations()){
             this.translations.add(trans.getName());
         }
     }

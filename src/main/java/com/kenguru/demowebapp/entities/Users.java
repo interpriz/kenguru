@@ -14,13 +14,13 @@ public class Users {
     private String name;
 
     @OneToMany(mappedBy = "user")
-    private Set<Users_words> uw;
+    private Set<UsersWords> uw;
 
     @OneToMany(mappedBy = "user")
-    private Set<Users_irregular_verbs_scores> uivs;
+    private Set<UsersIrregularVerbsScores> uivs;
 
     @OneToMany(mappedBy = "user")
-    private Set<Users_comparative_adjectives_scores> ucas;
+    private Set<UsersComparativeAdjectivesScores> ucas;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "users_groups",
@@ -36,7 +36,7 @@ public class Users {
         this.name = name;
     }
 
-    public Users(String name, Set<Users_words> uwt, Set<Groups> groups) {
+    public Users(String name, Set<UsersWords> uwt, Set<Groups> groups) {
         this.name = name;
         this.uw = uwt;
         this.groups = groups;
@@ -58,11 +58,11 @@ public class Users {
         this.name = name;
     }
 
-    public Set<Users_words> getUw() {
+    public Set<UsersWords> getUw() {
         return uw;
     }
 
-    public void setUw(Set<Users_words> uwt) {
+    public void setUw(Set<UsersWords> uwt) {
         this.uw = uwt;
     }
 
@@ -74,11 +74,11 @@ public class Users {
         this.groups = groups;
     }
 
-    public Set<Users_irregular_verbs_scores> getUivs() {
+    public Set<UsersIrregularVerbsScores> getUivs() {
         return uivs;
     }
 
-    public void setUivs(Set<Users_irregular_verbs_scores> uivs) {
+    public void setUivs(Set<UsersIrregularVerbsScores> uivs) {
         this.uivs = uivs;
     }
 }

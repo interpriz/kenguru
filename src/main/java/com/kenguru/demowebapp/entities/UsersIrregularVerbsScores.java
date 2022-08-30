@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "users_irregular_verbs_scores")
-public class Users_irregular_verbs_scores {
+public class UsersIrregularVerbsScores {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
@@ -14,7 +14,7 @@ public class Users_irregular_verbs_scores {
 
     @ManyToOne (cascade = CascadeType.ALL)
     @JoinColumn(name = "id_iv", nullable = false)
-    private Irregular_verbs irregularVerb;
+    private IrregularVerbs irregularVerb;
 
     @ManyToOne (cascade = CascadeType.ALL)
     @JoinColumn(name = "id_user", nullable = false)
@@ -22,10 +22,10 @@ public class Users_irregular_verbs_scores {
 
 
 
-    public Users_irregular_verbs_scores() {
+    public UsersIrregularVerbsScores() {
     }
 
-    public Users_irregular_verbs_scores(int score, Irregular_verbs iv, Users user) {
+    public UsersIrregularVerbsScores(int score, IrregularVerbs iv, Users user) {
         this.score = score;
         this.irregularVerb = iv;
         this.user = user;
@@ -47,11 +47,11 @@ public class Users_irregular_verbs_scores {
         this.score = score;
     }
 
-    public Irregular_verbs getIrregularVerb() {
+    public IrregularVerbs getIrregularVerb() {
         return irregularVerb;
     }
 
-    public void setIrregularVerb(Irregular_verbs irregularVerb) {
+    public void setIrregularVerb(IrregularVerbs irregularVerb) {
         this.irregularVerb = irregularVerb;
     }
 

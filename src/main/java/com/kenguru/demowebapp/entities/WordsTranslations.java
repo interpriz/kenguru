@@ -5,7 +5,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "words_translations")
-public class Words_translations {
+public class WordsTranslations {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
@@ -14,12 +14,12 @@ public class Words_translations {
     private String name;
 
     @ManyToMany(mappedBy = "translations",fetch = FetchType.LAZY)
-    private Set<Users_words> uw;
+    private Set<UsersWords> uw;
 
-    public Words_translations() {
+    public WordsTranslations() {
     }
 
-    public Words_translations(String name) {
+    public WordsTranslations(String name) {
         this.name = name;
     }
 
@@ -39,11 +39,11 @@ public class Words_translations {
         this.name = name;
     }
 
-    public Set<Users_words> getUw() {
+    public Set<UsersWords> getUw() {
         return uw;
     }
 
-    public void setUw(Set<Users_words> uw) {
+    public void setUw(Set<UsersWords> uw) {
         this.uw = uw;
     }
 }

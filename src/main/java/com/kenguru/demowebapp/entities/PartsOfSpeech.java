@@ -5,7 +5,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "parts_of_speech")
-public class Parts_of_speech {
+public class PartsOfSpeech {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
@@ -14,12 +14,12 @@ public class Parts_of_speech {
     private String name;
 
     @OneToMany(mappedBy = "partOfSpeech")
-    private Set<Words_part_of_speech> words;
+    private Set<WordsPartOfSpeech> words;
 
-    public Parts_of_speech() {
+    public PartsOfSpeech() {
     }
 
-    public Parts_of_speech(String name) {
+    public PartsOfSpeech(String name) {
         this.name = name;
     }
 
@@ -39,11 +39,11 @@ public class Parts_of_speech {
         this.name = name;
     }
 
-    public Set<Words_part_of_speech> getWords() {
+    public Set<WordsPartOfSpeech> getWords() {
         return words;
     }
 
-    public void setWords(Set<Words_part_of_speech> words) {
+    public void setWords(Set<WordsPartOfSpeech> words) {
         this.words = words;
     }
 }

@@ -6,7 +6,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "comparative_adjectives")
-public class Comparative_adjectives {
+public class ComparativeAdjectives {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
@@ -19,15 +19,15 @@ public class Comparative_adjectives {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_wps", nullable = false)
-    private Words_part_of_speech wps;
+    private WordsPartOfSpeech wps;
 
     @OneToMany(mappedBy = "comparativeAdjective")
-    private Set<Users_comparative_adjectives_scores> usersComparativeAdjectives;
+    private Set<UsersComparativeAdjectivesScores> usersComparativeAdjectives;
 
-    public Comparative_adjectives() {
+    public ComparativeAdjectives() {
     }
 
-    public Comparative_adjectives(String comparative, String superlative, Words_part_of_speech wps) {
+    public ComparativeAdjectives(String comparative, String superlative, WordsPartOfSpeech wps) {
         this.comparative = comparative;
         this.superlative = superlative;
         this.wps = wps;
@@ -57,19 +57,19 @@ public class Comparative_adjectives {
         this.superlative = superlative;
     }
 
-    public Words_part_of_speech getWps() {
+    public WordsPartOfSpeech getWps() {
         return wps;
     }
 
-    public void setWps(Words_part_of_speech wps) {
+    public void setWps(WordsPartOfSpeech wps) {
         this.wps = wps;
     }
 
-    public Set<Users_comparative_adjectives_scores> getUsersComparativeAdjectives() {
+    public Set<UsersComparativeAdjectivesScores> getUsersComparativeAdjectives() {
         return usersComparativeAdjectives;
     }
 
-    public void setUsersComparativeAdjectives(Set<Users_comparative_adjectives_scores> usersComparativeAdjectives) {
+    public void setUsersComparativeAdjectives(Set<UsersComparativeAdjectivesScores> usersComparativeAdjectives) {
         this.usersComparativeAdjectives = usersComparativeAdjectives;
     }
 }
