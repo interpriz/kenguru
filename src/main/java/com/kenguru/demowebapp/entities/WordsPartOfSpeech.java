@@ -5,7 +5,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "words_part_of_speech")
-public class Words_part_of_speech {
+public class WordsPartOfSpeech {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -18,18 +18,18 @@ public class Words_part_of_speech {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_part_sp", nullable = false)
-    private Parts_of_speech partOfSpeech;
+    private PartsOfSpeech partOfSpeech;
 
     @OneToMany(mappedBy = "wps")
-    private Set<Users_words> uw;
+    private Set<UsersWords> uw;
 
     @OneToOne(mappedBy = "wps")
-    private Irregular_verbs irr_verb;
+    private IrregularVerbs irr_verb;
 
-    public Words_part_of_speech() {
+    public WordsPartOfSpeech() {
     }
 
-    public Words_part_of_speech(Words word, Parts_of_speech partOfSpeech) {
+    public WordsPartOfSpeech(Words word, PartsOfSpeech partOfSpeech) {
         this.word = word;
         this.partOfSpeech = partOfSpeech;
     }
@@ -50,27 +50,27 @@ public class Words_part_of_speech {
         this.word = word;
     }
 
-    public Parts_of_speech getPartOfSpeech() {
+    public PartsOfSpeech getPartOfSpeech() {
         return partOfSpeech;
     }
 
-    public void setPartOfSpeech(Parts_of_speech partsOfSpeech) {
+    public void setPartOfSpeech(PartsOfSpeech partsOfSpeech) {
         this.partOfSpeech = partsOfSpeech;
     }
 
-    public Set<Users_words> getUw() {
+    public Set<UsersWords> getUw() {
         return uw;
     }
 
-    public void setUw(Set<Users_words> uwt) {
+    public void setUw(Set<UsersWords> uwt) {
         this.uw = uwt;
     }
 
-    public Irregular_verbs getIrr_verb() {
+    public IrregularVerbs getIrr_verb() {
         return irr_verb;
     }
 
-    public void setIrr_verb(Irregular_verbs irr_verb) {
+    public void setIrr_verb(IrregularVerbs irr_verb) {
         this.irr_verb = irr_verb;
     }
 }

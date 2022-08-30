@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "users_comparative_adjectives_scores")
-public class Users_comparative_adjectives_scores {
+public class UsersComparativeAdjectivesScores {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
@@ -14,16 +14,16 @@ public class Users_comparative_adjectives_scores {
 
     @ManyToOne (cascade = CascadeType.ALL)
     @JoinColumn(name = "id_ca", nullable = false)
-    private Comparative_adjectives comparativeAdjective;
+    private ComparativeAdjectives comparativeAdjective;
 
     @ManyToOne (cascade = CascadeType.ALL)
     @JoinColumn(name = "id_user", nullable = false)
     private Users user;
 
-    public Users_comparative_adjectives_scores() {
+    public UsersComparativeAdjectivesScores() {
     }
 
-    public Users_comparative_adjectives_scores(int score, Comparative_adjectives comparativeAdjective, Users user) {
+    public UsersComparativeAdjectivesScores(int score, ComparativeAdjectives comparativeAdjective, Users user) {
         this.score = score;
         this.comparativeAdjective = comparativeAdjective;
         this.user = user;
@@ -45,11 +45,11 @@ public class Users_comparative_adjectives_scores {
         this.score = score;
     }
 
-    public Comparative_adjectives getComparativeAdjective() {
+    public ComparativeAdjectives getComparativeAdjective() {
         return comparativeAdjective;
     }
 
-    public void setComparativeAdjective(Comparative_adjectives comparativeAdjective) {
+    public void setComparativeAdjective(ComparativeAdjectives comparativeAdjective) {
         this.comparativeAdjective = comparativeAdjective;
     }
 

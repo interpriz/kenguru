@@ -5,7 +5,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "phrasal_verbs")
-public class Phrasal_verbs {
+public class PhrasalVerbs {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
@@ -15,15 +15,15 @@ public class Phrasal_verbs {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_wps", nullable = false)
-    private Words_part_of_speech wps;
+    private WordsPartOfSpeech wps;
 
     @OneToMany(mappedBy = "phrasalVerb")
-    private Set<Users_phrasal_verbs_scores> upvt;
+    private Set<UsersPhrasalVerbsScores> upvt;
 
-    public Phrasal_verbs() {
+    public PhrasalVerbs() {
     }
 
-    public Phrasal_verbs(String preposition, Words_part_of_speech wps) {
+    public PhrasalVerbs(String preposition, WordsPartOfSpeech wps) {
         this.preposition = preposition;
         this.wps = wps;
     }
@@ -44,19 +44,19 @@ public class Phrasal_verbs {
         this.preposition = preposition;
     }
 
-    public Words_part_of_speech getWps() {
+    public WordsPartOfSpeech getWps() {
         return wps;
     }
 
-    public void setWps(Words_part_of_speech wps) {
+    public void setWps(WordsPartOfSpeech wps) {
         this.wps = wps;
     }
 
-    public Set<Users_phrasal_verbs_scores> getUpvt() {
+    public Set<UsersPhrasalVerbsScores> getUpvt() {
         return upvt;
     }
 
-    public void setUpvt(Set<Users_phrasal_verbs_scores> upvt) {
+    public void setUpvt(Set<UsersPhrasalVerbsScores> upvt) {
         this.upvt = upvt;
     }
 }

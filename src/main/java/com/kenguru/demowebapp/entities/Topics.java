@@ -17,12 +17,12 @@ public class Topics {
     private String description;
 
     @ManyToMany(mappedBy = "topics",fetch = FetchType.LAZY)
-    private Set<Users_words> uw;
+    private Set<UsersWords> uw;
 
     public Topics() {
     }
 
-    public Topics(String name, String description, Set<Users_words> uwt) {
+    public Topics(String name, String description, Set<UsersWords> uwt) {
         this.name = name;
         this.description = description;
         this.uw = uwt;
@@ -56,11 +56,11 @@ public class Topics {
         this.description = description;
     }
 
-    public Set<Users_words> getUw() {
+    public Set<UsersWords> getUw() {
         return uw;
     }
 
-    public void setUw(Set<Users_words> uwt) {
+    public void setUw(Set<UsersWords> uwt) {
         this.uw = uwt;
     }
 }

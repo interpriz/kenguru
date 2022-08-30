@@ -6,7 +6,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "users_phrasal_verbs_scores")
-public class Users_phrasal_verbs_scores {
+public class UsersPhrasalVerbsScores {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
@@ -19,7 +19,7 @@ public class Users_phrasal_verbs_scores {
 
     @ManyToOne (cascade = CascadeType.ALL)
     @JoinColumn(name = "id_pv", nullable = false)
-    private Phrasal_verbs phrasalVerb;
+    private PhrasalVerbs phrasalVerb;
 
     @ManyToOne (cascade = CascadeType.ALL)
     @JoinColumn(name = "id_user", nullable = false)
@@ -29,12 +29,12 @@ public class Users_phrasal_verbs_scores {
     @JoinTable(name = "users_phrasal_verbs_translations",
             joinColumns = { @JoinColumn(name = "id_pv") },
             inverseJoinColumns = { @JoinColumn(name = "id_translation") })
-    private Set<Phrasal_verbs_translations> translations;
+    private Set<PhrasalVerbsTranslations> translations;
 
-    public Users_phrasal_verbs_scores() {
+    public UsersPhrasalVerbsScores() {
     }
 
-    public Users_phrasal_verbs_scores(int score, String description, Phrasal_verbs phrasalVerb, Users user) {
+    public UsersPhrasalVerbsScores(int score, String description, PhrasalVerbs phrasalVerb, Users user) {
         this.score = score;
         this.description = description;
         this.phrasalVerb = phrasalVerb;
@@ -59,11 +59,11 @@ public class Users_phrasal_verbs_scores {
         this.score = score;
     }
 
-    public Phrasal_verbs getPhrasalVerb() {
+    public PhrasalVerbs getPhrasalVerb() {
         return phrasalVerb;
     }
 
-    public void setPhrasalVerb(Phrasal_verbs phrasalVerb) {
+    public void setPhrasalVerb(PhrasalVerbs phrasalVerb) {
         this.phrasalVerb = phrasalVerb;
     }
 
@@ -75,11 +75,11 @@ public class Users_phrasal_verbs_scores {
         this.user = user;
     }
 
-    public Set<Phrasal_verbs_translations> getTranslations() {
+    public Set<PhrasalVerbsTranslations> getTranslations() {
         return translations;
     }
 
-    public void setTranslations(Set<Phrasal_verbs_translations> translations) {
+    public void setTranslations(Set<PhrasalVerbsTranslations> translations) {
         this.translations = translations;
     }
 
