@@ -1,6 +1,5 @@
 package com.kenguru.demowebapp.controllers;
 
-import com.kenguru.demowebapp.dto.Users_word;
 import com.kenguru.demowebapp.entities.*;
 import com.kenguru.demowebapp.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -18,7 +16,7 @@ import java.util.Set;
 public class MainController {
 
     @Autowired
-    private Words_part_of_speechRepository words_parts_of_speechRepository;
+    private Words_part_of_speechRepository wordsPartsOfSpeechRepository;
 
     @Autowired
     private Users_wordsRepository users_wordsRepository;
@@ -71,7 +69,7 @@ public class MainController {
     public String history(Model model) {
         model.addAttribute("title", "История");
 
-        Iterable<Words_part_of_speech> wps = words_parts_of_speechRepository.findAll();
+        Iterable<Words_part_of_speech> wps = wordsPartsOfSpeechRepository.findAll();
         model.addAttribute("wps", wps);
 
         Iterable<Users_words> uw = users_wordsRepository.findByUser(new Users(1L,"u"));
@@ -118,11 +116,11 @@ public class MainController {
 
     private Words_part_of_speech saveOrGetWPS(Parts_of_speech pos, Words word){
         Words_part_of_speech wps;
-        List<Words_part_of_speech> wpsList =  words_parts_of_speechRepository.findWords_part_of_speechByPartOfSpeechAndWord(pos,word);
+        List<Words_part_of_speech> wpsList =  wordsPartsOfSpeechRepository.findWords_part_of_speechByPartOfSpeechAndWord(pos,word);
         if(wpsList.size()==0)
         {
             wps = new Words_part_of_speech(word,pos);
-            words_parts_of_speechRepository.save(wps);
+            wordsPartsOfSpeechRepository.save(wps);
         }else{
             wps = wpsList.get(0);
         }
