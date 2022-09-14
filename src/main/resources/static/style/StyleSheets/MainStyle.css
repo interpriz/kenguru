@@ -31,6 +31,16 @@ body {
     font-size: 26px;
     border-radius:0px 15px 15px 0px;
 }
+
+.mainBtn
+{
+    background-color: #FA6D1C;
+    color: white;
+    font-weight: bold;
+    font-size: 20px;
+    border-radius:15px 15px 15px 15px;
+}
+
 .btn:focus, .btn:active, .form-control:focus, .form-control:active
 {
     outline: none !important;

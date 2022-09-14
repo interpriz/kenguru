@@ -1,5 +1,6 @@
 package com.kenguru.demowebapp.controllers;
 
+import com.kenguru.demowebapp.dto.UsersWord;
 import com.kenguru.demowebapp.entities.*;
 import com.kenguru.demowebapp.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Controller
 public class MainController {
@@ -140,6 +142,50 @@ public class MainController {
         return uw;
     }
 
+    private void saveNewTranslation(String newTranslation, UsersWords usersWord){
+        if(newTranslation !="")
+        {
+            WordsTranslations wordTranslation;
+            List<WordsTranslations> translationsList = wordsTranslationsRepository.findWordsTranslationsByName(newTranslation);
+            if(translationsList.size()==0)
+            {
+                wordTranslation = new WordsTranslations(newTranslation);
+                wordsTranslationsRepository.save(wordTranslation);
+            }else{
+                wordTranslation = translationsList.get(0);
+            }
+
+            Set<WordsTranslations> uwTranslations = usersWord.getTranslations();
+            if(!uwTranslations.contains((wordTranslation))){
+                uwTranslations.add(wordTranslation);
+                usersWord.setTranslations(uwTranslations);
+                usersWordsRepository.save(usersWord);
+            }
+        }
+    }
+
+    private void saveNewTopic(String newTopic, UsersWords usersWord){
+        if(newTopic!="")
+        {
+            Topics topic;
+            List<Topics> topicList = topicsRepository.findTopicsByName(newTopic);
+            if(topicList.size()==0)
+            {
+                topic = new Topics(newTopic);
+                topicsRepository.save(topic);
+            }else{
+                topic = topicList.get(0);
+            }
+
+            Set<Topics> uwtTopics = usersWord.getTopics();
+            if(!uwtTopics.contains(topic)){
+                uwtTopics.add(topic);
+                usersWord.setTopics(uwtTopics);
+                usersWordsRepository.save(usersWord);
+            }
+        }
+    }
+
 
     @PostMapping("/addNewWord")
     public String addNewWordPost(
@@ -160,46 +206,48 @@ public class MainController {
 
         UsersWords uw = saveOrGetUsersWord(wps, usr);
 
-
-        if(translation !="")
-        {
-            WordsTranslations wordTranslation;
-            List<WordsTranslations> translationsList = wordsTranslationsRepository.findWordsTranslationsByName(translation);
-            if(translationsList.size()==0)
-            {
-                wordTranslation = new WordsTranslations(translation);
-                wordsTranslationsRepository.save(wordTranslation);
-            }else{
-                wordTranslation = translationsList.get(0);
-            }
-
-            Set<WordsTranslations> uwTranslations = uw.getTranslations();
-            if(!uwTranslations.contains((wordTranslation))){
-                uwTranslations.add(wordTranslation);
-                uw.setTranslations(uwTranslations);
-                usersWordsRepository.save(uw);
-            }
-        }
-
-        if(topicName!="")
-        {
-            Topics topic;
-            List<Topics> topicList = topicsRepository.findTopicsByName(topicName);
-            if(topicList.size()==0)
-            {
-                topic = new Topics(topicName);
-                topicsRepository.save(topic);
-            }else{
-                topic = topicList.get(0);
-            }
-
-            Set<Topics> uwtTopics = uw.getTopics();
-            if(!uwtTopics.contains(topic)){
-                uwtTopics.add(topic);
-                uw.setTopics(uwtTopics);
-                usersWordsRepository.save(uw);
-            }
-        }
+        //сохранение нового перевода
+        saveNewTranslation(translation, uw);
+//        if(translation !="")
+//        {
+//            WordsTranslations wordTranslation;
+//            List<WordsTranslations> translationsList = wordsTranslationsRepository.findWordsTranslationsByName(translation);
+//            if(translationsList.size()==0)
+//            {
+//                wordTranslation = new WordsTranslations(translation);
+//                wordsTranslationsRepository.save(wordTranslation);
+//            }else{
+//                wordTranslation = translationsList.get(0);
+//            }
+//
+//            Set<WordsTranslations> uwTranslations = uw.getTranslations();
+//            if(!uwTranslations.contains((wordTranslation))){
+//                uwTranslations.add(wordTranslation);
+//                uw.setTranslations(uwTranslations);
+//                usersWordsRepository.save(uw);
+//            }
+//        }
+        //сохранение новой темы
+        saveNewTopic(topicName, uw);
+//        if(topicName!="")
+//        {
+//            Topics topic;
+//            List<Topics> topicList = topicsRepository.findTopicsByName(topicName);
+//            if(topicList.size()==0)
+//            {
+//                topic = new Topics(topicName);
+//                topicsRepository.save(topic);
+//            }else{
+//                topic = topicList.get(0);
+//            }
+//
+//            Set<Topics> uwtTopics = uw.getTopics();
+//            if(!uwtTopics.contains(topic)){
+//                uwtTopics.add(topic);
+//                uw.setTopics(uwtTopics);
+//                usersWordsRepository.save(uw);
+//            }
+//        }
         return "redirect:/history";
     }
 
@@ -384,19 +432,75 @@ public class MainController {
 
         model.addAttribute("usersWord", usersWord);
 
+        Iterable<PartsOfSpeech> ps = partsOfSpeechRepository.findAll();
+        model.addAttribute("ps", ps);
+
 
         return "/editWord";
     }
 
     @PostMapping("/editWord")
     public String editWord(
+            @RequestParam Long userWordId,
             @RequestParam String wordName,
+            @RequestParam String partOfSpeech,
             @RequestParam String transcription,
-            @RequestParam String newTranslation,
-            @RequestParam List<String> Translations,
-            @RequestParam String newTopic,
-            @RequestParam List<String> Topics,
+            //@RequestParam List<String> oldTranslations,
+            @RequestParam(required = false) List<String> newTranslations,
+            //@RequestParam(required = false) List<String> oldTopics,
+            @RequestParam(required = false) List<String> newTopics,
             Model model){
+
+        UsersWords oldUsersWord = usersWordsRepository.findUsersWordsById(userWordId);
+        UsersWord oldUsersWordDTO = new UsersWord(oldUsersWord);
+
+
+
+        if(oldUsersWordDTO.getWord() != wordName){
+
+        }else{
+
+        }
+
+        if(oldUsersWordDTO.getPartOfSpeech() != partOfSpeech){
+
+        }else{
+
+        }
+
+        if(oldUsersWordDTO.getTranscription() != transcription){
+
+        }else{
+
+        }
+
+        //удаление старых переводов
+        oldUsersWord.getTranslations().removeIf(oldTrans -> !newTranslations.contains(oldTrans.getName()));
+        oldUsersWordDTO.getTranslations().removeIf(oldTrans -> !newTranslations.contains(oldTrans));
+
+
+        //добавление новых переводов
+        if(newTranslations!=null)
+        for( String newTranslation: newTranslations){
+            if(!oldUsersWordDTO.getTranslations().contains(newTranslation)){
+                //добавить новый перевод
+                saveNewTranslation(newTranslation, oldUsersWord);
+            }
+        }
+
+//        if(oldTopics!=null)
+//        for( String topic: oldUsersWordDTO.getTopics()){
+//
+//        }
+//
+//        if(newTopics!=null)
+//        for( String newtopic: newTopics){
+//
+//
+//        }
+
+        usersWordsRepository.save(oldUsersWord);
+
         return "redirect:/history";
     }
 
