@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Controller
 public class MainController {
@@ -300,10 +299,10 @@ public class MainController {
             usersPhrasalVerb = upvList.get(0);
         }
 
-        if(translation !="")
+        if(!translation.equals(""))
         {
             PhrasalVerbsTranslations pvTranslation;
-            List<PhrasalVerbsTranslations> pvtList = phrasalVerbsTranslationsRepository.findPhrasal_verbs_translationsByName(translation);
+            List<PhrasalVerbsTranslations> pvtList = phrasalVerbsTranslationsRepository.findByName(translation);
             if(pvtList.size()==0)
             {
                 pvTranslation = new PhrasalVerbsTranslations(translation);
@@ -454,23 +453,23 @@ public class MainController {
         UsersWords oldUsersWord = usersWordsRepository.findUsersWordsById(userWordId);
         UsersWord oldUsersWordDTO = new UsersWord(oldUsersWord);
 
+        boolean newWordName = !oldUsersWordDTO.getWord().equals(wordName);
+        boolean newWordPartOfSpeech = !oldUsersWordDTO.getPartOfSpeech().equals(partOfSpeech);
+        boolean newWordTranscription = !oldUsersWordDTO.getTranscription().equals(transcription);
 
-
-        if(oldUsersWordDTO.getWord() != wordName){
-
-        }else{
-
+        //если слово изменило написание или транскрипцию
+        if (newWordName || newWordTranscription) {
+            //создать новое слово и привязать его к пользователю
+            Words newWord = new Words(wordName, transcription);
+            oldUsersWord.getWps().setWord(newWord);
         }
 
-        if(oldUsersWordDTO.getPartOfSpeech() != partOfSpeech){
-
-        }else{
-
-        }
-
-        if(oldUsersWordDTO.getTranscription() != transcription){
-
-        }else{
+        //если слово изменило часть речи
+        if (newWordPartOfSpeech) {
+            //добавить новое сочетание слова и части речи и привязать его к пользователю
+            PartsOfSpeech newPartOfSpeech = partsOfSpeechRepository.findPartsOfSpeechByName(partOfSpeech);
+            WordsPartOfSpeech newWPS = new WordsPartOfSpeech(oldUsersWord.getWps().getWord(),newPartOfSpeech);
+            oldUsersWord.setWps(newWPS);
 
         }
 
@@ -478,26 +477,28 @@ public class MainController {
         oldUsersWord.getTranslations().removeIf(oldTrans -> !newTranslations.contains(oldTrans.getName()));
         oldUsersWordDTO.getTranslations().removeIf(oldTrans -> !newTranslations.contains(oldTrans));
 
-
         //добавление новых переводов
-        if(newTranslations!=null)
-        for( String newTranslation: newTranslations){
-            if(!oldUsersWordDTO.getTranslations().contains(newTranslation)){
-                //добавить новый перевод
-                saveNewTranslation(newTranslation, oldUsersWord);
+        if (newTranslations.size() != 0)
+            for (String newTranslation : newTranslations) {
+                if (!oldUsersWordDTO.getTranslations().contains(newTranslation)) {
+                    //добавить новый перевод
+                    saveNewTranslation(newTranslation, oldUsersWord);
+                }
             }
-        }
 
-//        if(oldTopics!=null)
-//        for( String topic: oldUsersWordDTO.getTopics()){
-//
-//        }
-//
-//        if(newTopics!=null)
-//        for( String newtopic: newTopics){
-//
-//
-//        }
+        //удаление старых тем
+        oldUsersWord.getTopics().removeIf(oldTopic -> !newTopics.contains(oldTopic.getName()));
+        oldUsersWordDTO.getTopics().removeIf(oldTopic -> !newTopics.contains(oldTopic));
+
+
+        //добавление новых тем
+        if (newTopics.size() != 0)
+            for (String newTopic : newTopics) {
+                if (!oldUsersWordDTO.getTopics().contains(newTopic)) {
+                    //добавить новую тему
+                    saveNewTopic(newTopic, oldUsersWord);
+                }
+            }
 
         usersWordsRepository.save(oldUsersWord);
 
