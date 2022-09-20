@@ -152,21 +152,19 @@ public class MainController {
         }
     }
 
-    private void saveNewTopic(String newTopic, UsersWords usersWord){
-        if(newTopic!="")
-        {
+    private void saveNewTopic(String newTopic, UsersWords usersWord) {
+        if (newTopic != "") {
             Topics topic;
             List<Topics> topicList = topicsRepository.findTopicsByName(newTopic);
-            if(topicList.size()==0)
-            {
+            if (topicList.size() == 0) {
                 topic = new Topics(newTopic);
                 topicsRepository.save(topic);
-            }else{
+            } else {
                 topic = topicList.get(0);
             }
 
             Set<Topics> uwtTopics = usersWord.getTopics();
-            if(!uwtTopics.contains(topic)){
+            if (!uwtTopics.contains(topic)) {
                 uwtTopics.add(topic);
                 usersWord.setTopics(uwtTopics);
                 usersWordsRepository.save(usersWord);

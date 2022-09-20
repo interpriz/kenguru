@@ -36,7 +36,7 @@ public class UsersWordsService {
     private UsersIrregularVerbsScoresRepository usersIrregularVerbsScoresRepository;
 
     @Autowired
-    private IrregularVerbsRepository irregular_verbsRepository;
+    private IrregularVerbsRepository irregularVerbsRepository;
 
     @Autowired
     private UsersComparativeAdjectivesScoresRepository usersComparativeAdjectivesScoresRepository;
