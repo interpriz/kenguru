@@ -19,9 +19,9 @@ function search() {
         }
         for(var i = 0; i< data.searchUserPhrasalVerbs.length; i++){
             var ref = document.createElement('a');
-            ref.id = `userFrasalVerb_${data.searchUserPhrasalVerbs[i].id}`;
+            ref.id = `userPhrasalVerb_${data.searchUserPhrasalVerbs[i].id}`;
             ref.className = "dropdown-item";
-            ref.href = `/editFrasalVerb/?userFrasalVerbId=${data.searchUserPhrasalVerbs[i].id}`;
+            ref.href = `/editPhrasalVerb/?userPhrasalVerbId=${data.searchUserPhrasalVerbs[i].id}`;
             ref.text = `Phrasal verb: ${data.searchUserPhrasalVerbs[i].word} ${data.searchUserPhrasalVerbs[i].preposition} ${data.searchUserPhrasalVerbs[i].translations}` ;
             var li = document.createElement('li');
             li.appendChild(ref);

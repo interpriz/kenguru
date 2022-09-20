@@ -55,7 +55,11 @@
             <div class="mb-3">
                 <label for="topicName" class="form-label">Темы</label>
                 <div class="input-group mb-3">
-                    <input id="topicName" name="newTopic" type="text" class="form-control" placeholder="Добавьте новую тему">
+                    <input id="topicName" name="newTopic" type="text" class="form-control" placeholder="Добавьте новую тему" list = "datalistOptions">
+                    <datalist id = "datalistOptions">
+                        <option th:each="el : ${topics}" th:value="${el.name}" th:text="${el.name}">
+                        </option>
+                    </datalist>
                     <button class="btn btn-outline-secondary" type="button" onclick="addNewTopic()">+</button>
                 </div>
                 <ul class="list-group" id = "topicsList" >

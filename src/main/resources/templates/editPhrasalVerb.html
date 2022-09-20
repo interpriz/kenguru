@@ -1,0 +1,68 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:form="http://www.w3.org/1999/xhtml">
+<head>
+    <title th:text="${title}"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+    <link rel="stylesheet"  th:href="@{/style/StyleSheets/MainStyle.css}"/>
+
+    <script src="/js/editWord.js"></script>
+
+</head>
+
+<!-- style="background-image: url('images/banner-2024869_1280.png');" -->
+
+<body>
+
+
+<header th:insert="blocks/header :: header"></header>
+
+<div class="container mt-5 mb-5" style="border-radius:15px; background-color: white; width: 730px; high: 200px;">
+    <h3>Редактирование фразового глагола</h3>
+    <form action="/editPhrasalVerb" method = "post">
+        <input type="hidden" name="userPhrasalVerbId" th:value="${usersPhrasalVerb.id}">
+        <div class="mb-3">
+            <label for="wordName" class="form-label">Английский глагол</label>
+            <input th:value="${usersPhrasalVerb.phrasalVerb.wps.word.name}" type="text"  id="wordName"         name="wordName"      placeholder="Введите глагол на английском" class = "form-control " readonly>
+        </div>
+        <div class="mb-3">
+            <label for="transcription" class="form-label">Транскрипция</label>
+            <input th:value="${usersPhrasalVerb.phrasalVerb.wps.word.transcription}" type="text"  id="transcription"    name="transcription" placeholder="Введите транскрипцию"  class = "form-control" readonly>
+        </div>
+        <div class="mb-3">
+            <label for="preposition" class="form-label">Предлог</label>
+            <input th:value="${usersPhrasalVerb.phrasalVerb.preposition}" type="text"  id="preposition"      name="preposition"   placeholder="Введите предлог" class = "form-control">
+        </div>
+        <div class="mb-3">
+            <label for="translation" class="form-label">Переводы</label>
+            <div class="input-group mb-3">
+                <input id="translation" name="newTranslation" type="text" class="form-control" placeholder="Добавьте новый перевод">
+                <button class="btn btn-outline-secondary" type="button" onclick="addNewTranslation()">+</button>
+            </div>
+            <ul class="list-group" id = "translationsList" >
+                <li class="list-group list-group-flush" th:each="el : ${usersPhrasalVerb.translations}">
+                    <div class="input-group mb-3">
+                        <input th:value="${el.name}" type="text" name="newTranslations"   placeholder="Введите перевод" class = "form-control" aria-describedby="button-addon2">
+                        <button class="btn btn-outline-secondary" type="button" onclick="deleteListElem()">x</button>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="mb-3">
+            <label for="description" class="form-label">Примеры использования</label>
+            <textarea th:text="${usersPhrasalVerb.description}" type="text"  id="description"      name="description"   placeholder="Введите описание(пример иссспользования)" class = "form-control" rows="3">
+            </textarea>
+        </div>
+
+        <button type="submit" class = "btn btn-success">Сохранить</button>
+    </form>
+
+</div>
+<div th:insert="blocks/footer :: footer"></div>
+
+
+
+</body>
+</html>

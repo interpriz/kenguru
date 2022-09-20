@@ -1,5 +1,6 @@
 package com.kenguru.demowebapp.controllers;
 
+import com.kenguru.demowebapp.dto.UsersPhrasalVerb;
 import com.kenguru.demowebapp.dto.UsersWord;
 import com.kenguru.demowebapp.entities.*;
 import com.kenguru.demowebapp.repositories.*;
@@ -88,19 +89,7 @@ public class MainController {
         return "history";
     }
 
-    @GetMapping("/addNewWord")
-    public String addNewWord(Model model) {
-        model.addAttribute("title", "Добавление нового слова");
 
-        Iterable<PartsOfSpeech> ps = partsOfSpeechRepository.findAll();
-        model.addAttribute("ps", ps);
-
-        Users usr  = usersRepository.getById(1L);
-        Iterable<Topics> topics = topicsRepository.findDistinctTopicsByUwIn(usersWordsRepository.findByUser(usr));
-        model.addAttribute("topics", topics);
-
-        return "addNewWord";
-    }
 
     private Words saveOrGetWord(String wordName, String transcription){
         Words word;
@@ -141,8 +130,8 @@ public class MainController {
         return uw;
     }
 
-    private void saveNewTranslation(String newTranslation, UsersWords usersWord){
-        if(newTranslation !="")
+    private void saveNewWordTranslation(String newTranslation, UsersWords usersWord){
+        if(!newTranslation.equals(""))
         {
             WordsTranslations wordTranslation;
             List<WordsTranslations> translationsList = wordsTranslationsRepository.findWordsTranslationsByName(newTranslation);
@@ -185,70 +174,32 @@ public class MainController {
         }
     }
 
+    private void saveNewPhrasalVerbTranslation(String newTranslation, UsersPhrasalVerbsScores usersPhrasalVerb){
+        if(!newTranslation.equals(""))
+        {
+            PhrasalVerbsTranslations pvTranslation;
+            List<PhrasalVerbsTranslations> pvtList = phrasalVerbsTranslationsRepository.findByName(newTranslation);
+            if(pvtList.size()==0)
+            {
+                pvTranslation = new PhrasalVerbsTranslations(newTranslation);
+                phrasalVerbsTranslationsRepository.save(pvTranslation);
+            }else{
+                pvTranslation = pvtList.get(0);
+            }
 
-    @PostMapping("/addNewWord")
-    public String addNewWordPost(
-            @RequestParam String partOfSpeech,
-            @RequestParam String wordName,
-            @RequestParam String transcription,
-            @RequestParam String translation,
-            @RequestParam String topicName,
-            Model model) {
 
 
-        PartsOfSpeech pos = partsOfSpeechRepository.findPartsOfSpeechByName(partOfSpeech);
-        Users usr  = usersRepository.getById(1L);
-
-        Words word = saveOrGetWord(wordName, transcription);
-
-        WordsPartOfSpeech wps = saveOrGetWPS(pos, word);
-
-        UsersWords uw = saveOrGetUsersWord(wps, usr);
-
-        //сохранение нового перевода
-        saveNewTranslation(translation, uw);
-//        if(translation !="")
-//        {
-//            WordsTranslations wordTranslation;
-//            List<WordsTranslations> translationsList = wordsTranslationsRepository.findWordsTranslationsByName(translation);
-//            if(translationsList.size()==0)
-//            {
-//                wordTranslation = new WordsTranslations(translation);
-//                wordsTranslationsRepository.save(wordTranslation);
-//            }else{
-//                wordTranslation = translationsList.get(0);
-//            }
-//
-//            Set<WordsTranslations> uwTranslations = uw.getTranslations();
-//            if(!uwTranslations.contains((wordTranslation))){
-//                uwTranslations.add(wordTranslation);
-//                uw.setTranslations(uwTranslations);
-//                usersWordsRepository.save(uw);
-//            }
-//        }
-        //сохранение новой темы
-        saveNewTopic(topicName, uw);
-//        if(topicName!="")
-//        {
-//            Topics topic;
-//            List<Topics> topicList = topicsRepository.findTopicsByName(topicName);
-//            if(topicList.size()==0)
-//            {
-//                topic = new Topics(topicName);
-//                topicsRepository.save(topic);
-//            }else{
-//                topic = topicList.get(0);
-//            }
-//
-//            Set<Topics> uwtTopics = uw.getTopics();
-//            if(!uwtTopics.contains(topic)){
-//                uwtTopics.add(topic);
-//                uw.setTopics(uwtTopics);
-//                usersWordsRepository.save(uw);
-//            }
-//        }
-        return "redirect:/history";
+            Set<PhrasalVerbsTranslations> pvTranslations = usersPhrasalVerb.getTranslations();
+            if(!pvTranslations.contains(pvTranslation)){
+                pvTranslations.add(pvTranslation);
+                usersPhrasalVerb.setTranslations(pvTranslations);
+                usersPhrasalVerbsScoresRepository.save(usersPhrasalVerb);
+            }
+        }
     }
+
+
+
 
 
     @GetMapping("/addNewPhrasalVerb")
@@ -299,27 +250,28 @@ public class MainController {
             usersPhrasalVerb = upvList.get(0);
         }
 
-        if(!translation.equals(""))
-        {
-            PhrasalVerbsTranslations pvTranslation;
-            List<PhrasalVerbsTranslations> pvtList = phrasalVerbsTranslationsRepository.findByName(translation);
-            if(pvtList.size()==0)
-            {
-                pvTranslation = new PhrasalVerbsTranslations(translation);
-                phrasalVerbsTranslationsRepository.save(pvTranslation);
-            }else{
-                pvTranslation = pvtList.get(0);
-            }
-
-
-
-            Set<PhrasalVerbsTranslations> pvTranslations = usersPhrasalVerb.getTranslations();
-            if(!pvTranslations.contains(pvTranslation)){
-                pvTranslations.add(pvTranslation);
-                usersPhrasalVerb.setTranslations(pvTranslations);
-                usersPhrasalVerbsScoresRepository.save(usersPhrasalVerb);
-            }
-        }
+        saveNewPhrasalVerbTranslation(translation,usersPhrasalVerb);
+//        if(!translation.equals(""))
+//        {
+//            PhrasalVerbsTranslations pvTranslation;
+//            List<PhrasalVerbsTranslations> pvtList = phrasalVerbsTranslationsRepository.findByName(translation);
+//            if(pvtList.size()==0)
+//            {
+//                pvTranslation = new PhrasalVerbsTranslations(translation);
+//                phrasalVerbsTranslationsRepository.save(pvTranslation);
+//            }else{
+//                pvTranslation = pvtList.get(0);
+//            }
+//
+//
+//
+//            Set<PhrasalVerbsTranslations> pvTranslations = usersPhrasalVerb.getTranslations();
+//            if(!pvTranslations.contains(pvTranslation)){
+//                pvTranslations.add(pvTranslation);
+//                usersPhrasalVerb.setTranslations(pvTranslations);
+//                usersPhrasalVerbsScoresRepository.save(usersPhrasalVerb);
+//            }
+//        }
         return "redirect:/history";
     }
 
@@ -423,91 +375,60 @@ public class MainController {
         return "redirect:/history";
     }
 
-    @GetMapping("/editWord")
-    public String editWord( @RequestParam Long userWordId, Model model){
-        model.addAttribute("title", "Редактирование слова");
+    @GetMapping("/editPhrasalVerb")
+    public String editPhrasalVerb( @RequestParam Long userPhrasalVerbId, Model model){
+        model.addAttribute("title", "Редактирование фразового глагола");
 
-        UsersWords usersWord = usersWordsRepository.findUsersWordsById(userWordId);
+        UsersPhrasalVerbsScores usersPhrasalVerb = usersPhrasalVerbsScoresRepository.getById(userPhrasalVerbId);
 
-        model.addAttribute("usersWord", usersWord);
+        model.addAttribute("usersPhrasalVerb", usersPhrasalVerb);
 
-        Iterable<PartsOfSpeech> ps = partsOfSpeechRepository.findAll();
-        model.addAttribute("ps", ps);
-
-
-        return "/editWord";
+        return "/editPhrasalVerb";
     }
 
-    @PostMapping("/editWord")
-    public String editWord(
-            @RequestParam Long userWordId,
+    @PostMapping("/editPhrasalVerb")
+    public String editPhrasalVerb(
+            @RequestParam Long userPhrasalVerbId,
             @RequestParam String wordName,
-            @RequestParam String partOfSpeech,
             @RequestParam String transcription,
-            //@RequestParam List<String> oldTranslations,
+            @RequestParam String preposition,
             @RequestParam(required = false) List<String> newTranslations,
-            //@RequestParam(required = false) List<String> oldTopics,
-            @RequestParam(required = false) List<String> newTopics,
+            @RequestParam String description,
             Model model){
 
-        UsersWords oldUsersWord = usersWordsRepository.findUsersWordsById(userWordId);
-        UsersWord oldUsersWordDTO = new UsersWord(oldUsersWord);
+        UsersPhrasalVerbsScores oldUsersPhrasalVerb = usersPhrasalVerbsScoresRepository.findUsersPhrasalVerbsScoresById(userPhrasalVerbId);
+        UsersPhrasalVerb oldUsersPhrasalVerbDTO = new UsersPhrasalVerb(oldUsersPhrasalVerb);
 
-        boolean newWordName = !oldUsersWordDTO.getWord().equals(wordName);
-        boolean newWordPartOfSpeech = !oldUsersWordDTO.getPartOfSpeech().equals(partOfSpeech);
-        boolean newWordTranscription = !oldUsersWordDTO.getTranscription().equals(transcription);
-
-        //если слово изменило написание или транскрипцию
-        if (newWordName || newWordTranscription) {
-            //создать новое слово и привязать его к пользователю
-            Words newWord = new Words(wordName, transcription);
-            oldUsersWord.getWps().setWord(newWord);
+        //если у глагола изменился предлог
+        if(!oldUsersPhrasalVerb.getPhrasalVerb().getPreposition().equals(preposition)){
+            WordsPartOfSpeech oldWPS = oldUsersPhrasalVerb.getPhrasalVerb().getWps();
+            PhrasalVerbs newPhrasalVerb = new PhrasalVerbs(preposition,oldWPS);
+            oldUsersPhrasalVerb.setPhrasalVerb(newPhrasalVerb);
         }
 
-        //если слово изменило часть речи
-        if (newWordPartOfSpeech) {
-            //добавить новое сочетание слова и части речи и привязать его к пользователю
-            PartsOfSpeech newPartOfSpeech = partsOfSpeechRepository.findPartsOfSpeechByName(partOfSpeech);
-            WordsPartOfSpeech newWPS = new WordsPartOfSpeech(oldUsersWord.getWps().getWord(),newPartOfSpeech);
-            oldUsersWord.setWps(newWPS);
-
+        //если у глагола изменилось описание
+        if(!oldUsersPhrasalVerb.getDescription().equals(description)){
+            oldUsersPhrasalVerb.setDescription(description);
         }
+
 
         //удаление старых переводов
-        oldUsersWord.getTranslations().removeIf(oldTrans -> !newTranslations.contains(oldTrans.getName()));
-        oldUsersWordDTO.getTranslations().removeIf(oldTrans -> !newTranslations.contains(oldTrans));
+        oldUsersPhrasalVerb.getTranslations().removeIf(oldTrans -> !newTranslations.contains(oldTrans.getName()));
+        oldUsersPhrasalVerbDTO.getTranslations().removeIf(oldTrans -> !newTranslations.contains(oldTrans));
 
         //добавление новых переводов
         if (newTranslations.size() != 0)
             for (String newTranslation : newTranslations) {
-                if (!oldUsersWordDTO.getTranslations().contains(newTranslation)) {
+                if (!oldUsersPhrasalVerbDTO.getTranslations().contains(newTranslation)) {
                     //добавить новый перевод
-                    saveNewTranslation(newTranslation, oldUsersWord);
+                    saveNewPhrasalVerbTranslation(newTranslation,oldUsersPhrasalVerb);
                 }
             }
 
-        //удаление старых тем
-        oldUsersWord.getTopics().removeIf(oldTopic -> !newTopics.contains(oldTopic.getName()));
-        oldUsersWordDTO.getTopics().removeIf(oldTopic -> !newTopics.contains(oldTopic));
-
-
-        //добавление новых тем
-        if (newTopics.size() != 0)
-            for (String newTopic : newTopics) {
-                if (!oldUsersWordDTO.getTopics().contains(newTopic)) {
-                    //добавить новую тему
-                    saveNewTopic(newTopic, oldUsersWord);
-                }
-            }
-
-        usersWordsRepository.save(oldUsersWord);
+        usersPhrasalVerbsScoresRepository.save(oldUsersPhrasalVerb);
 
         return "redirect:/history";
     }
-
-
-
-
 
 
 }
