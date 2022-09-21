@@ -10,7 +10,7 @@ import java.util.List;
 @Repository
 public interface PhrasalVerbsRepository extends JpaRepository<PhrasalVerbs, Long> {
 
-    List<PhrasalVerbs> findPhrasalVerbsByWpsAndPreposition(WordsPartOfSpeech wps, String preposition);
+    PhrasalVerbs findByWpsAndPreposition(WordsPartOfSpeech wps, String preposition);
 
     List<PhrasalVerbs> findByWpsIn(List<WordsPartOfSpeech> listWPS);
 }

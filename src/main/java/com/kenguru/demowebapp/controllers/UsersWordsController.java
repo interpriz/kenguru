@@ -17,7 +17,8 @@ import java.util.Set;
 @Controller
 public class UsersWordsController {
 
-
+    @Autowired
+    private UsersRepository usersRepository;
 
     private UsersWordsService service;
 
@@ -33,7 +34,9 @@ public class UsersWordsController {
         List<PartsOfSpeech> ps = service.getAllPartsOfSpeech();
         model.addAttribute("ps", ps);
 
-        List<Topics> topics = service.getAllUsersTopics();
+
+        Users usr  = usersRepository.getById(1L);
+        List<Topics> topics = service.getAllUsersTopics(usr);
         model.addAttribute("topics", topics);
 
         return "addNewWord";
@@ -49,7 +52,6 @@ public class UsersWordsController {
             Model model) {
         service.saveNewUsersWord(partOfSpeech,wordName,transcription,translation,topicName);
 
-
         return "redirect:/history";
     }
 
@@ -64,7 +66,8 @@ public class UsersWordsController {
         List<PartsOfSpeech> ps = service.getAllPartsOfSpeech();
         model.addAttribute("ps", ps);
 
-        List<Topics> topics = service.getAllUsersTopics();
+        Users usr  = usersRepository.getById(1L);
+        List<Topics> topics = service.getAllUsersTopics(usr);
         model.addAttribute("topics", topics);
 
 

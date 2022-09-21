@@ -9,5 +9,5 @@ import java.util.List;
 
 @Repository
 public interface IrregularVerbsRepository extends JpaRepository<IrregularVerbs, Long> {
-    List<IrregularVerbs> findIrregularVerbsByWps(WordsPartOfSpeech wps);
+    IrregularVerbs findByWps(WordsPartOfSpeech wps);
 }

@@ -1,7 +1,9 @@
 package com.kenguru.demowebapp.entities;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -78,6 +80,13 @@ public class UsersPhrasalVerbsScores {
     public Set<PhrasalVerbsTranslations> getTranslations() {
         return translations;
     }
+    public List<String> getListStringTranslations() {
+        List<String> translationsList = new ArrayList<>();
+        for(PhrasalVerbsTranslations trans : this.translations){
+            translationsList.add(trans.getName());
+        }
+        return new ArrayList<>();
+    }
 
     public void setTranslations(Set<PhrasalVerbsTranslations> translations) {
         this.translations = translations;
@@ -89,5 +98,11 @@ public class UsersPhrasalVerbsScores {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public void addNewTranslation(PhrasalVerbsTranslations newTranslation){
+        if(!translations.contains((newTranslation))){
+            translations.add(newTranslation);
+        }
     }
 }

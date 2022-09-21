@@ -8,6 +8,8 @@ import java.util.List;
 
 @Repository
 public interface WordsRepository extends JpaRepository<Words, Long> {
-    List<Words> findWordsByName(String name);
+
+    Words findByNameAndTranscription(String name, String transcr);
+
     Words findByName(String name);
 }

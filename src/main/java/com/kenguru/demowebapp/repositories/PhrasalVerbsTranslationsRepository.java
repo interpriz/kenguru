@@ -8,6 +8,6 @@ import java.util.List;
 
 @Repository
 public interface PhrasalVerbsTranslationsRepository extends JpaRepository<PhrasalVerbsTranslations, Long> {
-    List<PhrasalVerbsTranslations> findByName(String name);
+    PhrasalVerbsTranslations findByName(String name);
 
 }

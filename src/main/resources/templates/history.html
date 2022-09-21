@@ -26,7 +26,7 @@
                 <th scope="col">Перевод</th>
                 <th scope="col">Темы</th>
             </tr>
-            <tr th:each="el : ${uw}">
+            <tr th:each="el : ${usersWords}">
                 <td th:text="${el.id}"></td>
                 <td th:text="${el.wps.partOfSpeech.name}"></td>
                 <td th:text="${el.wps.word.name}"></td>
@@ -44,7 +44,7 @@
                 <th scope="col">Третья форма</th>
                 <th scope="col">Транскрипция</th>
             </tr>
-            <tr th:each="el : ${uivs}">
+            <tr th:each="el : ${usersIrrVerbs}">
                 <td th:text="${el.id}"></td>
                 <td th:text="${el.irregularVerb.wps.word.name}"></td>
                 <td th:text="${el.irregularVerb.second_form}"></td>
@@ -61,7 +61,7 @@
                 <th scope="col">Превосходная степень</th>
                 <th scope="col">Транскрипция</th>
             </tr>
-            <tr th:each="el : ${ucas}">
+            <tr th:each="el : ${usersCompAdj}">
                 <td th:text="${el.id}"></td>
                 <td th:text="${el.comparativeAdjective.wps.word.name}"></td>
                 <td th:text="${el.comparativeAdjective.comparative}"></td>
@@ -77,7 +77,7 @@
                 <th scope="col">Предлог</th>
                 <th scope="col">Перевод</th>
             </tr>
-            <tr th:each="el : ${upv}">
+            <tr th:each="el : ${usersPhrasVerbs}">
                 <td th:text="${el.id}"></td>
                 <td th:text="${el.phrasalVerb.wps.word.name}"></td>
                 <td th:text="${el.phrasalVerb.preposition}"></td>

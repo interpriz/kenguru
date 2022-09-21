@@ -10,6 +10,6 @@ import java.util.List;
 
 @Repository
 public interface WordsPartOfSpeechRepository extends JpaRepository<WordsPartOfSpeech, Long> {
-    List<WordsPartOfSpeech> findWordsPartOfSpeechByPartOfSpeechAndWord(PartsOfSpeech pos, Words word);
+    WordsPartOfSpeech findByPartOfSpeechAndWord(PartsOfSpeech pos, Words word);
     List<WordsPartOfSpeech> findByWord(Words word);
 }

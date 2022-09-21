@@ -1,15 +1,13 @@
 package com.kenguru.demowebapp.dto;
 
-import com.kenguru.demowebapp.entities.UsersPhrasalVerbsScores;
-
 import java.util.List;
 
-public class searchingObjects {
+public class SearchingObjects {
 
     private List<UsersWord> searchUserWords;
     private List<UsersPhrasalVerb> searchUserPhrasalVerbs;
 
-    public searchingObjects(List<UsersWord> searchUserWords, List<UsersPhrasalVerb> searchUserPhrasalVerbs) {
+    public SearchingObjects(List<UsersWord> searchUserWords, List<UsersPhrasalVerb> searchUserPhrasalVerbs) {
         this.searchUserWords = searchUserWords;
         this.searchUserPhrasalVerbs = searchUserPhrasalVerbs;
     }

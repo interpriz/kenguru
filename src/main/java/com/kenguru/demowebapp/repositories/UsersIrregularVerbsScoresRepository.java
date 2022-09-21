@@ -11,5 +11,5 @@ import java.util.List;
 @Repository
 public interface UsersIrregularVerbsScoresRepository extends JpaRepository<UsersIrregularVerbsScores, Long> {
     List<UsersIrregularVerbsScores> findByUser(Users usr);
-    List<UsersIrregularVerbsScores> findByUserAndIrregularVerb(Users usr, IrregularVerbs irregularVerb);
+    UsersIrregularVerbsScores findByUserAndIrregularVerb(Users usr, IrregularVerbs irregularVerb);
 }
