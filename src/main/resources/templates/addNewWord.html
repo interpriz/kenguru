@@ -20,7 +20,7 @@
 
 <div class="container mt-5 mb-5" style="border-radius:15px; background-color: white; width: 730px; high: 200px;">
     <h3>Добавление нового слова</h3>
-    <form action="/addNewWord" method = "post">
+    <form th:action="@{/addNewWord}" method = "post">
 <!--        <input type="text" name="partOfSpeech" placeholder="Выберите часть речи" class = "form-control">-->
         <select name="partOfSpeech"  class="form-select mt-1 mb-1" aria-label="Default select example">
             <option value="0" >Выберите часть речи</option>

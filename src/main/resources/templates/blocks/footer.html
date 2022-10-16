@@ -3,5 +3,11 @@
         <div class="container justify-content-center">
             Собственность Гаврилова Александра
         </div>
+        <div>
+            <form th:action="@{/logout}" method="post">
+                <input type="submit" value="Sign Out"/>
+            </form>
+            <span><a href="/user">Список пользователей</a></span>
+        </div>
     </footer>
 </div>

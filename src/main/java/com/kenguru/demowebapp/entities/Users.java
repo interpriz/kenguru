@@ -1,17 +1,32 @@
 package com.kenguru.demowebapp.entities;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.Set;
 
 @Entity
 @Table(name = "users")
-public class Users {
+public class Users implements UserDetails {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name", unique = true)
-    private String name;
+    @Column(name = "username", unique = true)
+    private String username;
+
+    @Column(name = "password", unique = true)
+    private String password;
+
+    @Column(name = "active", unique = true)
+    private boolean active;
+
+    @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "users_roles", joinColumns = @JoinColumn(name = "id_user"))
+    @Enumerated(EnumType.STRING)
+    private Set<Role> roles;
 
     @OneToMany(mappedBy = "user")
     private Set<UsersWords> uw;
@@ -31,15 +46,22 @@ public class Users {
     public Users() {
     }
 
-    public Users(Long id, String name) {
+    public Users(Long id, String username) {
         this.id = id;
-        this.name = name;
+        this.username = username;
     }
 
-    public Users(String name, Set<UsersWords> uwt, Set<Groups> groups) {
-        this.name = name;
+    public Users(String username, Set<UsersWords> uwt, Set<Groups> groups) {
+        this.username = username;
         this.uw = uwt;
         this.groups = groups;
+    }
+
+    public Users(String username, String password, boolean active, Set<Role> roles) {
+        this.username = username;
+        this.password = password;
+        this.active = active;
+        this.roles = roles;
     }
 
     public Long getId() {
@@ -50,12 +72,12 @@ public class Users {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getUsername() {
+        return username;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUsername(String name) {
+        this.username = name;
     }
 
     public Set<UsersWords> getUw() {
@@ -80,5 +102,62 @@ public class Users {
 
     public void setUivs(Set<UsersIrregularVerbsScores> uivs) {
         this.uivs = uivs;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public Set<UsersComparativeAdjectivesScores> getUcas() {
+        return ucas;
+    }
+
+    public void setUcas(Set<UsersComparativeAdjectivesScores> ucas) {
+        this.ucas = ucas;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return isActive();
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return getRoles();
     }
 }

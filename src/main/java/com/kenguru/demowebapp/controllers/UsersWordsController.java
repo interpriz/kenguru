@@ -80,9 +80,7 @@ public class UsersWordsController {
             @RequestParam String wordName,
             @RequestParam String partOfSpeech,
             @RequestParam String transcription,
-            //@RequestParam List<String> oldTranslations,
             @RequestParam(required = false) List<String> newTranslations,
-            //@RequestParam(required = false) List<String> oldTopics,
             @RequestParam(required = false) List<String> newTopics,
             Model model) {
         service.editOldUsersWord(
