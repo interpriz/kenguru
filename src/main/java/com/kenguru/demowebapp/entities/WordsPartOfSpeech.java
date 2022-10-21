@@ -24,7 +24,7 @@ public class WordsPartOfSpeech {
     private Set<UsersWords> uw;
 
     @OneToOne(mappedBy = "wps")
-    private IrregularVerbs irr_verb;
+    private IrregularVerbs irrVerb;
 
     public WordsPartOfSpeech() {
     }
@@ -66,11 +66,11 @@ public class WordsPartOfSpeech {
         this.uw = uwt;
     }
 
-    public IrregularVerbs getIrr_verb() {
-        return irr_verb;
+    public IrregularVerbs getIrrVerb() {
+        return irrVerb;
     }
 
-    public void setIrr_verb(IrregularVerbs irr_verb) {
-        this.irr_verb = irr_verb;
+    public void setIrrVerb(IrregularVerbs irrVerb) {
+        this.irrVerb = irrVerb;
     }
 }

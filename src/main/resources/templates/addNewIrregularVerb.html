@@ -21,7 +21,7 @@
 
 <div class="container mt-5 mb-5" style="border-radius:15px; background-color: white; width: 730px; high: 200px;">
     <h3>Добавление форм неправильного глагола</h3>
-    <form action="/addNewIrregularVerb" method = "post">
+    <form th:action="@{/addNewIrregularVerb}" method = "post">
         <p>
         <input type="text"  id="wordName"         name="wordName"      placeholder="Введите глагол на английском"                   class = "form-control mt-1 mb-1" onchange="change()">
         <input type="text"  id="transcription"    name="transcription" placeholder="Введите транскрипцию"                       class = "form-control mt-1 mb-1">

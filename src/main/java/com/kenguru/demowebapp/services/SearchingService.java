@@ -66,7 +66,7 @@ public class SearchingService {
                 //поиск слов по переводу
                 WordsTranslations wordTranslation = wordsTranslationsRepository.findByName(searchStr);
                 if (wordTranslation != null)
-                    searchUsersWords.addAll(wordTranslation.getUw());
+                    searchUsersWords.addAll(wordTranslation.getUsersWords());
 
                 //поиск всех фразовых глаголов по переводу глагола
                 PartsOfSpeech verb = partsOfSpeechRepository.findPartsOfSpeechByName("verb");
@@ -81,7 +81,7 @@ public class SearchingService {
                 //поиск фразового глагола по его переводу
                 PhrasalVerbsTranslations phrasalVerbsTranslations = phrasalVerbsTranslationsRepository.findByName(searchStr);
                 if (phrasalVerbsTranslations != null)
-                    searchUsersPhrasalVerbsScores.addAll(phrasalVerbsTranslations.getUpv());
+                    searchUsersPhrasalVerbsScores.addAll(phrasalVerbsTranslations.getUsersScores());
 
             }
 

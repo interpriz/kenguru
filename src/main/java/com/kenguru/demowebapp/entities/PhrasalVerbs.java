@@ -18,7 +18,7 @@ public class PhrasalVerbs {
     private WordsPartOfSpeech wps;
 
     @OneToMany(mappedBy = "phrasalVerb")
-    private Set<UsersPhrasalVerbsScores> upvt;
+    private Set<UsersPhrasalVerbsScores> usersScores;
 
     public PhrasalVerbs() {
     }
@@ -52,11 +52,11 @@ public class PhrasalVerbs {
         this.wps = wps;
     }
 
-    public Set<UsersPhrasalVerbsScores> getUpvt() {
-        return upvt;
+    public Set<UsersPhrasalVerbsScores> getUsersScores() {
+        return usersScores;
     }
 
-    public void setUpvt(Set<UsersPhrasalVerbsScores> upvt) {
-        this.upvt = upvt;
+    public void setUsersScores(Set<UsersPhrasalVerbsScores> upvt) {
+        this.usersScores = upvt;
     }
 }

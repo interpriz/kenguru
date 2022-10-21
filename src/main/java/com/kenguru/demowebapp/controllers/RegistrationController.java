@@ -36,7 +36,7 @@ public class RegistrationController {
 
         if(!service.registration(user))
         {
-            model.addAttribute("message", "User exists!");
+            model.addAttribute("exist", true);
             return "registration";
         }
 

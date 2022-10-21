@@ -14,7 +14,7 @@ public class WordsTranslations {
     private String name;
 
     @ManyToMany(mappedBy = "translations",fetch = FetchType.LAZY)
-    private Set<UsersWords> uw;
+    private Set<UsersWords> usersWords;
 
     public WordsTranslations() {
     }
@@ -39,11 +39,11 @@ public class WordsTranslations {
         this.name = name;
     }
 
-    public Set<UsersWords> getUw() {
-        return uw;
+    public Set<UsersWords> getUsersWords() {
+        return usersWords;
     }
 
-    public void setUw(Set<UsersWords> uw) {
-        this.uw = uw;
+    public void setUsersWords(Set<UsersWords> uw) {
+        this.usersWords = uw;
     }
 }

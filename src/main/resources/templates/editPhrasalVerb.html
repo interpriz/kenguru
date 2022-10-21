@@ -21,7 +21,7 @@
 
 <div class="container mt-5 mb-5" style="border-radius:15px; background-color: white; width: 730px; high: 200px;">
     <h3>Редактирование фразового глагола</h3>
-    <form action="/editPhrasalVerb" method = "post">
+    <form th:action="@{/editPhrasalVerb}" method = "post">
         <input type="hidden" name="userPhrasalVerbId" th:value="${usersPhrasalVerb.id}">
         <div class="mb-3">
             <label for="wordName" class="form-label">Английский глагол</label>

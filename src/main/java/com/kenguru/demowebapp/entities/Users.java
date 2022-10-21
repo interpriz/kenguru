@@ -14,7 +14,7 @@ public class Users implements UserDetails {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "username", unique = true)
+    @Column(name = "name", unique = true)
     private String username;
 
     @Column(name = "password", unique = true)
@@ -36,6 +36,9 @@ public class Users implements UserDetails {
 
     @OneToMany(mappedBy = "user")
     private Set<UsersComparativeAdjectivesScores> ucas;
+
+    @OneToMany(mappedBy = "user")
+    private Set<UsersPhrasalVerbsScores> phrasVerbsScores;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "users_groups",
@@ -126,6 +129,14 @@ public class Users implements UserDetails {
 
     public void setUcas(Set<UsersComparativeAdjectivesScores> ucas) {
         this.ucas = ucas;
+    }
+
+    public Set<UsersPhrasalVerbsScores> getPhrasVerbsScores() {
+        return phrasVerbsScores;
+    }
+
+    public void setPhrasVerbsScores(Set<UsersPhrasalVerbsScores> phrasVerbsScores) {
+        this.phrasVerbsScores = phrasVerbsScores;
     }
 
     public Set<Role> getRoles() {
