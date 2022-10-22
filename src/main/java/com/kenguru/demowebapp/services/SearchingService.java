@@ -22,8 +22,6 @@ public class SearchingService {
     @Autowired
     private WordsRepository wordsRepository;
     @Autowired
-    private UsersRepository usersRepository;
-    @Autowired
     private WordsTranslationsRepository wordsTranslationsRepository;
     @Autowired
     private UsersPhrasalVerbsScoresRepository usersPhrasalVerbsScoresRepository;

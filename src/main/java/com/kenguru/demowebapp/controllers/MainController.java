@@ -7,6 +7,7 @@ import com.kenguru.demowebapp.services.UsersIrregularVerbService;
 import com.kenguru.demowebapp.services.UsersPhrasalVerbsService;
 import com.kenguru.demowebapp.services.UsersWordsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,18 +23,15 @@ public class MainController {
     private UsersWordsService usersWordsService;
     private UsersPhrasalVerbsService usersPhrasVerbsService;
     private UsersCompAdjectivesService usersCompAdjectivesService;
-    private UsersRepository usersRepository;
 
     public MainController(UsersIrregularVerbService usersIrrVerbService,
                           UsersWordsService usersWordsService,
                           UsersPhrasalVerbsService usersPhrasVerbsService,
-                          UsersCompAdjectivesService usersCompAdjectivesService,
-                          UsersRepository usersRepository) {
+                          UsersCompAdjectivesService usersCompAdjectivesService) {
         this.usersIrrVerbService = usersIrrVerbService;
         this.usersWordsService = usersWordsService;
         this.usersPhrasVerbsService = usersPhrasVerbsService;
         this.usersCompAdjectivesService = usersCompAdjectivesService;
-        this.usersRepository = usersRepository;
     }
 
     @GetMapping("/")
@@ -43,10 +41,12 @@ public class MainController {
     }
 
     @GetMapping("/history")
-    public String history(Model model) {
+    public String history(
+            @AuthenticationPrincipal Users usr,
+            Model model) {
         model.addAttribute("title", "История");
 
-        Users usr  = usersRepository.getById(1L);
+        //Users usr  = usersRepository.getById(1L);
         List<UsersWords> usersWords = usersWordsService.getAllUsersWords(usr);
         model.addAttribute("usersWords", usersWords);
 
@@ -72,6 +72,7 @@ public class MainController {
 
     @PostMapping("/addNewIrregularVerb")
     public String addNewIrregularVerb(
+            @AuthenticationPrincipal Users usr,
             @RequestParam String wordName,
             @RequestParam String transcription,
             @RequestParam String secondForm,
@@ -82,7 +83,8 @@ public class MainController {
                 wordName,
                 transcription,
                 secondForm,
-                thirdForm
+                thirdForm,
+                usr
         );
 
         return "redirect:/history";
@@ -101,6 +103,7 @@ public class MainController {
 
     @PostMapping("/addNewComparativeAdjective")
     public String addNewComparativeAdjective(
+            @AuthenticationPrincipal Users usr,
             @RequestParam String wordName,
             @RequestParam String transcription,
             @RequestParam String comparative,
@@ -111,7 +114,8 @@ public class MainController {
                 wordName,
                 transcription,
                 comparative,
-                superlative
+                superlative,
+                usr
         );
 
         return "redirect:/history";

@@ -5,6 +5,7 @@ import com.kenguru.demowebapp.entities.*;
 import com.kenguru.demowebapp.repositories.*;
 import com.kenguru.demowebapp.services.UsersWordsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,8 +18,6 @@ import java.util.Set;
 @Controller
 public class UsersWordsController {
 
-    @Autowired
-    private UsersRepository usersRepository;
 
     private UsersWordsService service;
 
@@ -28,14 +27,17 @@ public class UsersWordsController {
 
 
     @GetMapping("/addNewWord")
-    public String addNewWord(Model model) {
+    public String addNewWord(
+            @AuthenticationPrincipal Users usr,
+            Model model
+    ) {
         model.addAttribute("title", "Добавление нового слова");
 
         List<PartsOfSpeech> ps = service.getAllPartsOfSpeech();
         model.addAttribute("ps", ps);
 
 
-        Users usr  = usersRepository.getById(1L);
+        //Users usr  = usersRepository.getById(1L);
         List<Topics> topics = service.getAllUsersTopics(usr);
         model.addAttribute("topics", topics);
 
@@ -44,19 +46,23 @@ public class UsersWordsController {
 
     @PostMapping("/addNewWord")
     public String addNewWordPost(
+            @AuthenticationPrincipal Users usr,
             @RequestParam String partOfSpeech,
             @RequestParam String wordName,
             @RequestParam String transcription,
             @RequestParam String translation,
             @RequestParam String topicName,
             Model model) {
-        service.saveNewUsersWord(partOfSpeech,wordName,transcription,translation,topicName);
+        service.saveNewUsersWord(partOfSpeech,wordName,transcription,translation,topicName,usr);
 
         return "redirect:/history";
     }
 
     @GetMapping("/editWord")
-    public String editWord(@RequestParam Long userWordId, Model model){
+    public String editWord(
+            @AuthenticationPrincipal Users usr,
+            @RequestParam Long userWordId,
+            Model model){
         model.addAttribute("title", "Редактирование слова");
 
         UsersWords usersWord = service.getUsersWord(userWordId);
@@ -66,7 +72,7 @@ public class UsersWordsController {
         List<PartsOfSpeech> ps = service.getAllPartsOfSpeech();
         model.addAttribute("ps", ps);
 
-        Users usr  = usersRepository.getById(1L);
+        //Users usr  = usersRepository.getById(1L);
         List<Topics> topics = service.getAllUsersTopics(usr);
         model.addAttribute("topics", topics);
 

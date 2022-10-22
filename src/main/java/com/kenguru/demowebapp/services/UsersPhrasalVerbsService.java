@@ -13,20 +13,17 @@ public class UsersPhrasalVerbsService {
 
     private UsersWordsService usersWordsService;
     private PartsOfSpeechRepository partsOfSpeechRepository;
-    private UsersRepository usersRepository;
     private UsersPhrasalVerbsScoresRepository usersPhrasalVerbsScoresRepository;
     private PhrasalVerbsRepository phrasalVerbsRepository;
     private PhrasalVerbsTranslationsRepository phrasalVerbsTranslationsRepository;
 
     public UsersPhrasalVerbsService(UsersWordsService usersWordsService,
                                     PartsOfSpeechRepository partsOfSpeechRepository,
-                                    UsersRepository usersRepository,
                                     UsersPhrasalVerbsScoresRepository usersPhrasalVerbsScoresRepository,
                                     PhrasalVerbsRepository phrasalVerbsRepository,
                                     PhrasalVerbsTranslationsRepository phrasalVerbsTranslationsRepository) {
         this.usersWordsService = usersWordsService;
         this.partsOfSpeechRepository = partsOfSpeechRepository;
-        this.usersRepository = usersRepository;
         this.usersPhrasalVerbsScoresRepository = usersPhrasalVerbsScoresRepository;
         this.phrasalVerbsRepository = phrasalVerbsRepository;
         this.phrasalVerbsTranslationsRepository = phrasalVerbsTranslationsRepository;
@@ -51,11 +48,12 @@ public class UsersPhrasalVerbsService {
             String transcription,
             String preposition,
             String translation,
-            String description
+            String description,
+            Users usr
     ){
         String partOfSpeech = "verb";
         PartsOfSpeech pos = partsOfSpeechRepository.findPartsOfSpeechByName(partOfSpeech);
-        Users usr  = usersRepository.getById(1L);
+        //Users usr  = usersRepository.getById(1L);
 
         Words word = usersWordsService.saveOrGetWord(wordName, transcription);
 

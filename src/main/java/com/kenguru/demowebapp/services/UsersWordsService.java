@@ -98,9 +98,10 @@ public class UsersWordsService {
             String wordName,
             String transcription,
             String translation,
-            String topicName) {
+            String topicName,
+            Users usr) {
         PartsOfSpeech pos = partsOfSpeechRepository.findPartsOfSpeechByName(partOfSpeech);
-        Users usr  = usersRepository.getById(1L);
+        //Users usr  = usersRepository.getById(1L);
 
         Words word = saveOrGetWord(wordName, transcription);
 
@@ -193,7 +194,7 @@ public class UsersWordsService {
     }
 
     public List<Topics> getAllUsersTopics(Users usr){
-        return topicsRepository.findDistinctTopicsByUwIn(usersWordsRepository.findByUser(usr));
+        return topicsRepository.findDistinctTopByUsersWordsIn(usersWordsRepository.findByUser(usr));
     }
 
     public UsersWords getUsersWord(Long userWordId){

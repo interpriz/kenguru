@@ -3,6 +3,7 @@ package com.kenguru.demowebapp.controllers;
 import com.kenguru.demowebapp.dto.UsersPhrasalVerb;
 import com.kenguru.demowebapp.entities.*;
 import com.kenguru.demowebapp.services.UsersPhrasalVerbsService;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,6 +30,7 @@ public class UsersPhrasalVerbsController {
 
     @PostMapping("/addNewPhrasalVerb")
     public String addNewPhrasalVerb(
+            @AuthenticationPrincipal Users usr,
             @RequestParam String wordName,
             @RequestParam String transcription,
             @RequestParam String preposition,
@@ -40,7 +42,8 @@ public class UsersPhrasalVerbsController {
                 transcription,
                 preposition,
                 translation,
-                description);
+                description,
+                usr);
 
 
 

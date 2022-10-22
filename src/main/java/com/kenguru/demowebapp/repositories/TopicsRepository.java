@@ -10,6 +10,6 @@ import java.util.List;
 
 @Repository
 public interface TopicsRepository extends JpaRepository<Topics, Long> {
-    List<Topics> findDistinctTopicsByUwIn(Collection<UsersWords> uw);
+    List<Topics> findDistinctTopByUsersWordsIn(Collection<UsersWords> uw);
     Topics findByName(String name);
 }

@@ -2,29 +2,29 @@ package com.kenguru.demowebapp.controllers;
 
 import com.kenguru.demowebapp.entities.Role;
 import com.kenguru.demowebapp.entities.Users;
-import com.kenguru.demowebapp.repositories.UsersRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.kenguru.demowebapp.services.UserService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
 import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/user")
 @PreAuthorize("hasAuthority('ADMIN')")
 public class UserController {
 
-    @Autowired
-    UsersRepository userRepo;
+
+    private UserService userService;
+
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     @GetMapping
     public String userList(Model model){
-        model.addAttribute("users", userRepo.findAll());
+        model.addAttribute("users", userService.findAllUsers());
 
         return "userList";
     }
@@ -43,7 +43,8 @@ public class UserController {
             @RequestParam Map<String, String> form,
             @RequestParam("userId") Users user
     ) {
-        user.setUsername(username);
+        userService.saveEditedUser(user, username, form);
+        /*user.setUsername(username);
 
         //все роли
         Set<String> roles = Arrays.stream(Role.values())
@@ -58,7 +59,7 @@ public class UserController {
             }
         }
 
-        userRepo.save(user);
+        userRepo.save(user);*/
 
         return "redirect:/user";
     }

@@ -16,18 +16,15 @@ public class UsersCompAdjectivesService {
 
     private UsersWordsService usersWordsService;
     private PartsOfSpeechRepository partsOfSpeechRepository;
-    private UsersRepository usersRepository;
     private UsersComparativeAdjectivesScoresRepository usersCompAdjectivesScoresRepository;
     private ComparativeAdjectivesRepository compAdjectivesRepository;
 
     public UsersCompAdjectivesService(UsersWordsService usersWordsService,
                                       PartsOfSpeechRepository partsOfSpeechRepository,
-                                      UsersRepository usersRepository,
                                       UsersComparativeAdjectivesScoresRepository usersCompAdjectivesScoresRepository,
                                       ComparativeAdjectivesRepository compAdjectivesRepository) {
         this.usersWordsService = usersWordsService;
         this.partsOfSpeechRepository = partsOfSpeechRepository;
-        this.usersRepository = usersRepository;
         this.usersCompAdjectivesScoresRepository = usersCompAdjectivesScoresRepository;
         this.compAdjectivesRepository = compAdjectivesRepository;
     }
@@ -36,11 +33,12 @@ public class UsersCompAdjectivesService {
             String wordName,
             String transcription,
             String comparative,
-            String superlative
+            String superlative,
+            Users usr
     ){
         String partOfSpeech = "adjective";
         PartsOfSpeech pos = partsOfSpeechRepository.findPartsOfSpeechByName(partOfSpeech);
-        Users usr  = usersRepository.getById(1L);
+        //Users usr  = usersRepository.getById(1L);
 
         Words word = usersWordsService.saveOrGetWord(wordName, transcription);
 

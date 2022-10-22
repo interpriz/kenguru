@@ -13,18 +13,15 @@ public class UsersIrregularVerbService {
 
     private UsersWordsService usersWordsService;
     private PartsOfSpeechRepository partsOfSpeechRepository;
-    private UsersRepository usersRepository;
     private UsersIrregularVerbsScoresRepository usersIrregularVerbsScoresRepository;
     private IrregularVerbsRepository irregularVerbsRepository;
 
     public UsersIrregularVerbService(UsersWordsService usersWordsService,
                                      PartsOfSpeechRepository partsOfSpeechRepository,
-                                     UsersRepository usersRepository,
                                      UsersIrregularVerbsScoresRepository usersIrregularVerbsScoresRepository,
                                      IrregularVerbsRepository irregularVerbsRepository) {
         this.usersWordsService = usersWordsService;
         this.partsOfSpeechRepository = partsOfSpeechRepository;
-        this.usersRepository = usersRepository;
         this.usersIrregularVerbsScoresRepository = usersIrregularVerbsScoresRepository;
         this.irregularVerbsRepository = irregularVerbsRepository;
     }
@@ -33,12 +30,13 @@ public class UsersIrregularVerbService {
             String wordName,
             String transcription,
             String secondForm,
-            String thirdForm
+            String thirdForm,
+            Users usr
     ){
         String partOfSpeech = "verb";
         PartsOfSpeech pos = partsOfSpeechRepository.findPartsOfSpeechByName(partOfSpeech);
 
-        Users usr  = usersRepository.getById(1L);
+        //Users usr  = usersRepository.getById(1L);
 
         Words word = usersWordsService.saveOrGetWord(wordName, transcription);
 

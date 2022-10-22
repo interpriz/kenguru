@@ -6,6 +6,7 @@ import com.kenguru.demowebapp.repositories.*;
 import com.kenguru.demowebapp.services.SearchingService;
 import com.kenguru.demowebapp.services.UsersWordsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -18,12 +19,10 @@ public class RestController {
 
     private SearchingService searchingService;
     private UsersWordsService usersWordsService;
-    private UsersRepository usersRepository;
 
-    public RestController(SearchingService searchingService, UsersWordsService usersWordsService, UsersRepository usersRepository) {
+    public RestController(SearchingService searchingService, UsersWordsService usersWordsService) {
         this.searchingService = searchingService;
         this.usersWordsService = usersWordsService;
-        this.usersRepository = usersRepository;
     }
 
     @GetMapping("/hellow")
@@ -44,9 +43,10 @@ public class RestController {
 
     @GetMapping("/findWords")
     public SearchingObjects findWords(
+            @AuthenticationPrincipal Users usr,
             @RequestParam String word){
 
-        Users usr  = usersRepository.getById(1L);
+        //Users usr  = usersRepository.getById(1L);
 
         return searchingService.findWords(usr,word);
     }
