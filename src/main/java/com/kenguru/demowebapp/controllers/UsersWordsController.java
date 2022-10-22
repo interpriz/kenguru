@@ -1,10 +1,7 @@
 package com.kenguru.demowebapp.controllers;
 
-import com.kenguru.demowebapp.dto.UsersWord;
 import com.kenguru.demowebapp.entities.*;
-import com.kenguru.demowebapp.repositories.*;
 import com.kenguru.demowebapp.services.UsersWordsService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,7 +10,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
-import java.util.Set;
 
 @Controller
 public class UsersWordsController {
@@ -89,7 +85,7 @@ public class UsersWordsController {
             @RequestParam(required = false) List<String> newTranslations,
             @RequestParam(required = false) List<String> newTopics,
             Model model) {
-        service.editOldUsersWord(
+        service.saveEditedOldUsersWord(
                 userWordId,
                 wordName,
                 partOfSpeech,

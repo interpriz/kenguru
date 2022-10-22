@@ -17,23 +17,27 @@ public class UsersPhrasalVerbsService {
     private PhrasalVerbsRepository phrasalVerbsRepository;
     private PhrasalVerbsTranslationsRepository phrasalVerbsTranslationsRepository;
 
+    private UserService userService;
+
     public UsersPhrasalVerbsService(UsersWordsService usersWordsService,
                                     PartsOfSpeechRepository partsOfSpeechRepository,
                                     UsersPhrasalVerbsScoresRepository usersPhrasalVerbsScoresRepository,
                                     PhrasalVerbsRepository phrasalVerbsRepository,
-                                    PhrasalVerbsTranslationsRepository phrasalVerbsTranslationsRepository) {
+                                    PhrasalVerbsTranslationsRepository phrasalVerbsTranslationsRepository,
+                                    UserService userService) {
         this.usersWordsService = usersWordsService;
         this.partsOfSpeechRepository = partsOfSpeechRepository;
         this.usersPhrasalVerbsScoresRepository = usersPhrasalVerbsScoresRepository;
         this.phrasalVerbsRepository = phrasalVerbsRepository;
         this.phrasalVerbsTranslationsRepository = phrasalVerbsTranslationsRepository;
+        this.userService = userService;
     }
 
     private void addNewUsersPhrasalVerbTranslation(String newTranslation, UsersPhrasalVerbsScores usersPhrasalVerb){
         if(!newTranslation.isBlank())
         {
             PhrasalVerbsTranslations phrasVerbTranslation= phrasalVerbsTranslationsRepository.findByName(newTranslation);
-            if(phrasVerbTranslation!=null)
+            if(phrasVerbTranslation==null)
             {
                 phrasVerbTranslation = new PhrasalVerbsTranslations(newTranslation);
                 phrasalVerbsTranslationsRepository.save(phrasVerbTranslation);
@@ -51,9 +55,10 @@ public class UsersPhrasalVerbsService {
             String description,
             Users usr
     ){
+        usr = userService.loadUserById(usr.getId());
+
         String partOfSpeech = "verb";
         PartsOfSpeech pos = partsOfSpeechRepository.findPartsOfSpeechByName(partOfSpeech);
-        //Users usr  = usersRepository.getById(1L);
 
         Words word = usersWordsService.saveOrGetWord(wordName, transcription);
 
@@ -62,14 +67,14 @@ public class UsersPhrasalVerbsService {
         UsersWords uw = usersWordsService.saveOrGetUsersWord(wps, usr);
 
         PhrasalVerbs phrasalVerb = phrasalVerbsRepository.findByWpsAndPreposition(wps, preposition);
-        if(phrasalVerb!=null)
+        if(phrasalVerb==null)
         {
             phrasalVerb = new PhrasalVerbs(preposition,wps);
             phrasalVerbsRepository.save(phrasalVerb);
         }
 
         UsersPhrasalVerbsScores usersPhrasalVerb= usersPhrasalVerbsScoresRepository.findByUserAndPhrasalVerb(usr,phrasalVerb);
-        if(usersPhrasalVerb!=null)
+        if(usersPhrasalVerb==null)
         {
             usersPhrasalVerb = new UsersPhrasalVerbsScores(0,description,phrasalVerb,usr);
             usersPhrasalVerbsScoresRepository.save(usersPhrasalVerb);
@@ -86,7 +91,7 @@ public class UsersPhrasalVerbsService {
         usersPhrasalVerb.getTranslations().removeIf(oldTrans -> !newTranslations.contains(oldTrans.getName()));
 
         //добавление новых переводов
-        if (!newTranslations.isEmpty())
+        if (newTranslations!=null)
             for (String newTranslation : newTranslations) {
                 if (!usersPhrasalVerb.getListStringTranslations().contains(newTranslation)) {
                     //добавить новый перевод

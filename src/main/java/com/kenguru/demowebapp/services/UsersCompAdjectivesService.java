@@ -19,14 +19,18 @@ public class UsersCompAdjectivesService {
     private UsersComparativeAdjectivesScoresRepository usersCompAdjectivesScoresRepository;
     private ComparativeAdjectivesRepository compAdjectivesRepository;
 
+    private UserService userService;
+
     public UsersCompAdjectivesService(UsersWordsService usersWordsService,
                                       PartsOfSpeechRepository partsOfSpeechRepository,
                                       UsersComparativeAdjectivesScoresRepository usersCompAdjectivesScoresRepository,
-                                      ComparativeAdjectivesRepository compAdjectivesRepository) {
+                                      ComparativeAdjectivesRepository compAdjectivesRepository,
+                                      UserService userService) {
         this.usersWordsService = usersWordsService;
         this.partsOfSpeechRepository = partsOfSpeechRepository;
         this.usersCompAdjectivesScoresRepository = usersCompAdjectivesScoresRepository;
         this.compAdjectivesRepository = compAdjectivesRepository;
+        this.userService = userService;
     }
 
     public void addNewComparativeAdjective(
@@ -36,9 +40,10 @@ public class UsersCompAdjectivesService {
             String superlative,
             Users usr
     ){
+        usr = userService.loadUserById(usr.getId());
+
         String partOfSpeech = "adjective";
         PartsOfSpeech pos = partsOfSpeechRepository.findPartsOfSpeechByName(partOfSpeech);
-        //Users usr  = usersRepository.getById(1L);
 
         Words word = usersWordsService.saveOrGetWord(wordName, transcription);
 
@@ -47,14 +52,14 @@ public class UsersCompAdjectivesService {
         UsersWords uw = usersWordsService.saveOrGetUsersWord(wps, usr);
 
         ComparativeAdjectives compAdjective = compAdjectivesRepository.findByWps(wps);
-        if(compAdjective!=null)
+        if(compAdjective==null)
         {
             compAdjective = new ComparativeAdjectives(comparative,superlative,wps);
             compAdjectivesRepository.save(compAdjective);
         }
 
         UsersComparativeAdjectivesScores usersCompAdjective = usersCompAdjectivesScoresRepository.findByUserAndComparativeAdjective(usr,compAdjective);
-        if(usersCompAdjective != null)
+        if(usersCompAdjective == null)
         {
             usersCompAdjective = new UsersComparativeAdjectivesScores(0,compAdjective,usr);
             usersCompAdjectivesScoresRepository.save(usersCompAdjective);

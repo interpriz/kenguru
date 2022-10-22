@@ -43,6 +43,10 @@ public class UserService implements UserDetailsService {
         return userRepo.findAll();
     }
 
+    public Users loadUserById(Long id){
+        return userRepo.getById(id);
+    }
+
     public void saveEditedUser(Users user, String name, Map<String, String> formParams){
 
         user.setUsername(name);

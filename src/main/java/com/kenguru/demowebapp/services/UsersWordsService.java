@@ -1,6 +1,5 @@
 package com.kenguru.demowebapp.services;
 
-import com.kenguru.demowebapp.dto.UsersWord;
 import com.kenguru.demowebapp.entities.*;
 import com.kenguru.demowebapp.repositories.*;
 import org.springframework.stereotype.Service;
@@ -15,7 +14,7 @@ public class UsersWordsService {
     private UsersWordsRepository usersWordsRepository;
     private WordsRepository wordsRepository;
     private PartsOfSpeechRepository partsOfSpeechRepository;
-    private UsersRepository usersRepository;
+    private UserService userService;
     private TopicsRepository topicsRepository;
     private WordsTranslationsRepository wordsTranslationsRepository;
 
@@ -23,14 +22,14 @@ public class UsersWordsService {
                              UsersWordsRepository usersWordsRepository,
                              WordsRepository wordsRepository,
                              PartsOfSpeechRepository partsOfSpeechRepository,
-                             UsersRepository usersRepository,
+                             UserService userService,
                              TopicsRepository topicsRepository,
                              WordsTranslationsRepository wordsTranslationsRepository) {
         this.wordsPartsOfSpeechRepository = wordsPartsOfSpeechRepository;
         this.usersWordsRepository = usersWordsRepository;
         this.wordsRepository = wordsRepository;
         this.partsOfSpeechRepository = partsOfSpeechRepository;
-        this.usersRepository = usersRepository;
+        this.userService = userService;
         this.topicsRepository = topicsRepository;
         this.wordsTranslationsRepository = wordsTranslationsRepository;
     }
@@ -100,8 +99,10 @@ public class UsersWordsService {
             String translation,
             String topicName,
             Users usr) {
+
+        usr = userService.loadUserById(usr.getId());
+
         PartsOfSpeech pos = partsOfSpeechRepository.findPartsOfSpeechByName(partOfSpeech);
-        //Users usr  = usersRepository.getById(1L);
 
         Words word = saveOrGetWord(wordName, transcription);
 
@@ -123,7 +124,7 @@ public class UsersWordsService {
         usersWord.getTranslations().removeIf(oldTrans -> !newTranslations.contains(oldTrans.getName()));
 
         //добавление новых переводов
-        if (!newTranslations.isEmpty())
+        if (newTranslations!=null)
             for (String newTranslation : newTranslations) {
                 if (!usersWord.getListStringTranslations().contains(newTranslation)) {
                     //добавить новый перевод
@@ -138,7 +139,7 @@ public class UsersWordsService {
 
 
         //добавление новых тем
-        if (newTopics.size() != 0)
+        if (newTopics!=null)
             for (String newTopic : newTopics) {
                 if (!usersWord.getListStringTopics().contains(newTopic)) {
                     //добавить новую тему
@@ -148,7 +149,7 @@ public class UsersWordsService {
     }
 
     //решить проблему с транскрипцией(должна быть единственной)
-    public void editOldUsersWord(
+    public void saveEditedOldUsersWord(
             Long userWordId,
             String wordName,
             String partOfSpeech,

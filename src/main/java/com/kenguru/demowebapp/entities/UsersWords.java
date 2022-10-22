@@ -21,7 +21,7 @@ public class UsersWords {
     @JoinColumn(name = "id_wps", nullable = false)
     private WordsPartOfSpeech wps;
 
-    @ManyToOne (cascade = CascadeType.ALL)
+    @ManyToOne (cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "id_user", nullable = false)
     private Users user;
 
