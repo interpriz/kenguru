@@ -11,5 +11,7 @@ import java.util.List;
 @Repository
 public interface UsersPhrasalVerbsScoresRepository extends JpaRepository<UsersPhrasalVerbsScores, Long> {
     List<UsersPhrasalVerbsScores> findByUser(Users usr);
-    List<UsersPhrasalVerbsScores> findUsersPhrasalVerbsByUserAndPhrasalVerb(Users usr, PhrasalVerbs pv);
+    UsersPhrasalVerbsScores findUsersPhrasalVerbsScoresById(Long id);
+    UsersPhrasalVerbsScores findByUserAndPhrasalVerb(Users usr, PhrasalVerbs pv);
+    List<UsersPhrasalVerbsScores> findByUserAndPhrasalVerbIn(Users usr, List<PhrasalVerbs> lstPhrasalVerbs);
 }

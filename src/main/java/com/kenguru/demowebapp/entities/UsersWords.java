@@ -1,7 +1,9 @@
 package com.kenguru.demowebapp.entities;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -19,7 +21,7 @@ public class UsersWords {
     @JoinColumn(name = "id_wps", nullable = false)
     private WordsPartOfSpeech wps;
 
-    @ManyToOne (cascade = CascadeType.ALL)
+    @ManyToOne (cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "id_user", nullable = false)
     private Users user;
 
@@ -90,6 +92,14 @@ public class UsersWords {
         return topics;
     }
 
+    public List<String> getListStringTopics() {
+        List<String> topicsList = new ArrayList<>();
+        for(Topics topic : this.topics){
+            topicsList.add(topic.getName());
+        }
+        return new ArrayList<>();
+    }
+
     public void setTopics(Set<Topics> topics) {
         this.topics = topics;
     }
@@ -98,7 +108,34 @@ public class UsersWords {
         return translations;
     }
 
+    public List<String> getListStringTranslations() {
+        List<String> translationsList = new ArrayList<>();
+        for(WordsTranslations trans : this.translations){
+            translationsList.add(trans.getName());
+        }
+        return new ArrayList<>();
+    }
+
+
+
+
     public void setTranslations(Set<WordsTranslations> translations) {
         this.translations = translations;
     }
+
+
+
+    public void addNewTranslation(WordsTranslations newTranslation){
+        if(!translations.contains((newTranslation))){
+            translations.add(newTranslation);
+        }
+    }
+
+    public void addNewTopic(Topics newTopic){
+        if(!topics.contains(newTopic)){
+            topics.add(newTopic);
+        }
+    }
+
+
 }

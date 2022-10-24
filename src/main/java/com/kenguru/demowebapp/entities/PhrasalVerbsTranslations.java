@@ -14,7 +14,7 @@ public class PhrasalVerbsTranslations {
     private String name;
 
     @ManyToMany(mappedBy = "translations",fetch = FetchType.EAGER)
-    private Set<UsersPhrasalVerbsScores> upv;
+    private Set<UsersPhrasalVerbsScores> usersScores;
 
     public PhrasalVerbsTranslations() {
     }
@@ -39,11 +39,11 @@ public class PhrasalVerbsTranslations {
         this.name = name;
     }
 
-    public Set<UsersPhrasalVerbsScores> getUpv() {
-        return upv;
+    public Set<UsersPhrasalVerbsScores> getUsersScores() {
+        return usersScores;
     }
 
-    public void setUpv(Set<UsersPhrasalVerbsScores> upv) {
-        this.upv = upv;
+    public void setUsersScores(Set<UsersPhrasalVerbsScores> upv) {
+        this.usersScores = upv;
     }
 }

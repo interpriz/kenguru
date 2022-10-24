@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public interface WordsTranslationsRepository extends JpaRepository<WordsTranslations, Long> {
 
-    List<WordsTranslations> findDistinctWords_translationsByUwIn(Collection<UsersWords> uw);
-    List<WordsTranslations> findWordsTranslationsByName(String name);
+    /*List<WordsTranslations> findDistinctWords_translationsByUwIn(Collection<UsersWords> uw);
+    List<WordsTranslations> findWordsTranslationsByName(String name);*/
     WordsTranslations findByName(String name);
 }

@@ -12,5 +12,5 @@ import java.util.List;
 public interface UsersComparativeAdjectivesScoresRepository extends JpaRepository<UsersComparativeAdjectivesScores, Long> {
 
     List<UsersComparativeAdjectivesScores> findByUser(Users usr);
-    List<UsersComparativeAdjectivesScores> findByUserAndComparativeAdjective(Users usr, ComparativeAdjectives comparativeAdjective);
+    UsersComparativeAdjectivesScores findByUserAndComparativeAdjective(Users usr, ComparativeAdjectives comparativeAdjective);
 }

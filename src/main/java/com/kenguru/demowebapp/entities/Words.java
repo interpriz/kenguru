@@ -17,7 +17,7 @@ public class Words {
     private String transcription;
 
     @OneToMany(mappedBy = "word")
-    private Set<WordsPartOfSpeech> parts_of_speeches;
+    private Set<WordsPartOfSpeech> partsOfSpeeches;
 
 
 
@@ -53,11 +53,11 @@ public class Words {
         this.transcription = transcription;
     }
 
-    public Set<WordsPartOfSpeech> getParts_of_speeches() {
-        return parts_of_speeches;
+    public Set<WordsPartOfSpeech> getPartsOfSpeeches() {
+        return partsOfSpeeches;
     }
 
-    public void setParts_of_speeches(Set<WordsPartOfSpeech> part_of_speeches) {
-        this.parts_of_speeches = part_of_speeches;
+    public void setPartsOfSpeeches(Set<WordsPartOfSpeech> partOfSpeeches) {
+        this.partsOfSpeeches = partOfSpeeches;
     }
 }

@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UsersWordsRepository extends JpaRepository<UsersWords, Long> {
     List<UsersWords> findByUser(Users usr);
-    List<UsersWords> findUsersWordsByUserAndWps(Users usr, WordsPartOfSpeech wps);
+    UsersWords findByUserAndWps(Users usr, WordsPartOfSpeech wps);
     List<UsersWords> findByUserAndWpsIn(Users usr, List<WordsPartOfSpeech> wps);
     UsersWords findUsersWordsById(Long id);
 }

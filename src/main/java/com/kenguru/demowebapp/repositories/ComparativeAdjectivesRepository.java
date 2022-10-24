@@ -9,5 +9,5 @@ import java.util.List;
 
 @Repository
 public interface ComparativeAdjectivesRepository extends JpaRepository<ComparativeAdjectives,Long> {
-    List<ComparativeAdjectives> findComparativeAdjectivesByWps(WordsPartOfSpeech wps);
+    ComparativeAdjectives findByWps(WordsPartOfSpeech wps);
 }

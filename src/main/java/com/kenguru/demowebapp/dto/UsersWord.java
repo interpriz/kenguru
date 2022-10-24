@@ -13,6 +13,8 @@ public class UsersWord {
 
     private String word;
 
+    private String transcription;
+
     private String partOfSpeech;
 
     private List<String> topics;
@@ -26,6 +28,7 @@ public class UsersWord {
         this.id = usersWord.getId();
         this.score = usersWord.getScore();
         this.word = usersWord.getWps().getWord().getName();
+        this.transcription = usersWord.getWps().getWord().getTranscription();
         this.partOfSpeech = usersWord.getWps().getPartOfSpeech().getName();
         this.topics = new ArrayList<>();
         for(Topics top : usersWord.getTopics()){
@@ -37,6 +40,14 @@ public class UsersWord {
         }
     }
 
+
+    public String getTranscription() {
+        return transcription;
+    }
+
+    public void setTranscription(String transcription) {
+        this.transcription = transcription;
+    }
 
     public Long getId() {
         return id;
