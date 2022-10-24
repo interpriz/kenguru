@@ -10,13 +10,13 @@ import java.util.List;
 public class UsersWordsService {
 
 
-    private WordsPartOfSpeechRepository wordsPartsOfSpeechRepository;
-    private UsersWordsRepository usersWordsRepository;
-    private WordsRepository wordsRepository;
-    private PartsOfSpeechRepository partsOfSpeechRepository;
-    private UserService userService;
-    private TopicsRepository topicsRepository;
-    private WordsTranslationsRepository wordsTranslationsRepository;
+    private final WordsPartOfSpeechRepository wordsPartsOfSpeechRepository;
+    private final UsersWordsRepository usersWordsRepository;
+    private final WordsRepository wordsRepository;
+    private final PartsOfSpeechRepository partsOfSpeechRepository;
+    private final UserService userService;
+    private final TopicsRepository topicsRepository;
+    private final WordsTranslationsRepository wordsTranslationsRepository;
 
     public UsersWordsService(WordsPartOfSpeechRepository wordsPartsOfSpeechRepository,
                              UsersWordsRepository usersWordsRepository,
@@ -100,7 +100,7 @@ public class UsersWordsService {
             String topicName,
             Users usr) {
 
-        usr = userService.loadUserById(usr.getId());
+        Users user = userService.loadUserById(usr.getId());
 
         PartsOfSpeech pos = partsOfSpeechRepository.findPartsOfSpeechByName(partOfSpeech);
 
@@ -108,7 +108,7 @@ public class UsersWordsService {
 
         WordsPartOfSpeech wps = saveOrGetWPS(pos, word);
 
-        UsersWords usersWord = saveOrGetUsersWord(wps, usr);
+        UsersWords usersWord = saveOrGetUsersWord(wps, user);
 
         //сохранение нового перевода
         addNewUsersWordTranslation(translation, usersWord);

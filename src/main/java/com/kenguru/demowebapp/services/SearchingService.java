@@ -5,7 +5,6 @@ import com.kenguru.demowebapp.dto.UsersPhrasalVerb;
 import com.kenguru.demowebapp.dto.UsersWord;
 import com.kenguru.demowebapp.entities.*;
 import com.kenguru.demowebapp.repositories.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -15,22 +14,40 @@ import java.util.stream.Collectors;
 @Service
 public class SearchingService {
 
-    @Autowired
-    private WordsPartOfSpeechRepository wordsPartsOfSpeechRepository;
-    @Autowired
-    private UsersWordsRepository usersWordsRepository;
-    @Autowired
-    private WordsRepository wordsRepository;
-    @Autowired
-    private WordsTranslationsRepository wordsTranslationsRepository;
-    @Autowired
-    private UsersPhrasalVerbsScoresRepository usersPhrasalVerbsScoresRepository;
-    @Autowired
-    private PhrasalVerbsRepository phrasalVerbsRepository;
-    @Autowired
-    private PartsOfSpeechRepository partsOfSpeechRepository;
-    @Autowired
-    private PhrasalVerbsTranslationsRepository phrasalVerbsTranslationsRepository;
+
+    private final WordsPartOfSpeechRepository wordsPartsOfSpeechRepository;
+
+    private final UsersWordsRepository usersWordsRepository;
+
+    private final WordsRepository wordsRepository;
+
+    private final WordsTranslationsRepository wordsTranslationsRepository;
+
+    private final UsersPhrasalVerbsScoresRepository usersPhrasalVerbsScoresRepository;
+
+    private final PhrasalVerbsRepository phrasalVerbsRepository;
+
+    private final PartsOfSpeechRepository partsOfSpeechRepository;
+
+    private final PhrasalVerbsTranslationsRepository phrasalVerbsTranslationsRepository;
+
+    public SearchingService(WordsPartOfSpeechRepository wordsPartsOfSpeechRepository,
+                            UsersWordsRepository usersWordsRepository,
+                            WordsRepository wordsRepository,
+                            WordsTranslationsRepository wordsTranslationsRepository,
+                            UsersPhrasalVerbsScoresRepository usersPhrasalVerbsScoresRepository,
+                            PhrasalVerbsRepository phrasalVerbsRepository,
+                            PartsOfSpeechRepository partsOfSpeechRepository,
+                            PhrasalVerbsTranslationsRepository phrasalVerbsTranslationsRepository) {
+        this.wordsPartsOfSpeechRepository = wordsPartsOfSpeechRepository;
+        this.usersWordsRepository = usersWordsRepository;
+        this.wordsRepository = wordsRepository;
+        this.wordsTranslationsRepository = wordsTranslationsRepository;
+        this.usersPhrasalVerbsScoresRepository = usersPhrasalVerbsScoresRepository;
+        this.phrasalVerbsRepository = phrasalVerbsRepository;
+        this.partsOfSpeechRepository = partsOfSpeechRepository;
+        this.phrasalVerbsTranslationsRepository = phrasalVerbsTranslationsRepository;
+    }
 
     public SearchingObjects findWords(Users usr, String searchStr) {
 

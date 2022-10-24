@@ -44,7 +44,8 @@ public class UserService implements UserDetailsService {
     }
 
     public Users loadUserById(Long id){
-        return userRepo.getById(id);
+        //return userRepo.getById(id);
+        return userRepo.findById(id).orElse(null);
     }
 
     public void saveEditedUser(Users user, String name, Map<String, String> formParams){

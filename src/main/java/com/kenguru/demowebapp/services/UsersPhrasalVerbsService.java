@@ -11,13 +11,13 @@ import java.util.List;
 public class UsersPhrasalVerbsService {
 
 
-    private UsersWordsService usersWordsService;
-    private PartsOfSpeechRepository partsOfSpeechRepository;
-    private UsersPhrasalVerbsScoresRepository usersPhrasalVerbsScoresRepository;
-    private PhrasalVerbsRepository phrasalVerbsRepository;
-    private PhrasalVerbsTranslationsRepository phrasalVerbsTranslationsRepository;
+    private final UsersWordsService usersWordsService;
+    private final PartsOfSpeechRepository partsOfSpeechRepository;
+    private final UsersPhrasalVerbsScoresRepository usersPhrasalVerbsScoresRepository;
+    private final PhrasalVerbsRepository phrasalVerbsRepository;
+    private final PhrasalVerbsTranslationsRepository phrasalVerbsTranslationsRepository;
 
-    private UserService userService;
+    private final UserService userService;
 
     public UsersPhrasalVerbsService(UsersWordsService usersWordsService,
                                     PartsOfSpeechRepository partsOfSpeechRepository,
@@ -55,7 +55,7 @@ public class UsersPhrasalVerbsService {
             String description,
             Users usr
     ){
-        usr = userService.loadUserById(usr.getId());
+        Users user = userService.loadUserById(usr.getId());
 
         String partOfSpeech = "verb";
         PartsOfSpeech pos = partsOfSpeechRepository.findPartsOfSpeechByName(partOfSpeech);
@@ -64,7 +64,7 @@ public class UsersPhrasalVerbsService {
 
         WordsPartOfSpeech wps = usersWordsService.saveOrGetWPS(pos, word);
 
-        UsersWords uw = usersWordsService.saveOrGetUsersWord(wps, usr);
+        UsersWords uw = usersWordsService.saveOrGetUsersWord(wps, user);
 
         PhrasalVerbs phrasalVerb = phrasalVerbsRepository.findByWpsAndPreposition(wps, preposition);
         if(phrasalVerb==null)
@@ -73,10 +73,10 @@ public class UsersPhrasalVerbsService {
             phrasalVerbsRepository.save(phrasalVerb);
         }
 
-        UsersPhrasalVerbsScores usersPhrasalVerb= usersPhrasalVerbsScoresRepository.findByUserAndPhrasalVerb(usr,phrasalVerb);
+        UsersPhrasalVerbsScores usersPhrasalVerb= usersPhrasalVerbsScoresRepository.findByUserAndPhrasalVerb(user,phrasalVerb);
         if(usersPhrasalVerb==null)
         {
-            usersPhrasalVerb = new UsersPhrasalVerbsScores(0,description,phrasalVerb,usr);
+            usersPhrasalVerb = new UsersPhrasalVerbsScores(0,description,phrasalVerb,user);
             usersPhrasalVerbsScoresRepository.save(usersPhrasalVerb);
         }
 

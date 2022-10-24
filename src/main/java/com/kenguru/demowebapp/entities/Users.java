@@ -2,6 +2,7 @@ package com.kenguru.demowebapp.entities;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import java.util.Collection;
@@ -40,7 +41,7 @@ public class Users implements UserDetails {
     @OneToMany(mappedBy = "user")
     private Set<UsersPhrasalVerbsScores> phrasVerbsScores;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "users_groups",
             joinColumns = { @JoinColumn(name = "id_user") },
             inverseJoinColumns = { @JoinColumn(name = "id_group") })

@@ -11,12 +11,12 @@ import java.util.List;
 public class UsersIrregularVerbService {
 
 
-    private UsersWordsService usersWordsService;
-    private PartsOfSpeechRepository partsOfSpeechRepository;
-    private UsersIrregularVerbsScoresRepository usersIrregularVerbsScoresRepository;
-    private IrregularVerbsRepository irregularVerbsRepository;
+    private final UsersWordsService usersWordsService;
+    private final PartsOfSpeechRepository partsOfSpeechRepository;
+    private final UsersIrregularVerbsScoresRepository usersIrregularVerbsScoresRepository;
+    private final IrregularVerbsRepository irregularVerbsRepository;
 
-    private UserService userService;
+    private final UserService userService;
 
     public UsersIrregularVerbService(UsersWordsService usersWordsService,
                                      PartsOfSpeechRepository partsOfSpeechRepository,
@@ -37,7 +37,7 @@ public class UsersIrregularVerbService {
             String thirdForm,
             Users usr
     ){
-        usr = userService.loadUserById(usr.getId());
+        Users user = userService.loadUserById(usr.getId());
 
         String partOfSpeech = "verb";
         PartsOfSpeech pos = partsOfSpeechRepository.findPartsOfSpeechByName(partOfSpeech);
@@ -46,7 +46,7 @@ public class UsersIrregularVerbService {
 
         WordsPartOfSpeech wps = usersWordsService.saveOrGetWPS(pos, word);
 
-        UsersWords uw = usersWordsService.saveOrGetUsersWord(wps, usr);
+        UsersWords uw = usersWordsService.saveOrGetUsersWord(wps, user);
 
         IrregularVerbs irregularVerb = irregularVerbsRepository.findByWps(wps);
         if(irregularVerb==null)
@@ -55,10 +55,10 @@ public class UsersIrregularVerbService {
             irregularVerbsRepository.save(irregularVerb);
         }
 
-        UsersIrregularVerbsScores usersIrregularVerb = usersIrregularVerbsScoresRepository.findByUserAndIrregularVerb(usr,irregularVerb);
+        UsersIrregularVerbsScores usersIrregularVerb = usersIrregularVerbsScoresRepository.findByUserAndIrregularVerb(user,irregularVerb);
         if(usersIrregularVerb==null)
         {
-            usersIrregularVerb = new UsersIrregularVerbsScores(0,irregularVerb,usr);
+            usersIrregularVerb = new UsersIrregularVerbsScores(0,irregularVerb,user);
             usersIrregularVerbsScoresRepository.save(usersIrregularVerb);
         }
     }
