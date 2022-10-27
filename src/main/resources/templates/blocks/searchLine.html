@@ -1,0 +1,19 @@
+<div th:fragment="searchLine">
+  <script src=https://code.jquery.com/jquery-3.6.0.js></script>
+  <script src="/js/header.js"></script>
+  <link rel="stylesheet"  th:href="@{/style/StyleSheets/Header.css}"/>
+  <form action="/editWord" method = "post">
+    <div class="row justify-content-center">
+      <div class="input-group " style="width: 730px; ">
+
+        <input id="searchingWord" name="searchingWord" class="form-control" type="search" placeholder="Search" aria-label="Search" data-bs-toggle="dropdown" oninput="search()">
+        <ul class="dropdown-menu" id = "searchSelectList">
+        </ul>
+        <div class="input-group-append">
+          <button class="btn" type="submit" >Найти</button>
+        </div>
+
+      </div>
+    </div>
+  </form>
+</div>

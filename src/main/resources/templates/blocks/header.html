@@ -1,56 +1,11 @@
 <div th:fragment="header">
     <script src=https://code.jquery.com/jquery-3.6.0.js></script>
     <script src="/js/header.js"></script>
+    <link rel="stylesheet"  th:href="@{/style/StyleSheets/Header.css}"/>
     <div class="container">
-        <div class="row justify-content-center">
-            <h1 style="
-        /*position: absolute;*/
-        width: 462px;
-        height: 124px;
-        /*left: calc(50% - 462px/2 + 40px);
-        top: calc(50% - 124px/2 - 419px);*/
-        background: url('/style/images/banner-2024869_1280.png') right 40px center no-repeat,
-        url('/style/images/scale_1200.jfif') left 104px center no-repeat;
-        background-size: 27% 100%, 33% 60%;
-        background-color: white;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        ">KENGURU</h1>
-        </div>
-        <form action="/editWord" method = "post">
-            <div class="row justify-content-center">
-                <div class="input-group " style="width: 730px; ">
-
-                        <input id="searchingWord" name="searchingWord" class="form-control" type="search" placeholder="Search" aria-label="Search" data-bs-toggle="dropdown" oninput="search()">
-                        <ul class="dropdown-menu" id = "searchSelectList">
-                        </ul>
-                        <div class="input-group-append">
-                            <button class="btn" type="submit" >Найти</button>
-                        </div>
-
-                </div>
-            </div>
-        </form>
-
-        <ul class="nav justify-content-center" >
-            <li class="nav-item"><a href="/history" class="nav-link active">История</a></li>
-<!--            <li class="nav-item"><a href="/addNewWord" class="nav-link ">Добавить</a></li>-->
-
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    Добавить
-                </a>
-                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <li><a class="dropdown-item" href="/addNewWord">Слово</a></li>
-                    <li><a class="dropdown-item" href="/addNewPhrasalVerb">Фразовый глагол</a></li>
-                    <li><a class="dropdown-item" href="/addNewIrregularVerb">Формы неправильного глагола</a></li>
-                    <li><a class="dropdown-item" href="/addNewComparativeAdjective">Сравнительные степени прилагательного</a></li>
-                </ul>
-            </li>
-            <li class="nav-item"><a href="#" class="nav-link">Тесты</a></li>
-            <li class="nav-item"><a href="#" class="nav-link">Библиотека</a></li>
-            <li class="nav-item"><a href="#" class="nav-link">Статистика</a></li>
-        </ul>
+        <div th:insert="blocks/kenguruName :: kenguruName"></div>
+        <div th:insert="blocks/searchLine :: searchLine"></div>
     </div>
+    <div th:insert="blocks/navbar :: navbar"></div>
 </div>
 
