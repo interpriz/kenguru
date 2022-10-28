@@ -15,7 +15,7 @@ import java.util.List;
 @Controller
 public class UsersPhrasalVerbsController {
 
-    private UsersPhrasalVerbsService service;
+    private final UsersPhrasalVerbsService service;
 
     public UsersPhrasalVerbsController(UsersPhrasalVerbsService service) {
         this.service = service;

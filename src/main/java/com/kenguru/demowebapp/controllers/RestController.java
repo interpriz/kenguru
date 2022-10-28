@@ -17,8 +17,8 @@ import java.util.List;
 public class RestController {
 
 
-    private SearchingService searchingService;
-    private UsersWordsService usersWordsService;
+    private final SearchingService searchingService;
+    private final UsersWordsService usersWordsService;
 
     public RestController(SearchingService searchingService, UsersWordsService usersWordsService) {
         this.searchingService = searchingService;

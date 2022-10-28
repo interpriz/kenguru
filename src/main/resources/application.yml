@@ -11,5 +11,26 @@ spring:
     properties:
       hibernate:
         default_schema: "kenguru"
+        jdbc:
+          lob:
+            non_contextual_creation: true
     database: postgresql
     database-platform: "org.hibernate.dialect.PostgreSQL10Dialect"
+  mail:
+    host: smtp.yandex.ru
+    username: "kenguru.main@yandex.ru"
+    password: "rauehmtsvgmmuzxz"
+    port: 465
+    protocol: "smtps"
+    properties:
+      mail:
+        debug: true
+
+
+
+
+
+
+
+
+

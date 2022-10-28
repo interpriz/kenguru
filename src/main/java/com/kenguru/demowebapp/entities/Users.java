@@ -24,6 +24,10 @@ public class Users implements UserDetails {
     @Column(name = "active", unique = true)
     private boolean active;
 
+    private String email;
+
+    private String activationCode;
+
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "users_roles", joinColumns = @JoinColumn(name = "id_user"))
     @Enumerated(EnumType.STRING)
@@ -146,6 +150,22 @@ public class Users implements UserDetails {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getActivationCode() {
+        return activationCode;
+    }
+
+    public void setActivationCode(String activationCode) {
+        this.activationCode = activationCode;
     }
 
     @Override

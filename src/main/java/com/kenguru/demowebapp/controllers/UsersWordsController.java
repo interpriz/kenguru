@@ -15,7 +15,7 @@ import java.util.List;
 public class UsersWordsController {
 
 
-    private UsersWordsService service;
+    private final UsersWordsService service;
 
     public UsersWordsController(UsersWordsService service) {
         this.service = service;

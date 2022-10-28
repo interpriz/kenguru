@@ -19,10 +19,10 @@ import java.util.List;
 @Controller
 public class MainController {
 
-    private UsersIrregularVerbService usersIrrVerbService;
-    private UsersWordsService usersWordsService;
-    private UsersPhrasalVerbsService usersPhrasVerbsService;
-    private UsersCompAdjectivesService usersCompAdjectivesService;
+    private final UsersIrregularVerbService usersIrrVerbService;
+    private final UsersWordsService usersWordsService;
+    private final UsersPhrasalVerbsService usersPhrasVerbsService;
+    private final UsersCompAdjectivesService usersCompAdjectivesService;
 
     public MainController(UsersIrregularVerbService usersIrrVerbService,
                           UsersWordsService usersWordsService,

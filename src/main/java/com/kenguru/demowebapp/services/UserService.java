@@ -15,9 +15,12 @@ import java.util.stream.Collectors;
 @Service
 public class UserService implements UserDetailsService {
 
-    private UsersRepository userRepo;
+    private final MailSenderService mailSender;
 
-    public UserService(UsersRepository userRepo) {
+    private final UsersRepository userRepo;
+
+    public UserService(MailSenderService mailSender, UsersRepository userRepo) {
+        this.mailSender = mailSender;
         this.userRepo = userRepo;
     }
 
@@ -26,11 +29,26 @@ public class UserService implements UserDetailsService {
 
         if (userFromDb != null) {
             return false;
-        }else{
-            userFromDb = new Users(user.getUsername(),user.getPassword(),true, Collections.singleton(Role.USER));
-            userRepo.save(userFromDb);
-            return true;
         }
+
+        user.setActive(true);
+        user.setRoles(Collections.singleton(Role.USER));
+        user.setActivationCode(UUID.randomUUID().toString());
+        userRepo.save(user);
+
+        if (!user.getEmail().isBlank()) {
+            String message = String.format(
+                    "Hello, %s! \n" +
+                            "Welcome to Sweater. Please, visit next link: http://localhost:8080/activate/%s",
+                    user.getUsername(),
+                    user.getActivationCode()
+            );
+
+            mailSender.send(user.getEmail(), "Activation code", message);
+        }
+
+        return true;
+
     }
 
 
@@ -66,5 +84,16 @@ public class UserService implements UserDetailsService {
         }
 
         userRepo.save(user);
+    }
+
+    public boolean activateUser(String code) {
+        Users user =  userRepo.findByActivationCode(code);
+        if(user == null){
+            return false;
+        }
+        user.setActivationCode(null);
+        userRepo.save(user);
+
+        return true;
     }
 }
