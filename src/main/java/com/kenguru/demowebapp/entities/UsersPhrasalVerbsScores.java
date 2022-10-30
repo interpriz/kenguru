@@ -29,7 +29,7 @@ public class UsersPhrasalVerbsScores {
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "users_phrasal_verbs_translations",
-            joinColumns = { @JoinColumn(name = "id_pv") },
+            joinColumns = { @JoinColumn(name = "id_upv") },
             inverseJoinColumns = { @JoinColumn(name = "id_translation") })
     private Set<PhrasalVerbsTranslations> translations;
 

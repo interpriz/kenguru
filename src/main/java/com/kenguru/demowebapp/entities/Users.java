@@ -15,13 +15,13 @@ public class Users implements UserDetails {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name", unique = true)
+    @Column(name = "name")
     private String username;
 
-    @Column(name = "password", unique = true)
+    @Column(name = "password")
     private String password;
 
-    @Column(name = "active", unique = true)
+    @Column(name = "active")
     private boolean active;
 
     private String email;
