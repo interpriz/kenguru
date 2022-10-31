@@ -4,6 +4,7 @@ import com.kenguru.demowebapp.entities.Role;
 import com.kenguru.demowebapp.entities.Users;
 import com.kenguru.demowebapp.services.UserService;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -12,7 +13,6 @@ import java.util.Map;
 
 @Controller
 @RequestMapping("/user")
-@PreAuthorize("hasAuthority('ADMIN')")
 public class UserController {
 
 
@@ -22,6 +22,7 @@ public class UserController {
         this.userService = userService;
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping
     public String userList(Model model){
         model.addAttribute("users", userService.findAllUsers());
@@ -29,6 +30,7 @@ public class UserController {
         return "userList";
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     //  /user/id
     @GetMapping("{user}")
     public String userEdit(@PathVariable Users user, Model model){
@@ -37,6 +39,7 @@ public class UserController {
         return "userEdit";
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping
     public String userSave(
             @RequestParam String username,
@@ -44,23 +47,28 @@ public class UserController {
             @RequestParam("userId") Users user
     ) {
         userService.saveEditedUser(user, username, form);
-        /*user.setUsername(username);
-
-        //все роли
-        Set<String> roles = Arrays.stream(Role.values())
-                .map(Role::name)
-                .collect(Collectors.toSet());
-
-        user.getRoles().clear();
-
-        for (String key : form.keySet()) {
-            if (roles.contains(key)) {
-                user.getRoles().add(Role.valueOf(key));
-            }
-        }
-
-        userRepo.save(user);*/
 
         return "redirect:/user";
     }
+
+
+    @GetMapping("profile")
+    public String getProfile(Model model, @AuthenticationPrincipal Users user) {
+        model.addAttribute("username", user.getUsername());
+        model.addAttribute("email", user.getEmail());
+
+        return "profile";
+    }
+
+    @PostMapping("profile")
+    public String updateProfile(
+            @AuthenticationPrincipal Users user,
+            @RequestParam String password,
+            @RequestParam String email
+    ) {
+        userService.updateProfile(user, password, email);
+
+        return "redirect:/user/profile";
+    }
+
 }

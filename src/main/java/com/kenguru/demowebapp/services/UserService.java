@@ -36,6 +36,13 @@ public class UserService implements UserDetailsService {
         user.setActivationCode(UUID.randomUUID().toString());
         userRepo.save(user);
 
+        sendMessage(user);
+
+        return true;
+
+    }
+
+    private void sendMessage(Users user) {
         if (!user.getEmail().isBlank()) {
             String message = String.format(
                     "Hello, %s! \n" +
@@ -46,9 +53,6 @@ public class UserService implements UserDetailsService {
 
             mailSender.send(user.getEmail(), "Activation code", message);
         }
-
-        return true;
-
     }
 
 
@@ -95,5 +99,32 @@ public class UserService implements UserDetailsService {
         userRepo.save(user);
 
         return true;
+    }
+
+    public void updateProfile(Users user, String password, String email) {
+        //Users user = userRepo.findByUsername(usr.getUsername());
+
+        String userEmail = user.getEmail();
+
+        boolean isEmailChanged = (email != null && !email.equals(userEmail)) ||
+                (userEmail != null && !userEmail.equals(email));
+
+        if (isEmailChanged) {
+            user.setEmail(email);
+
+            if (!email.isEmpty()) {
+                user.setActivationCode(UUID.randomUUID().toString());
+            }
+        }
+
+        if (!password.isEmpty()) {
+            user.setPassword(password);
+        }
+
+        userRepo.save(user);
+
+        if (isEmailChanged) {
+            sendMessage(user);
+        }
     }
 }

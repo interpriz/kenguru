@@ -442,6 +442,20 @@ values (1, 'admin', '123', true);
 insert into kenguru.users_roles (id_user, roles)
 values (1, 'USER'), (1, 'ADMIN');
 
+copy kenguru."words" (name, transcription) FROM 'C:\JOB\kenguru_load\words.txt' DELIMITER E'\t' ENCODING 'UTF8';
+copy kenguru."parts_of_speech" (name) FROM 'C:\JOB\kenguru_load\parts_of_speech.txt' DELIMITER E'\t' ENCODING 'UTF8';
+copy kenguru."words_part_of_speech" (id_word, id_part_sp) FROM 'C:\JOB\kenguru_load\words_part_of_speech.txt' DELIMITER E'\t' ENCODING 'UTF8';
+copy kenguru."users_words" (id_wps, id_user, score) FROM 'C:\JOB\kenguru_load\users_words.txt' DELIMITER E'\t' ENCODING 'UTF8';
+copy kenguru."words_translations" (name) FROM 'C:\JOB\kenguru_load\words_translations.txt' DELIMITER E'\t' ENCODING 'UTF8';
+copy kenguru."users_words_translations" (id_uw, id_translation) FROM 'C:\JOB\kenguru_load\users_words_translations.txt' DELIMITER E'\t' ENCODING 'UTF8';
+copy kenguru."irregular_verbs" (id_wps, second_form, third_form) FROM 'C:\JOB\kenguru_load\irregular_verbs.txt' DELIMITER E'\t' ENCODING 'UTF8';
+copy kenguru."users_irregular_verbs_scores" (id_iv, id_user, score) FROM 'C:\JOB\kenguru_load\users_irregular_verbs_scores.txt' DELIMITER E'\t' ENCODING 'UTF8';
+copy kenguru."comparative_adjectives" (id_wps, comparative, superlative) FROM 'C:\JOB\kenguru_load\comparative_adjectives.txt' DELIMITER E'\t' ENCODING 'UTF8';
+copy kenguru."users_comparative_adjectives_scores" (id_ca, id_user, score) FROM 'C:\JOB\kenguru_load\users_comparative_adjectives_scores.txt' DELIMITER E'\t' ENCODING 'UTF8';
+copy kenguru."phrasal_verbs" (id_wps, preposition) FROM 'C:\JOB\kenguru_load\phrasal_verbs.txt' DELIMITER E'\t' ENCODING 'UTF8';
+
+
+
 
 
 

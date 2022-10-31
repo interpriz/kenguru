@@ -6,6 +6,9 @@
         </div>
         Пользователь:
         <div sec:authentication="principal.username"></div>
+        <div>
+            <a href="/user/profile" >Профиль пользователя</a>
+        </div>
         <!--<div sec:authorize="hasRole('USER')">Text visible to user.</div>
         <div sec:authorize="hasRole('ADMIN')">Text visible to admin.</div>
         <div sec:authorize="isAuthenticated()">Text visible only to authenticated users.</div>-->
