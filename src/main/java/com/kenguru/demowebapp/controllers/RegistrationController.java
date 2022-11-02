@@ -5,9 +5,14 @@ import com.kenguru.demowebapp.entities.Users;
 import com.kenguru.demowebapp.services.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import javax.validation.Valid;
+import java.util.Map;
 
 @Controller
 public class RegistrationController {
@@ -24,15 +29,43 @@ public class RegistrationController {
 
     @PostMapping("/registration")
     public String registration(
-            Users user,
+            @RequestParam("password2") String passwordConfirm,
+            @Valid Users user,
+            BindingResult bindingResult,
             Model model
     ) {
+        boolean isConfirmEmpty = passwordConfirm.isEmpty();
 
-        if(!userService.registration(user))
-        {
-            model.addAttribute("exist", true);
-            return "registration";
+        if (isConfirmEmpty) {
+            model.addAttribute("password2Error", "Поддтверждение пароля не может быть пустым");
         }
+
+        if (user.getPassword() != null && !user.getPassword().equals(passwordConfirm)) {
+            model.addAttribute("passwordError", "Пароли различаются!");
+        }
+
+        if (bindingResult.hasErrors()) {
+            Map<String, String> errors = ControllerUtils.getErrors(bindingResult);
+            model.mergeAttributes(errors);
+        }
+
+        if(isConfirmEmpty ||
+                model.containsAttribute("passwordError") ||
+                bindingResult.hasErrors()
+        ){
+            model.addAttribute("user", user);
+
+            return "registration";
+        }else{
+            if(!userService.registration(user))
+            {
+                model.addAttribute("usernameError", "Такой пользователь уже есть!");
+                return "registration";
+            }
+        }
+
+
+
 
         return "redirect:/login";
     }
@@ -42,9 +75,11 @@ public class RegistrationController {
         boolean isActivated = userService.activateUser(code);
 
         if (isActivated) {
-            model.addAttribute("message", "User successfully activated");
+            model.addAttribute("messageType", "alert-success");
+            model.addAttribute("message", "Пользователь успешно активирован");
         } else {
-            model.addAttribute("message", "Activation code is not found!");
+            model.addAttribute("messageType", "alert-danger");
+            model.addAttribute("message", "Код активации не найден");
         }
 
         return "login";

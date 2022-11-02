@@ -5,7 +5,7 @@ function addNewTranslation() {
 
     var input = document.createElement('input');
     input.className = "form-control";
-    input.name = "newTranslations";
+    input.name = "translations";
     input.value = newTranslation.value ;
     input.type = "text";
 
@@ -13,6 +13,7 @@ function addNewTranslation() {
     button.className = "btn btn-outline-secondary";
     button.type = "button";
     button.textContent = "x";
+    button.onclick = deleteListElem;
 
 
     var li = document.createElement('li');
@@ -35,7 +36,7 @@ function addNewTopic() {
 
     var input = document.createElement('input');
     input.className = "form-control";
-    input.name = "newTopics";
+    input.name = "topics";
     input.value = newTopic.value ;
     input.type = "text";
 
@@ -43,6 +44,7 @@ function addNewTopic() {
     button.className = "btn btn-outline-secondary";
     button.type = "button";
     button.textContent = "x";
+    button.onclick = deleteListElem;
 
 
     var li = document.createElement('li');

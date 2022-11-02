@@ -46,7 +46,7 @@
                 <ul class="list-group" id = "translationsList" >
                     <li class="list-group list-group-flush" th:each="el : ${usersWord.translations}">
                         <div class="input-group mb-3">
-                            <input name="newTranslations" type="text" class="form-control"  aria-describedby="button-addon2" th:value="${el.name}">
+                            <input name="translations" type="text" class="form-control"  aria-describedby="button-addon2" th:value="${el.name}">
                             <button class="btn btn-outline-secondary" type="button" onclick="deleteListElem()">x</button>
                         </div>
                     </li>
@@ -65,7 +65,7 @@
                 <ul class="list-group" id = "topicsList" >
                     <li class="list-group list-group-flush" th:each="el : ${usersWord.topics}">
                         <div class="input-group mb-3 ">
-                            <input name="newTopics" type="text" class="form-control"  aria-describedby="button-addon2" th:value="${el.name} ">
+                            <input name="topics" type="text" class="form-control"  aria-describedby="button-addon2" th:value="${el.name} ">
                             <button class="btn btn-outline-secondary" type="button" onclick="deleteListElem()">x</button>
                         </div>
                     </li>

@@ -1,5 +1,6 @@
 package com.kenguru.demowebapp.services;
 
+import com.kenguru.demowebapp.dto.UsersWord;
 import com.kenguru.demowebapp.entities.*;
 import com.kenguru.demowebapp.repositories.*;
 import org.springframework.stereotype.Service;
@@ -32,6 +33,85 @@ public class UsersWordsService {
         this.userService = userService;
         this.topicsRepository = topicsRepository;
         this.wordsTranslationsRepository = wordsTranslationsRepository;
+    }
+
+    //решить проблему с транскрипцией(должна быть единственной)
+    public void saveEditedOldUsersWord(
+            Long userWordId,
+            String wordName,
+            String partOfSpeech,
+            String transcription,
+            List<String> newTranslations,
+            List<String> newTopics
+    ){
+        UsersWords oldUsersWord = usersWordsRepository.findUsersWordsById(userWordId);
+
+        boolean newWordName = !oldUsersWord.getWps().getWord().getName().equals(wordName);
+        boolean newWordPartOfSpeech = !oldUsersWord.getWps().getPartOfSpeech().getName().equals(partOfSpeech);
+        boolean newWordTranscription = !oldUsersWord.getWps().getWord().getTranscription().equals(transcription);
+
+        //если слово изменило написание (транскрипция остается неизменной)
+        transcription = oldUsersWord.getWps().getWord().getTranscription();
+        if (newWordName || newWordTranscription) {
+            //создать новое слово и привязать его к пользователю
+            Words newWord = new Words(wordName, transcription);
+            oldUsersWord.getWps().setWord(newWord);
+        }
+
+        //если слово изменило часть речи
+        if (newWordPartOfSpeech) {
+            //добавить новое сочетание слова и части речи и привязать его к пользователю
+            PartsOfSpeech newPartOfSpeech = partsOfSpeechRepository.findPartsOfSpeechByName(partOfSpeech);
+            WordsPartOfSpeech newWPS = new WordsPartOfSpeech(oldUsersWord.getWps().getWord(),newPartOfSpeech);
+            oldUsersWord.setWps(newWPS);
+
+        }
+
+        //обновление списка переводов
+        updateTranslations(oldUsersWord, newTranslations);
+
+        //обновление списка тем
+        updateTopics(oldUsersWord, newTopics);
+
+
+        usersWordsRepository.save(oldUsersWord);
+    }
+
+    public void saveNewUsersWord(
+            /*String partOfSpeech,
+            String wordName,
+            String transcription,
+            List<String> translations,
+            List<String> topicsNames,*/
+            UsersWord newWord,
+            Users usr) {
+
+        Users user = userService.loadUserById(usr.getId());
+
+        PartsOfSpeech pos = partsOfSpeechRepository.findPartsOfSpeechByName(newWord.getPartOfSpeech());
+
+        Words word = saveOrGetWord(newWord.getWordName(), newWord.getTranscription());
+
+        WordsPartOfSpeech wps = saveOrGetWPS(pos, word);
+
+        UsersWords usersWord = saveOrGetUsersWord(wps, user);
+
+        //сохранение новых переводов
+        for (String translation: newWord.getTranslations()
+        ) {
+            addNewUsersWordTranslation(translation, usersWord);
+        }
+
+
+        //сохранение новых тем
+        for (String topicName: newWord.getTopics()
+        ) {
+            addNewUsersWordTopic(topicName, usersWord);
+        }
+
+
+        usersWordsRepository.save(usersWord);
+
     }
 
     public Words saveOrGetWord(String wordName, String transcription){
@@ -92,33 +172,7 @@ public class UsersWordsService {
         }
     }
 
-    public void saveNewUsersWord(
-            String partOfSpeech,
-            String wordName,
-            String transcription,
-            String translation,
-            String topicName,
-            Users usr) {
 
-        Users user = userService.loadUserById(usr.getId());
-
-        PartsOfSpeech pos = partsOfSpeechRepository.findPartsOfSpeechByName(partOfSpeech);
-
-        Words word = saveOrGetWord(wordName, transcription);
-
-        WordsPartOfSpeech wps = saveOrGetWPS(pos, word);
-
-        UsersWords usersWord = saveOrGetUsersWord(wps, user);
-
-        //сохранение нового перевода
-        addNewUsersWordTranslation(translation, usersWord);
-
-        //сохранение новой темы
-        addNewUsersWordTopic(topicName, usersWord);
-
-        usersWordsRepository.save(usersWord);
-
-    }
     public void updateTranslations(UsersWords usersWord, List<String> newTranslations){
         //удаление старых переводов
         usersWord.getTranslations().removeIf(oldTrans -> !newTranslations.contains(oldTrans.getName()));
@@ -148,47 +202,7 @@ public class UsersWordsService {
             }
     }
 
-    //решить проблему с транскрипцией(должна быть единственной)
-    public void saveEditedOldUsersWord(
-            Long userWordId,
-            String wordName,
-            String partOfSpeech,
-            String transcription,
-            List<String> newTranslations,
-            List<String> newTopics
-    ){
-        UsersWords oldUsersWord = usersWordsRepository.findUsersWordsById(userWordId);
 
-        boolean newWordName = !oldUsersWord.getWps().getWord().getName().equals(wordName);
-        boolean newWordPartOfSpeech = !oldUsersWord.getWps().getPartOfSpeech().getName().equals(partOfSpeech);
-        boolean newWordTranscription = !oldUsersWord.getWps().getWord().getTranscription().equals(transcription);
-
-        //если слово изменило написание (транскрипция остается неизменной)
-        transcription = oldUsersWord.getWps().getWord().getTranscription();
-        if (newWordName || newWordTranscription) {
-            //создать новое слово и привязать его к пользователю
-            Words newWord = new Words(wordName, transcription);
-            oldUsersWord.getWps().setWord(newWord);
-        }
-
-        //если слово изменило часть речи
-        if (newWordPartOfSpeech) {
-            //добавить новое сочетание слова и части речи и привязать его к пользователю
-            PartsOfSpeech newPartOfSpeech = partsOfSpeechRepository.findPartsOfSpeechByName(partOfSpeech);
-            WordsPartOfSpeech newWPS = new WordsPartOfSpeech(oldUsersWord.getWps().getWord(),newPartOfSpeech);
-            oldUsersWord.setWps(newWPS);
-
-        }
-
-        //обновление списка переводов
-        updateTranslations(oldUsersWord, newTranslations);
-
-        //обновление списка тем
-        updateTopics(oldUsersWord, newTopics);
-
-
-        usersWordsRepository.save(oldUsersWord);
-    }
 
     public List<PartsOfSpeech> getAllPartsOfSpeech(){
         return partsOfSpeechRepository.findAll();

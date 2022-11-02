@@ -6,6 +6,7 @@ import com.kenguru.demowebapp.repositories.UsersRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -16,12 +17,13 @@ import java.util.stream.Collectors;
 public class UserService implements UserDetailsService {
 
     private final MailSenderService mailSender;
-
     private final UsersRepository userRepo;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserService(MailSenderService mailSender, UsersRepository userRepo) {
+    public UserService(MailSenderService mailSender, UsersRepository userRepo, PasswordEncoder passwordEncoder) {
         this.mailSender = mailSender;
         this.userRepo = userRepo;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public boolean registration(Users user){
@@ -34,6 +36,7 @@ public class UserService implements UserDetailsService {
         user.setActive(true);
         user.setRoles(Collections.singleton(Role.USER));
         user.setActivationCode(UUID.randomUUID().toString());
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepo.save(user);
 
         sendMessage(user);
@@ -118,7 +121,7 @@ public class UserService implements UserDetailsService {
         }
 
         if (!password.isEmpty()) {
-            user.setPassword(password);
+            user.setPassword(passwordEncoder.encode(password));
         }
 
         userRepo.save(user);

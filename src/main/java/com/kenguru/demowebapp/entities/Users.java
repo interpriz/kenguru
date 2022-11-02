@@ -1,10 +1,13 @@
 package com.kenguru.demowebapp.entities;
 
+import org.hibernate.validator.constraints.Length;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import java.util.Collection;
 import java.util.Set;
 
@@ -15,15 +18,19 @@ public class Users implements UserDetails {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "Имя пользователя не может быть пустым")
     @Column(name = "name")
     private String username;
 
+    @NotBlank(message = "Пароль не может быть пустым")
     @Column(name = "password")
     private String password;
 
     @Column(name = "active")
     private boolean active;
 
+    @Email(message = "Email не верен")
+    @NotBlank(message = "Email не может быть пустым")
     private String email;
 
     private String activationCode;

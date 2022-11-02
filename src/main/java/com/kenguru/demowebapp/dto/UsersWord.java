@@ -1,9 +1,13 @@
 package com.kenguru.demowebapp.dto;
 
 import com.kenguru.demowebapp.entities.*;
+import org.hibernate.validator.constraints.Length;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;
 import java.util.List;
+
 
 public class UsersWord {
 
@@ -11,14 +15,20 @@ public class UsersWord {
 
     private int score;
 
-    private String word;
+    @NotBlank(message = "Пожалуйста введите слово")
+    @Length(max = 100, message = "Слово слишком длинное")
+    private String wordName;
 
+    @NotBlank(message = "Пожалуйста введите транскрипцию")
+    @Length(max = 100, message = "Транскрипция слишком длинная")
     private String transcription;
 
+    @NotBlank(message = "Пожалуйста выберите часть речи")
     private String partOfSpeech;
 
     private List<String> topics;
 
+    @NotEmpty(message = "Пожалуйста добавьте перевод")
     private List<String> translations;
 
     public UsersWord() {
@@ -27,7 +37,7 @@ public class UsersWord {
     public UsersWord(UsersWords usersWord) {
         this.id = usersWord.getId();
         this.score = usersWord.getScore();
-        this.word = usersWord.getWps().getWord().getName();
+        this.wordName = usersWord.getWps().getWord().getName();
         this.transcription = usersWord.getWps().getWord().getTranscription();
         this.partOfSpeech = usersWord.getWps().getPartOfSpeech().getName();
         this.topics = new ArrayList<>();
@@ -65,12 +75,12 @@ public class UsersWord {
         this.score = score;
     }
 
-    public String getWord() {
-        return word;
+    public String getWordName() {
+        return wordName;
     }
 
-    public void setWord(String word) {
-        this.word = word;
+    public void setWordName(String wordName) {
+        this.wordName = wordName;
     }
 
     public String getPartOfSpeech() {
@@ -82,7 +92,10 @@ public class UsersWord {
     }
 
     public List<String> getTopics() {
-        return topics;
+        if (topics != null)
+            return topics;
+        else return new ArrayList<>();
+
     }
 
     public void setTopics(List<String> topics) {
