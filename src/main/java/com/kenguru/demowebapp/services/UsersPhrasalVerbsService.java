@@ -5,7 +5,10 @@ import com.kenguru.demowebapp.entities.*;
 import com.kenguru.demowebapp.repositories.*;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import static com.kenguru.demowebapp.StaticStrings.*;
 
 @Service
 public class UsersPhrasalVerbsService {
@@ -36,12 +39,20 @@ public class UsersPhrasalVerbsService {
     private void addNewUsersPhrasalVerbTranslation(String newTranslation, UsersPhrasalVerbsScores usersPhrasalVerb){
         if(!newTranslation.isBlank())
         {
-            PhrasalVerbsTranslations phrasVerbTranslation= phrasalVerbsTranslationsRepository.findByName(newTranslation);
+            /*PhrasalVerbsTranslations phrasVerbTranslation= phrasalVerbsTranslationsRepository.findByName(newTranslation);
             if(phrasVerbTranslation==null)
             {
                 phrasVerbTranslation = new PhrasalVerbsTranslations(newTranslation);
                 phrasalVerbsTranslationsRepository.save(phrasVerbTranslation);
-            }
+            }*/
+            PhrasalVerbsTranslations phrasVerbTranslation= phrasalVerbsTranslationsRepository
+                    .findByName(newTranslation).orElseGet(
+                            ()->{
+                                PhrasalVerbsTranslations newPhrasVerbTranslation = new PhrasalVerbsTranslations(newTranslation);
+                                phrasalVerbsTranslationsRepository.save(newPhrasVerbTranslation);
+                                return newPhrasVerbTranslation;
+                            }
+                    );
 
             usersPhrasalVerb.addNewTranslation(phrasVerbTranslation);
         }
@@ -57,8 +68,7 @@ public class UsersPhrasalVerbsService {
     ){
         Users user = userService.loadUserById(usr.getId());
 
-        String partOfSpeech = "verb";
-        PartsOfSpeech pos = partsOfSpeechRepository.findPartsOfSpeechByName(partOfSpeech);
+        PartsOfSpeech pos = partsOfSpeechRepository.findPartsOfSpeechByName(PART_OF_SPEECH_VERB).get();
 
         Words word = usersWordsService.saveOrGetWord(wordName, transcription);
 
@@ -66,19 +76,38 @@ public class UsersPhrasalVerbsService {
 
         UsersWords uw = usersWordsService.saveOrGetUsersWord(wps, user);
 
-        PhrasalVerbs phrasalVerb = phrasalVerbsRepository.findByWpsAndPreposition(wps, preposition);
+        /*PhrasalVerbs phrasalVerb = phrasalVerbsRepository.findByWpsAndPreposition(wps, preposition).if;
         if(phrasalVerb==null)
         {
             phrasalVerb = new PhrasalVerbs(preposition,wps);
             phrasalVerbsRepository.save(phrasalVerb);
-        }
+        }*/
+        PhrasalVerbs phrasalVerb = phrasalVerbsRepository
+                .findByWpsAndPreposition(wps, preposition)
+                .orElseGet(() -> {
+                    PhrasalVerbs newPhrasalVerb = new PhrasalVerbs(preposition, wps);
+                    phrasalVerbsRepository.save(newPhrasalVerb);
+                    return newPhrasalVerb;
+                });
 
-        UsersPhrasalVerbsScores usersPhrasalVerb= usersPhrasalVerbsScoresRepository.findByUserAndPhrasalVerb(user,phrasalVerb);
+
+        /*UsersPhrasalVerbsScores usersPhrasalVerb= usersPhrasalVerbsScoresRepository.findByUserAndPhrasalVerb(user,phrasalVerb);
         if(usersPhrasalVerb==null)
         {
             usersPhrasalVerb = new UsersPhrasalVerbsScores(0,description,phrasalVerb,user);
             usersPhrasalVerbsScoresRepository.save(usersPhrasalVerb);
-        }
+        }*/
+        UsersPhrasalVerbsScores usersPhrasalVerb=
+                usersPhrasalVerbsScoresRepository
+                        .findByUserAndPhrasalVerb(user,phrasalVerb)
+                        .orElseGet(
+                                ()->{
+                                    UsersPhrasalVerbsScores newUsersPhrasalVerb = new UsersPhrasalVerbsScores(0,description,phrasalVerb,user);
+                                    usersPhrasalVerbsScoresRepository.save(newUsersPhrasalVerb);
+                                    return newUsersPhrasalVerb;
+                                }
+                        );
+
 
         addNewUsersPhrasalVerbTranslation(translation,usersPhrasalVerb);
 
@@ -108,7 +137,11 @@ public class UsersPhrasalVerbsService {
             List<String> newTranslations,
             String description
     ){
-        UsersPhrasalVerbsScores oldUsersPhrasalVerb = usersPhrasalVerbsScoresRepository.findUsersPhrasalVerbsScoresById(userPhrasalVerbId);
+        //TODO переделать get()
+        UsersPhrasalVerbsScores oldUsersPhrasalVerb =
+                usersPhrasalVerbsScoresRepository
+                        .findUsersPhrasalVerbsScoresById(userPhrasalVerbId)
+                        .get();
         UsersPhrasalVerb oldUsersPhrasalVerbDTO = new UsersPhrasalVerb(oldUsersPhrasalVerb);
 
         //если у глагола изменился предлог
@@ -136,6 +169,10 @@ public class UsersPhrasalVerbsService {
     }
 
     public List<UsersPhrasalVerbsScores> getUsersPhrasalVerbByUser(Users usr){
-        return  usersPhrasalVerbsScoresRepository.findByUser(usr);
+        return  usersPhrasalVerbsScoresRepository
+                .findByUser(usr)
+                .orElseGet(
+                        ArrayList::new
+                );
     }
 }

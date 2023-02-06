@@ -56,8 +56,8 @@
         <tr th:each="el : ${usersIrrVerbs}">
             <td th:text="${el.id}"></td>
             <td th:text="${el.irregularVerb.wps.word.name}"></td>
-            <td th:text="${el.irregularVerb.second_form}"></td>
-            <td th:text="${el.irregularVerb.third_form}"></td>
+            <td th:text="${el.irregularVerb.secondForm}"></td>
+            <td th:text="${el.irregularVerb.thirdForm}"></td>
             <td th:text="${el.irregularVerb.wps.word.transcription}"></td>
         </tr>
     </table>

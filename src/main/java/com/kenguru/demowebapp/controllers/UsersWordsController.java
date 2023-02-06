@@ -15,6 +15,8 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
 
+import static com.kenguru.demowebapp.StaticStrings.*;
+
 @Controller
 public class UsersWordsController {
 
@@ -26,25 +28,25 @@ public class UsersWordsController {
     }
 
 
-    @GetMapping("/addNewWord")
+    @GetMapping("/add/new-word")
     public String addNewWord(
             @AuthenticationPrincipal Users usr,
             Model model
     ) {
-        model.addAttribute("title", "Добавление нового слова");
+        model.addAttribute("title", TITLE_ADD_NEW_WORD);
 
-        List<PartsOfSpeech> ps = service.getAllPartsOfSpeech();
-        model.addAttribute("ps", ps);
+        List<PartsOfSpeech> partOfSpeech = service.getAllPartsOfSpeech();
+        model.addAttribute(ATTRIBUTE_PART_OF_SPEECH, partOfSpeech);
 
 
         //Users usr  = usersRepository.getById(1L);
         List<Topics> topics = service.getAllUsersTopics(usr);
-        model.addAttribute("topics", topics);
+        model.addAttribute(ATTRIBUTE_TOPICS, topics);
 
         return "addNewWord";
     }
 
-    @PostMapping("/addNewWord")
+    @PostMapping("/add/new-word")
     public String addNewWordPost(
             @AuthenticationPrincipal Users usr,
            /* @RequestParam String partOfSpeech,
@@ -60,15 +62,15 @@ public class UsersWordsController {
             Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
 
             model.mergeAttributes(errorsMap);
-            model.addAttribute("newWord", newWord);
+            model.addAttribute(ATTRIBUTE_NEW_WORD, newWord);
 
-            List<PartsOfSpeech> ps = service.getAllPartsOfSpeech();
-            model.addAttribute("ps", ps);
+            List<PartsOfSpeech> partOfSpeech = service.getAllPartsOfSpeech();
+            model.addAttribute(ATTRIBUTE_PART_OF_SPEECH, partOfSpeech);
 
 
             //Users usr  = usersRepository.getById(1L);
             List<Topics> topics = service.getAllUsersTopics(usr);
-            model.addAttribute("topics", topics);
+            model.addAttribute(ATTRIBUTE_TOPICS, topics);
             return "addNewWord";
         }else{
             service.saveNewUsersWord(newWord,usr);
@@ -79,29 +81,29 @@ public class UsersWordsController {
 
     }
 
-    @GetMapping("/editWord")
+    @GetMapping("/edit/word")
     public String editWord(
             @AuthenticationPrincipal Users usr,
             @RequestParam Long userWordId,
             Model model){
-        model.addAttribute("title", "Редактирование слова");
+        model.addAttribute("title", TITLE_EDIT_WORD);
 
         UsersWords usersWord = service.getUsersWord(userWordId);
 
-        model.addAttribute("usersWord", usersWord);
+        model.addAttribute(ATTRIBUTE_USERS_WORD, usersWord);
 
         List<PartsOfSpeech> ps = service.getAllPartsOfSpeech();
-        model.addAttribute("ps", ps);
+        model.addAttribute(ATTRIBUTE_PART_OF_SPEECH, ps);
 
         //Users usr  = usersRepository.getById(1L);
         List<Topics> topics = service.getAllUsersTopics(usr);
-        model.addAttribute("topics", topics);
+        model.addAttribute(ATTRIBUTE_TOPICS, topics);
 
 
         return "/editWord";
     }
 
-    @PostMapping("/editWord")
+    @PostMapping("/edit/word")
     public String editWord(
             @RequestParam Long userWordId,
             @RequestParam String wordName,
@@ -121,10 +123,4 @@ public class UsersWordsController {
 
         return "redirect:/history";
     }
-
-
-
-
-
-
 }

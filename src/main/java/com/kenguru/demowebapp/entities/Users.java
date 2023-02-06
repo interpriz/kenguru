@@ -1,15 +1,15 @@
 package com.kenguru.demowebapp.entities;
 
-import org.hibernate.validator.constraints.Length;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import java.util.Collection;
 import java.util.Set;
+
+import static com.kenguru.demowebapp.StaticStrings.*;
 
 @Entity
 @Table(name = "users")
@@ -18,19 +18,19 @@ public class Users implements UserDetails {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "Имя пользователя не может быть пустым")
+    @NotBlank(message = MESSAGE_EMPTY_USER_NAME)
     @Column(name = "name")
     private String username;
 
-    @NotBlank(message = "Пароль не может быть пустым")
+    @NotBlank(message = MESSAGE_EMPTY_PASSWORD)
     @Column(name = "password")
     private String password;
 
     @Column(name = "active")
     private boolean active;
 
-    @Email(message = "Email не верен")
-    @NotBlank(message = "Email не может быть пустым")
+    @Email(message = MESSAGE_ERROR_EMAIL)
+    @NotBlank(message = MESSAGE_EMPTY_EMAIL)
     private String email;
 
     private String activationCode;
@@ -41,13 +41,13 @@ public class Users implements UserDetails {
     private Set<Role> roles;
 
     @OneToMany(mappedBy = "user")
-    private Set<UsersWords> uw;
+    private Set<UsersWords> usersWords;
 
     @OneToMany(mappedBy = "user")
-    private Set<UsersIrregularVerbsScores> uivs;
+    private Set<UsersIrregularVerbsScores> usersIrrVerbsScores;
 
     @OneToMany(mappedBy = "user")
-    private Set<UsersComparativeAdjectivesScores> ucas;
+    private Set<UsersComparativeAdjectivesScores> usersCompAdjScores;
 
     @OneToMany(mappedBy = "user")
     private Set<UsersPhrasalVerbsScores> phrasVerbsScores;
@@ -68,7 +68,7 @@ public class Users implements UserDetails {
 
     public Users(String username, Set<UsersWords> uwt, Set<Groups> groups) {
         this.username = username;
-        this.uw = uwt;
+        this.usersWords = uwt;
         this.groups = groups;
     }
 
@@ -95,12 +95,12 @@ public class Users implements UserDetails {
         this.username = name;
     }
 
-    public Set<UsersWords> getUw() {
-        return uw;
+    public Set<UsersWords> getUsersWords() {
+        return usersWords;
     }
 
-    public void setUw(Set<UsersWords> uwt) {
-        this.uw = uwt;
+    public void setUsersWords(Set<UsersWords> usersWords) {
+        this.usersWords = usersWords;
     }
 
     public Set<Groups> getGroups() {
@@ -111,12 +111,12 @@ public class Users implements UserDetails {
         this.groups = groups;
     }
 
-    public Set<UsersIrregularVerbsScores> getUivs() {
-        return uivs;
+    public Set<UsersIrregularVerbsScores> getUsersIrrVerbsScores() {
+        return usersIrrVerbsScores;
     }
 
-    public void setUivs(Set<UsersIrregularVerbsScores> uivs) {
-        this.uivs = uivs;
+    public void setUsersIrrVerbsScores(Set<UsersIrregularVerbsScores> uivs) {
+        this.usersIrrVerbsScores = uivs;
     }
 
     public String getPassword() {
@@ -135,12 +135,12 @@ public class Users implements UserDetails {
         this.active = active;
     }
 
-    public Set<UsersComparativeAdjectivesScores> getUcas() {
-        return ucas;
+    public Set<UsersComparativeAdjectivesScores> getUsersCompAdjScores() {
+        return usersCompAdjScores;
     }
 
-    public void setUcas(Set<UsersComparativeAdjectivesScores> ucas) {
-        this.ucas = ucas;
+    public void setUsersCompAdjScores(Set<UsersComparativeAdjectivesScores> usersCompAdjScores) {
+        this.usersCompAdjScores = usersCompAdjScores;
     }
 
     public Set<UsersPhrasalVerbsScores> getPhrasVerbsScores() {

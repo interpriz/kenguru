@@ -18,7 +18,7 @@
 
 <div class="container mt-5 mb-5" style="border-radius:15px; background-color: white; width: 730px; high: 200px;">
     <h3>Редактирование слова</h3>
-    <form th:action="@{/editWord}" method = "post">
+    <form th:action="@{/edit/word}" method = "post">
         <!--        <input type="text" name="partOfSpeech" placeholder="Выберите часть речи" class = "form-control">-->
         <input type="hidden" name="userWordId" th:value="${usersWord.id}">
             <div class="mb-3">
@@ -29,7 +29,7 @@
                 <label for="partOfSpeech" class="form-label">Часть речи</label>
                 <select id="partOfSpeech" name="partOfSpeech"  class="form-select mt-1 mb-1" aria-label="Default select example">
                     <option value="0" >Выберите часть речи</option>
-                    <option th:each="el : ${ps}" th:value="${el.name}" th:text="${el.name}" th:selected="${el.name==usersWord.wps.partOfSpeech.name}">
+                    <option th:each="el : ${partOfSpeech}" th:value="${el.name}" th:text="${el.name}" th:selected="${el.name==usersWord.wps.partOfSpeech.name}">
                     </option>
                 </select>
             </div>

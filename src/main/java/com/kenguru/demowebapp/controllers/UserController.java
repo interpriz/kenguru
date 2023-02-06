@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
+import static com.kenguru.demowebapp.StaticStrings.*;
+
 @Controller
 @RequestMapping("/user")
 public class UserController {
@@ -25,7 +27,7 @@ public class UserController {
     @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping
     public String userList(Model model){
-        model.addAttribute("users", userService.findAllUsers());
+        model.addAttribute(ATTRIBUTE_USERS, userService.findAllUsers());
 
         return "userList";
     }
@@ -34,8 +36,8 @@ public class UserController {
     //  /user/id
     @GetMapping("{user}")
     public String userEdit(@PathVariable Users user, Model model){
-        model.addAttribute("user",user);
-        model.addAttribute("roles", Role.values());
+        model.addAttribute(ATTRIBUTE_USER,user);
+        model.addAttribute(ATTRIBUTE_ROLES, Role.values());
         return "userEdit";
     }
 
@@ -54,8 +56,8 @@ public class UserController {
 
     @GetMapping("profile")
     public String getProfile(Model model, @AuthenticationPrincipal Users user) {
-        model.addAttribute("username", user.getUsername());
-        model.addAttribute("email", user.getEmail());
+        model.addAttribute(ATTRIBUTE_USER_NAME, user.getUsername());
+        model.addAttribute(ATTRIBUTE_EMAIL, user.getEmail());
 
         return "profile";
     }

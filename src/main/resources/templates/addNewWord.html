@@ -21,11 +21,11 @@
 
 <div class="container mt-5 mb-5" style="border-radius:15px; background-color: white; width: 730px; high: 200px;">
     <h3>Добавление нового слова</h3>
-    <form th:action="@{/addNewWord}" method = "post">
+    <form th:action="@{/add/new-word}" method = "post">
 <!--        <input type="text" name="partOfSpeech" placeholder="Выберите часть речи" class = "form-control">-->
         <!--<select name="partOfSpeech"  class="form-select mt-1 mb-1" aria-label="Default select example">
             <option value="0" >Выберите часть речи</option>
-            <option th:each="el : ${ps}" th:value="${el.name}" th:text="${el.name}">
+            <option th:each="el : ${partOfSpeech}" th:value="${el.name}" th:text="${el.name}">
             </option>
         </select>
         <p>-->
@@ -46,7 +46,7 @@
             <select id="partOfSpeech" name="partOfSpeech"  class="form-select mt-1 mb-1" th:classappend="${partOfSpeechError} ? 'is-invalid' : ''"
                     aria-label="Default select example">
                 <option value="" >Выберите часть речи</option>
-                <option th:each="el : ${ps}" th:value="${el.name}" th:text="${el.name}" th:selected="${newWord} ? ${el.name==newWord.partOfSpeech} : ${false}">
+                <option th:each="el : ${partOfSpeech}" th:value="${el.name}" th:text="${el.name}" th:selected="${newWord} ? ${el.name==newWord.partOfSpeech} : ${false}">
                 </option>
             </select>
             <div class="invalid-feedback"

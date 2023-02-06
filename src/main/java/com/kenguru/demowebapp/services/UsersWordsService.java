@@ -5,6 +5,7 @@ import com.kenguru.demowebapp.entities.*;
 import com.kenguru.demowebapp.repositories.*;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -44,7 +45,7 @@ public class UsersWordsService {
             List<String> newTranslations,
             List<String> newTopics
     ){
-        UsersWords oldUsersWord = usersWordsRepository.findUsersWordsById(userWordId);
+        UsersWords oldUsersWord = usersWordsRepository.findUsersWordsById(userWordId).get();
 
         boolean newWordName = !oldUsersWord.getWps().getWord().getName().equals(wordName);
         boolean newWordPartOfSpeech = !oldUsersWord.getWps().getPartOfSpeech().getName().equals(partOfSpeech);
@@ -61,7 +62,7 @@ public class UsersWordsService {
         //если слово изменило часть речи
         if (newWordPartOfSpeech) {
             //добавить новое сочетание слова и части речи и привязать его к пользователю
-            PartsOfSpeech newPartOfSpeech = partsOfSpeechRepository.findPartsOfSpeechByName(partOfSpeech);
+            PartsOfSpeech newPartOfSpeech = partsOfSpeechRepository.findPartsOfSpeechByName(partOfSpeech).get();
             WordsPartOfSpeech newWPS = new WordsPartOfSpeech(oldUsersWord.getWps().getWord(),newPartOfSpeech);
             oldUsersWord.setWps(newWPS);
 
@@ -72,7 +73,6 @@ public class UsersWordsService {
 
         //обновление списка тем
         updateTopics(oldUsersWord, newTopics);
-
 
         usersWordsRepository.save(oldUsersWord);
     }
@@ -88,7 +88,7 @@ public class UsersWordsService {
 
         Users user = userService.loadUserById(usr.getId());
 
-        PartsOfSpeech pos = partsOfSpeechRepository.findPartsOfSpeechByName(newWord.getPartOfSpeech());
+        PartsOfSpeech pos = partsOfSpeechRepository.findPartsOfSpeechByName(newWord.getPartOfSpeech()).get();
 
         Words word = saveOrGetWord(newWord.getWordName(), newWord.getTranscription());
 
@@ -97,15 +97,13 @@ public class UsersWordsService {
         UsersWords usersWord = saveOrGetUsersWord(wps, user);
 
         //сохранение новых переводов
-        for (String translation: newWord.getTranslations()
-        ) {
+        for (String translation: newWord.getTranslations()){
             addNewUsersWordTranslation(translation, usersWord);
         }
 
 
         //сохранение новых тем
-        for (String topicName: newWord.getTopics()
-        ) {
+        for (String topicName: newWord.getTopics()) {
             addNewUsersWordTopic(topicName, usersWord);
         }
 
@@ -115,60 +113,107 @@ public class UsersWordsService {
     }
 
     public Words saveOrGetWord(String wordName, String transcription){
-        Words word = wordsRepository.findByName(wordName);
+        /*Words word = wordsRepository.findByName(wordName);
         if(word==null)
         {
             word = new Words(wordName,transcription);
             wordsRepository.save(word);
         }
-        return word;
+        return word;*/
+
+        return wordsRepository
+                .findByName(wordName).orElseGet(
+                        ()->{
+                            Words newWord = new Words(wordName,transcription);
+                            wordsRepository.save(newWord);
+                            return newWord;
+                        }
+        );
+
     }
 
     public WordsPartOfSpeech saveOrGetWPS(PartsOfSpeech pos, Words word){
-        WordsPartOfSpeech wps = wordsPartsOfSpeechRepository.findByPartOfSpeechAndWord(pos,word);
+        /*WordsPartOfSpeech wps = wordsPartsOfSpeechRepository.findByPartOfSpeechAndWord(pos,word);
         if(wps==null)
         {
             wps = new WordsPartOfSpeech(word,pos);
             wordsPartsOfSpeechRepository.save(wps);
         }
-        return wps;
+        return wps;*/
+
+        return wordsPartsOfSpeechRepository
+                .findByPartOfSpeechAndWord(pos, word)
+                .orElseGet(
+                        () -> {
+                            WordsPartOfSpeech newWPS = new WordsPartOfSpeech(word, pos);
+                            wordsPartsOfSpeechRepository.save(newWPS);
+                            return newWPS;
+                        }
+                );
     }
 
     public UsersWords saveOrGetUsersWord(WordsPartOfSpeech wps, Users usr){
-        UsersWords userWord = usersWordsRepository.findByUserAndWps(usr,wps);
+        /*UsersWords userWord = usersWordsRepository.findByUserAndWps(usr,wps);
         if(userWord==null)
         {
             userWord = new UsersWords(0,wps,usr);
             usersWordsRepository.save(userWord);
-        }
+        }*/
+
+        UsersWords userWord =
+                usersWordsRepository
+                        .findByUserAndWps(usr,wps).orElseGet(
+                                ()->{
+                                    UsersWords newUserWord = new UsersWords(0,wps,usr);
+                                    usersWordsRepository.save(newUserWord);
+                                    return newUserWord;
+                                }
+                        );
         return userWord;
     }
 
     public void addNewUsersWordTranslation(String newTranslation, UsersWords usersWord){
         if(!newTranslation.isBlank())
         {
-            WordsTranslations newWordTranslation = wordsTranslationsRepository.findByName(newTranslation);
+            /*WordsTranslations newWordTranslation = wordsTranslationsRepository.findByName(newTranslation);
             if(newWordTranslation==null)
             {
                 newWordTranslation = new WordsTranslations(newTranslation);
                 wordsTranslationsRepository.save(newWordTranslation);
-            }
+            }*/
+            WordsTranslations wordTranslation =
+                    wordsTranslationsRepository
+                            .findByName(newTranslation).orElseGet(
+                                    ()->{
+                                        WordsTranslations newWordTranslation = new WordsTranslations(newTranslation);
+                                        wordsTranslationsRepository.save(newWordTranslation);
+                                        return newWordTranslation;
+                                    }
+                            );
 
-            usersWord.addNewTranslation(newWordTranslation);
+            usersWord.addNewTranslation(wordTranslation);
         }
     }
 
-    public void addNewUsersWordTopic(String newTopic, UsersWords usersWord){
-        if(!newTopic.isBlank())
+    public void addNewUsersWordTopic(String newTopicName, UsersWords usersWord){
+        if(!newTopicName.isBlank())
         {
-            Topics newUsersWordTopic = topicsRepository.findByName(newTopic);
+            /*Topics newUsersWordTopic = topicsRepository.findByName(newTopic);
             if(newUsersWordTopic==null)
             {
                 newUsersWordTopic = new Topics(newTopic);
                 topicsRepository.save(newUsersWordTopic);
-            }
+            }*/
+            Topics topic = topicsRepository
+                    .findByName(newTopicName).orElseGet(
+                            ()->{
+                                Topics newWordsTopic = new Topics(newTopicName);
+                                topicsRepository.save(newWordsTopic);
+                                return newWordsTopic;
+                            }
+                    );
 
-            usersWord.addNewTopic(newUsersWordTopic);
+            usersWord.addNewTopic(topic);
         }
     }
 
@@ -208,20 +253,27 @@ public class UsersWordsService {
         return partsOfSpeechRepository.findAll();
     }
 
-    public List<Topics> getAllUsersTopics(Users usr){
-        return topicsRepository.findDistinctTopByUsersWordsIn(usersWordsRepository.findByUser(usr));
+    public List<Topics> getAllUsersTopics(Users usr) {
+        return topicsRepository
+                .findDistinctTopByUsersWordsIn(
+                        usersWordsRepository.findByUser(usr)
+                                .orElseGet(ArrayList::new)
+                )
+                .orElseGet(ArrayList::new);
     }
 
     public UsersWords getUsersWord(Long userWordId){
-        return usersWordsRepository.findUsersWordsById(userWordId);
+        return usersWordsRepository.findUsersWordsById(userWordId).get();
     }
 
     public List<UsersWords> getAllUsersWords(Users usr){
-        return usersWordsRepository.findByUser(usr);
+        return usersWordsRepository
+                .findByUser(usr)
+                .orElseGet(ArrayList::new);
     }
 
     public Words getWordByName(String word){
-        return wordsRepository.findByName(word);
+        return wordsRepository.findByName(word).get();
     }
 
 

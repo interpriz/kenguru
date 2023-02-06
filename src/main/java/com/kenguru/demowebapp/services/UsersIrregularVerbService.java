@@ -5,7 +5,10 @@ import com.kenguru.demowebapp.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import static com.kenguru.demowebapp.StaticStrings.*;
 
 @Service
 public class UsersIrregularVerbService {
@@ -39,8 +42,7 @@ public class UsersIrregularVerbService {
     ){
         Users user = userService.loadUserById(usr.getId());
 
-        String partOfSpeech = "verb";
-        PartsOfSpeech pos = partsOfSpeechRepository.findPartsOfSpeechByName(partOfSpeech);
+        PartsOfSpeech pos = partsOfSpeechRepository.findPartsOfSpeechByName(PART_OF_SPEECH_VERB).get();
 
         Words word = usersWordsService.saveOrGetWord(wordName, transcription);
 
@@ -48,23 +50,47 @@ public class UsersIrregularVerbService {
 
         UsersWords uw = usersWordsService.saveOrGetUsersWord(wps, user);
 
-        IrregularVerbs irregularVerb = irregularVerbsRepository.findByWps(wps);
+        /*IrregularVerbs irregularVerb = irregularVerbsRepository.findByWps(wps);
         if(irregularVerb==null)
         {
             irregularVerb = new IrregularVerbs(secondForm,thirdForm,wps);
             irregularVerbsRepository.save(irregularVerb);
-        }
+        }*/
+        IrregularVerbs irregularVerb = irregularVerbsRepository
+                .findByWps(wps).orElseGet(
+                        ()->{
+                            IrregularVerbs newIrregularVerb = new IrregularVerbs(secondForm,thirdForm,wps);
+                            irregularVerbsRepository.save(newIrregularVerb);
+                            return newIrregularVerb;
+                        }
+                );
 
-        UsersIrregularVerbsScores usersIrregularVerb = usersIrregularVerbsScoresRepository.findByUserAndIrregularVerb(user,irregularVerb);
+
+
+        /*UsersIrregularVerbsScores usersIrregularVerb = usersIrregularVerbsScoresRepository.findByUserAndIrregularVerb(user,irregularVerb);
         if(usersIrregularVerb==null)
         {
             usersIrregularVerb = new UsersIrregularVerbsScores(0,irregularVerb,user);
             usersIrregularVerbsScoresRepository.save(usersIrregularVerb);
-        }
+        }*/
+        UsersIrregularVerbsScores usersIrregularVerb =
+                usersIrregularVerbsScoresRepository
+                        .findByUserAndIrregularVerb(user,irregularVerb)
+                        .orElseGet(
+                                ()->{
+                                    UsersIrregularVerbsScores newUsersIrregularVerb = new UsersIrregularVerbsScores(0,irregularVerb,user);
+                                    usersIrregularVerbsScoresRepository.save(newUsersIrregularVerb);
+                                    return newUsersIrregularVerb;
+                                }
+                        );
     }
 
     public List<UsersIrregularVerbsScores> getUsersIrrVerbsByUser(Users usr){
-        return usersIrregularVerbsScoresRepository.findByUser(usr);
+        return usersIrregularVerbsScoresRepository
+                .findByUser(usr)
+                .orElseGet(
+                        ArrayList::new
+                );
     }
 
 }

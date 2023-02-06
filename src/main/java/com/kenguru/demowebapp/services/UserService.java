@@ -27,9 +27,11 @@ public class UserService implements UserDetailsService {
     }
 
     public boolean registration(Users user){
-        Users userFromDb = userRepo.findByUsername(user.getUsername());
-
+        /*Users userFromDb = userRepo.findByUsername(user.getUsername());
         if (userFromDb != null) {
+            return false;
+        }*/
+        if(userRepo.findByUsername(user.getUsername()).isEmpty()){
             return false;
         }
 
@@ -49,7 +51,7 @@ public class UserService implements UserDetailsService {
         if (!user.getEmail().isBlank()) {
             String message = String.format(
                     "Hello, %s! \n" +
-                            "Welcome to Sweater. Please, visit next link: http://localhost:8080/activate/%s",
+                            "Welcome to Kenguru. Please, visit next link: http://localhost:8080/activate/%s",
                     user.getUsername(),
                     user.getActivationCode()
             );
@@ -61,7 +63,7 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
-        return userRepo.findByUsername(userName);
+        return userRepo.findByUsername(userName).get();
     }
 
     public List<Users> findAllUsers(){
@@ -94,14 +96,22 @@ public class UserService implements UserDetailsService {
     }
 
     public boolean activateUser(String code) {
-        Users user =  userRepo.findByActivationCode(code);
+        /*Users user =  userRepo.findByActivationCode(code);
         if(user == null){
             return false;
         }
         user.setActivationCode(null);
         userRepo.save(user);
-
         return true;
+        */
+        Optional<Users> user =  userRepo.findByActivationCode(code);
+        user.ifPresent(
+                (u) ->{
+                    u.setActivationCode(null);
+                    userRepo.save(u);
+                }
+        );
+        return user.isPresent();
     }
 
     public void updateProfile(Users user, String password, String email) {

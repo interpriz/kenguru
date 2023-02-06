@@ -1,6 +1,5 @@
 package com.kenguru.demowebapp.controllers;
 
-import com.kenguru.demowebapp.dto.UsersPhrasalVerb;
 import com.kenguru.demowebapp.entities.*;
 import com.kenguru.demowebapp.services.UsersPhrasalVerbsService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -12,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
+import static com.kenguru.demowebapp.StaticStrings.*;
+
 @Controller
 public class UsersPhrasalVerbsController {
 
@@ -21,14 +22,14 @@ public class UsersPhrasalVerbsController {
         this.service = service;
     }
 
-    @GetMapping("/addNewPhrasalVerb")
+    @GetMapping("/add/new-phrasal-verb")
     public String addNewPhrasalVerb(Model model) {
-        model.addAttribute("title", "Добавление нового фразового глагола");
+        model.addAttribute("title", TITLE_ADD_NEW_PHRASAL_VERB);
 
         return "addNewPhrasalVerb";
     }
 
-    @PostMapping("/addNewPhrasalVerb")
+    @PostMapping("/add/new-phrasal-verb")
     public String addNewPhrasalVerb(
             @AuthenticationPrincipal Users usr,
             @RequestParam String wordName,
@@ -50,18 +51,18 @@ public class UsersPhrasalVerbsController {
         return "redirect:/history";
     }
 
-    @GetMapping("/editPhrasalVerb")
+    @GetMapping("/edit/phrasal-verb")
     public String editPhrasalVerb( @RequestParam Long userPhrasalVerbId, Model model){
-        model.addAttribute("title", "Редактирование фразового глагола");
+        model.addAttribute("title", TITLE_EDIT_PHRASAL_VERB);
 
         UsersPhrasalVerbsScores usersPhrasalVerb = service.getUsersPhrasalVerbById(userPhrasalVerbId);
 
-        model.addAttribute("usersPhrasalVerb", usersPhrasalVerb);
+        model.addAttribute(ATTRIBUTE_USERS_PHRASAL_VERB, usersPhrasalVerb);
 
         return "/editPhrasalVerb";
     }
 
-    @PostMapping("/editPhrasalVerb")
+    @PostMapping("/edit/phrasal-verb")
     public String editPhrasalVerb(
             @RequestParam Long userPhrasalVerbId,
             @RequestParam String wordName,

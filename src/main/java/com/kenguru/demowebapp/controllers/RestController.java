@@ -1,6 +1,8 @@
 package com.kenguru.demowebapp.controllers;
 
 import com.kenguru.demowebapp.dto.SearchingObjects;
+import com.kenguru.demowebapp.dto.UsersPhrasalVerb;
+import com.kenguru.demowebapp.dto.UsersWord;
 import com.kenguru.demowebapp.entities.*;
 import com.kenguru.demowebapp.repositories.*;
 import com.kenguru.demowebapp.services.SearchingService;
@@ -32,22 +34,40 @@ public class RestController {
         list.add("world");
         return list;
     }
-    @GetMapping(value = "/findTranscriptionByWord")
+
+    @GetMapping(value = "/find/transcription-by-word")
     public String findTranscriptionByWord(@RequestParam String name){
 
-        Words words= usersWordsService.getWordByName(name);
+        Words word= usersWordsService.getWordByName(name);
 
-        return words.getTranscription();
+        return word.getTranscription();
     }
 
 
-    @GetMapping("/findWords")
+    /*@GetMapping("/find/words")
     public SearchingObjects findWords(
             @AuthenticationPrincipal Users usr,
             @RequestParam String word){
 
         //Users usr  = usersRepository.getById(1L);
-
         return searchingService.findWords(usr,word);
+    }*/
+
+    @GetMapping("/find/words")
+    public List<UsersWord> findWords(
+            @AuthenticationPrincipal Users usr,
+            @RequestParam String word){
+
+        //Users usr  = usersRepository.getById(1L);
+        return searchingService.findWords_(usr,word);
+    }
+
+    @GetMapping("/find/phrasal-verbs")
+    public List<UsersPhrasalVerb> findPhrasalVerbs(
+            @AuthenticationPrincipal Users usr,
+            @RequestParam String word){
+
+        //Users usr  = usersRepository.getById(1L);
+        return searchingService.findPhrasalVerbs(usr,word);
     }
 }

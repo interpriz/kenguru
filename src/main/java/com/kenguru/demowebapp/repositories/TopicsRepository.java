@@ -7,9 +7,10 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface TopicsRepository extends JpaRepository<Topics, Long> {
-    List<Topics> findDistinctTopByUsersWordsIn(Collection<UsersWords> uw);
-    Topics findByName(String name);
+    Optional<List<Topics>> findDistinctTopByUsersWordsIn(Collection<UsersWords> uw);
+    Optional<Topics> findByName(String name);
 }

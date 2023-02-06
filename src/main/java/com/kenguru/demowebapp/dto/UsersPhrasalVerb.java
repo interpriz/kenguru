@@ -2,10 +2,9 @@ package com.kenguru.demowebapp.dto;
 
 import com.kenguru.demowebapp.entities.PhrasalVerbsTranslations;
 import com.kenguru.demowebapp.entities.UsersPhrasalVerbsScores;
-import com.kenguru.demowebapp.entities.WordsTranslations;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class UsersPhrasalVerb {
 
@@ -21,19 +20,31 @@ public class UsersPhrasalVerb {
 
     private List<String> translations;
 
-    private String Description;
+    private String description;
 
-    public UsersPhrasalVerb(UsersPhrasalVerbsScores UsersPhrasalVerb) {
-        this.id = UsersPhrasalVerb.getId();
-        this.score = UsersPhrasalVerb.getScore();
-        this.word = UsersPhrasalVerb.getPhrasalVerb().getWps().getWord().getName();
-        this.preposition = UsersPhrasalVerb.getPhrasalVerb().getPreposition();
-        this.transcription = UsersPhrasalVerb.getPhrasalVerb().getWps().getWord().getTranscription();
-        this.translations = new ArrayList<>();
-        for(PhrasalVerbsTranslations trans : UsersPhrasalVerb.getTranslations()){
+    public UsersPhrasalVerb(UsersPhrasalVerbsScores usersPhrasalVerb) {
+        this.id = usersPhrasalVerb.getId();
+        this.score = usersPhrasalVerb.getScore();
+        this.word = usersPhrasalVerb.getPhrasalVerb()
+                .getWps()
+                .getWord()
+                .getName();
+        this.preposition = usersPhrasalVerb.getPhrasalVerb()
+                .getPreposition();
+        this.transcription = usersPhrasalVerb.getPhrasalVerb()
+                .getWps()
+                .getWord()
+                .getTranscription();
+        /*this.translations = new ArrayList<>();
+        for(PhrasalVerbsTranslations trans : usersPhrasalVerb.getTranslations()){
             this.translations.add(trans.getName());
-        }
-        Description = UsersPhrasalVerb.getDescription();
+        }*/
+        this.translations = usersPhrasalVerb.getTranslations()
+                .stream()
+                .map(PhrasalVerbsTranslations::getName)
+                .collect(Collectors.toList());
+
+        description = usersPhrasalVerb.getDescription();
     }
 
     public Long getId() {
@@ -85,10 +96,10 @@ public class UsersPhrasalVerb {
     }
 
     public String getDescription() {
-        return Description;
+        return description;
     }
 
     public void setDescription(String description) {
-        Description = description;
+        this.description = description;
     }
 }

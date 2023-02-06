@@ -11,10 +11,10 @@ public class IrregularVerbs {
     private Long id;
 
     @Column(name = "second_form")
-    private String second_form;
+    private String secondForm;
 
     @Column(name = "third_form")
-    private String third_form;
+    private String thirdForm;
 
     @OneToOne (cascade = CascadeType.ALL)
     @JoinColumn(name = "id_wps", nullable = false)
@@ -26,9 +26,9 @@ public class IrregularVerbs {
     public IrregularVerbs() {
     }
 
-    public IrregularVerbs(String second_form, String third_form, WordsPartOfSpeech wps) {
-        this.second_form = second_form;
-        this.third_form = third_form;
+    public IrregularVerbs(String second_form, String thirdForm, WordsPartOfSpeech wps) {
+        this.secondForm = second_form;
+        this.thirdForm = thirdForm;
         this.wps = wps;
     }
 
@@ -40,20 +40,20 @@ public class IrregularVerbs {
         this.id = id;
     }
 
-    public String getSecond_form() {
-        return second_form;
+    public String getSecondForm() {
+        return secondForm;
     }
 
-    public void setSecond_form(String second_form) {
-        this.second_form = second_form;
+    public void setSecondForm(String secondForm) {
+        this.secondForm = secondForm;
     }
 
-    public String getThird_form() {
-        return third_form;
+    public String getThirdForm() {
+        return thirdForm;
     }
 
-    public void setThird_form(String third_form) {
-        this.third_form = third_form;
+    public void setThirdForm(String thirdForm) {
+        this.thirdForm = thirdForm;
     }
 
     public WordsPartOfSpeech getWps() {

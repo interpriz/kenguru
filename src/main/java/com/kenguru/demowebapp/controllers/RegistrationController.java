@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.validation.Valid;
 import java.util.Map;
 
+import static com.kenguru.demowebapp.StaticStrings.*;
+
 @Controller
 public class RegistrationController {
     private final UserService userService;
@@ -29,7 +31,7 @@ public class RegistrationController {
 
     @PostMapping("/registration")
     public String registration(
-            @RequestParam("password2") String passwordConfirm,
+            @RequestParam(ATTRIBUTE_PASSWORD_2) String passwordConfirm,
             @Valid Users user,
             BindingResult bindingResult,
             Model model
@@ -37,11 +39,11 @@ public class RegistrationController {
         boolean isConfirmEmpty = passwordConfirm.isEmpty();
 
         if (isConfirmEmpty) {
-            model.addAttribute("password2Error", "Поддтверждение пароля не может быть пустым");
+            model.addAttribute(ATTRIBUTE_PASSWORD_2_ERROR, MESSAGE_PASSWORD_2_ERROR);
         }
 
         if (user.getPassword() != null && !user.getPassword().equals(passwordConfirm)) {
-            model.addAttribute("passwordError", "Пароли различаются!");
+            model.addAttribute(ATTRIBUTE_PASSWORD_ERROR, MESSAGE_PASSWORD_ERROR);
         }
 
         if (bindingResult.hasErrors()) {
@@ -50,16 +52,16 @@ public class RegistrationController {
         }
 
         if(isConfirmEmpty ||
-                model.containsAttribute("passwordError") ||
+                model.containsAttribute(ATTRIBUTE_PASSWORD_ERROR) ||
                 bindingResult.hasErrors()
         ){
-            model.addAttribute("user", user);
+            model.addAttribute(ATTRIBUTE_USER, user);
 
             return "registration";
         }else{
             if(!userService.registration(user))
             {
-                model.addAttribute("usernameError", "Такой пользователь уже есть!");
+                model.addAttribute(ATTRIBUTE_USER_NAME_ERROR, MESSAGE_USER_NAME_ERROR);
                 return "registration";
             }
         }
@@ -75,11 +77,11 @@ public class RegistrationController {
         boolean isActivated = userService.activateUser(code);
 
         if (isActivated) {
-            model.addAttribute("messageType", "alert-success");
-            model.addAttribute("message", "Пользователь успешно активирован");
+            model.addAttribute(ATTRIBUTE_MESSAGE_TYPE, VALUE_ALERT_SUCCESS);
+            model.addAttribute(ATTRIBUTE_MESSAGE, MESSAGE_USER_ACTIVATION_SUCCESS);
         } else {
-            model.addAttribute("messageType", "alert-danger");
-            model.addAttribute("message", "Код активации не найден");
+            model.addAttribute(ATTRIBUTE_MESSAGE_TYPE, VALUE_ALERT_DANGER);
+            model.addAttribute(ATTRIBUTE_MESSAGE, MESSAGE_USER_ACTIVATION_ERROR);
         }
 
         return "login";

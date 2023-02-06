@@ -8,7 +8,10 @@ import com.kenguru.demowebapp.repositories.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import static com.kenguru.demowebapp.StaticStrings.*;
 
 @Service
 public class UsersCompAdjectivesService {
@@ -42,8 +45,7 @@ public class UsersCompAdjectivesService {
     ){
         Users user = userService.loadUserById(usr.getId());
 
-        String partOfSpeech = "adjective";
-        PartsOfSpeech pos = partsOfSpeechRepository.findPartsOfSpeechByName(partOfSpeech);
+        PartsOfSpeech pos = partsOfSpeechRepository.findPartsOfSpeechByName(PART_OF_SPEECH_ADJECTIVE).get();
 
         Words word = usersWordsService.saveOrGetWord(wordName, transcription);
 
@@ -51,23 +53,46 @@ public class UsersCompAdjectivesService {
 
         UsersWords uw = usersWordsService.saveOrGetUsersWord(wps, user);
 
-        ComparativeAdjectives compAdjective = compAdjectivesRepository.findByWps(wps);
+        /*ComparativeAdjectives compAdjective = compAdjectivesRepository.findByWps(wps);
         if(compAdjective==null)
         {
             compAdjective = new ComparativeAdjectives(comparative,superlative,wps);
             compAdjectivesRepository.save(compAdjective);
-        }
+        }*/
+        ComparativeAdjectives compAdjective = compAdjectivesRepository
+                .findByWps(wps).orElseGet(
+                        ()->{
+                            ComparativeAdjectives newCompAdjective = new ComparativeAdjectives(comparative,superlative,wps);
+                            compAdjectivesRepository.save(newCompAdjective);
+                            return newCompAdjective;
+                        }
+                );
 
-        UsersComparativeAdjectivesScores usersCompAdjective = usersCompAdjectivesScoresRepository.findByUserAndComparativeAdjective(user,compAdjective);
+        /*UsersComparativeAdjectivesScores usersCompAdjective = usersCompAdjectivesScoresRepository.findByUserAndComparativeAdjective(user,compAdjective);
         if(usersCompAdjective == null)
         {
             usersCompAdjective = new UsersComparativeAdjectivesScores(0,compAdjective,user);
             usersCompAdjectivesScoresRepository.save(usersCompAdjective);
-        }
+        }*/
+        UsersComparativeAdjectivesScores usersCompAdj =
+                usersCompAdjectivesScoresRepository
+                        .findByUserAndComparativeAdjective(user,compAdjective)
+                        .orElseGet(
+                                ()->{
+                                    UsersComparativeAdjectivesScores newUsersCompAdj = new UsersComparativeAdjectivesScores(0,compAdjective,user);
+                                    usersCompAdjectivesScoresRepository.save(newUsersCompAdj);
+                                    return newUsersCompAdj;
+                                }
+                        );
+
     }
 
     public List<UsersComparativeAdjectivesScores> getUsersCompAdjecByUser(Users usr){
-        return  usersCompAdjectivesScoresRepository.findByUser(usr);
+        return  usersCompAdjectivesScoresRepository
+                .findByUser(usr)
+                .orElseGet(
+                        ArrayList::new
+                );
     }
 
 }

@@ -21,19 +21,19 @@
 
 <div class="container mt-5 mb-5" style="border-radius:15px; background-color: white; width: 730px; high: 200px;">
     <h3>Редактирование фразового глагола</h3>
-    <form th:action="@{/editPhrasalVerb}" method = "post">
-        <input type="hidden" name="userPhrasalVerbId" th:value="${usersPhrasalVerb.id}">
+    <form th:action="@{/edit/phrasal-verb}" method = "post">
+        <input type="hidden" name="userPhrasalVerbId" th:value="${usersPhrasVerb.id}">
         <div class="mb-3">
             <label for="wordName" class="form-label">Английский глагол</label>
-            <input th:value="${usersPhrasalVerb.phrasalVerb.wps.word.name}" type="text"  id="wordName"         name="wordName"      placeholder="Введите глагол на английском" class = "form-control " readonly>
+            <input th:value="${usersPhrasVerb.phrasalVerb.wps.word.name}" type="text" id="wordName" name="wordName" placeholder="Введите глагол на английском" class = "form-control " readonly>
         </div>
         <div class="mb-3">
             <label for="transcription" class="form-label">Транскрипция</label>
-            <input th:value="${usersPhrasalVerb.phrasalVerb.wps.word.transcription}" type="text"  id="transcription"    name="transcription" placeholder="Введите транскрипцию"  class = "form-control" readonly>
+            <input th:value="${usersPhrasVerb.phrasalVerb.wps.word.transcription}" type="text" id="transcription" name="transcription" placeholder="Введите транскрипцию" class = "form-control" readonly>
         </div>
         <div class="mb-3">
             <label for="preposition" class="form-label">Предлог</label>
-            <input th:value="${usersPhrasalVerb.phrasalVerb.preposition}" type="text"  id="preposition"      name="preposition"   placeholder="Введите предлог" class = "form-control">
+            <input th:value="${usersPhrasVerb.phrasalVerb.preposition}" type="text" id="preposition" name="preposition" placeholder="Введите предлог" class = "form-control">
         </div>
         <div class="mb-3">
             <label for="translation" class="form-label">Переводы</label>
@@ -42,7 +42,7 @@
                 <button class="btn btn-outline-secondary" type="button" onclick="addNewTranslation()">+</button>
             </div>
             <ul class="list-group" id = "translationsList" >
-                <li class="list-group list-group-flush" th:each="el : ${usersPhrasalVerb.translations}">
+                <li class="list-group list-group-flush" th:each="el : ${usersPhrasVerb.translations}">
                     <div class="input-group mb-3">
                         <input th:value="${el.name}" type="text" name="newTranslations"   placeholder="Введите перевод" class = "form-control" aria-describedby="button-addon2">
                         <button class="btn btn-outline-secondary" type="button" onclick="deleteListElem()">x</button>
@@ -52,7 +52,7 @@
         </div>
         <div class="mb-3">
             <label for="description" class="form-label">Примеры использования</label>
-            <textarea th:text="${usersPhrasalVerb.description}" type="text"  id="description"      name="description"   placeholder="Введите описание(пример иссспользования)" class = "form-control" rows="3">
+            <textarea th:text="${usersPhrasVerb.description}" type="text" id="description" name="description" placeholder="Введите описание(пример иссспользования)" class = "form-control" rows="3">
             </textarea>
         </div>
 

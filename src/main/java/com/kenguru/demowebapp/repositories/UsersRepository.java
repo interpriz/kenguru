@@ -5,9 +5,10 @@ import com.kenguru.demowebapp.entities.Users;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface UsersRepository extends JpaRepository<Users, Long> {
-    Users findByUsername(String name);
-
-    Users findByActivationCode(String code);
+    Optional<Users> findByUsername(String name);
+    Optional<Users> findByActivationCode(String code);
 }

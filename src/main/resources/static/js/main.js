@@ -16,7 +16,7 @@
 
 function change() {
     $.ajax({
-        url: "http://localhost:8080/findTranscriptionByWord/",
+        url: "http://localhost:8080/find/transcription-by-word/",
         data:{"name" : $("#wordName").val()}
     }).then(function(data) {
         var trans = $("#wordName").val();
