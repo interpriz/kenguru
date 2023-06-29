@@ -24,7 +24,7 @@ public class UsersPhrasalVerbsController {
 
     @GetMapping("/add/new-phrasal-verb")
     public String addNewPhrasalVerb(Model model) {
-        model.addAttribute("title", TITLE_ADD_NEW_PHRASAL_VERB);
+        model.addAttribute("title", ADD_NEW_PHRASAL_VERB_TITLE);
 
         return "addNewPhrasalVerb";
     }
@@ -53,7 +53,7 @@ public class UsersPhrasalVerbsController {
 
     @GetMapping("/edit/phrasal-verb")
     public String editPhrasalVerb( @RequestParam Long userPhrasalVerbId, Model model){
-        model.addAttribute("title", TITLE_EDIT_PHRASAL_VERB);
+        model.addAttribute("title", EDIT_PHRASAL_VERB_TITLE);
 
         UsersPhrasalVerbsScores usersPhrasalVerb = service.getUsersPhrasalVerbById(userPhrasalVerbId);
 

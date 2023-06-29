@@ -36,7 +36,7 @@ public class MainController {
 
     @GetMapping("/")
     public String home(Model model) {
-        model.addAttribute("title", TITLE_MAIN_PAGE);
+        model.addAttribute("title", MAIN_PAGE_TITLE);
         return "home";
     }
 
@@ -44,7 +44,7 @@ public class MainController {
     public String history(
             @AuthenticationPrincipal Users usr,
             Model model) {
-        model.addAttribute("title", TITLE_HISTORY);
+        model.addAttribute("title", HISTORY_TITLE);
 
         //Users usr  = usersRepository.getById(1L);
         List<UsersWords> usersWords = usersWordsService.getAllUsersWords(usr);
@@ -65,7 +65,7 @@ public class MainController {
     @GetMapping("/add/new-irregular-verb")
     public String addNewIrregularVerb(Model model) {
 
-        model.addAttribute("title", TITLE_ADD_NEW_IRREGULAR_VERB);
+        model.addAttribute("title", ADD_NEW_IRREGULAR_VERB_TITLE);
 
         return "addNewIrregularVerb";
     }
@@ -95,7 +95,7 @@ public class MainController {
     @GetMapping("/add/new-comparative-adjective")
     public String addNewComparativeAdjective(Model model) {
 
-        model.addAttribute("title", TITLE_ADD_NEW_COMP_ADJECTIVE);
+        model.addAttribute("title", ADD_NEW_COMP_ADJECTIVE_TITLE);
 
         return "addNewComparativeAdjective";
     }

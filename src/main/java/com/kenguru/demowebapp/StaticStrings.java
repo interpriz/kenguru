@@ -3,17 +3,17 @@ package com.kenguru.demowebapp;
 public final class StaticStrings {
 
     //TITLES
-    public static final String TITLE_HISTORY = "История";
-    public static final String TITLE_ADD_NEW_IRREGULAR_VERB = "Добавление форм неправильного глагола";
-    public static final String TITLE_ADD_NEW_COMP_ADJECTIVE ="Добавление сравнительных степеней прилагательного";
-    public static final String TITLE_ADD_NEW_PHRASAL_VERB = "Добавление нового фразового глагола";
-    public static final String TITLE_EDIT_PHRASAL_VERB = "Редактирование фразового глагола";
-    public static final String TITLE_ADD_NEW_WORD = "Добавление нового слова";
-    public static final String TITLE_EDIT_WORD = "Редактирование слова";
+    public static final String HISTORY_TITLE = "История";
+    public static final String ADD_NEW_IRREGULAR_VERB_TITLE = "Добавление форм неправильного глагола";
+    public static final String ADD_NEW_COMP_ADJECTIVE_TITLE ="Добавление сравнительных степеней прилагательного";
+    public static final String ADD_NEW_PHRASAL_VERB_TITLE = "Добавление нового фразового глагола";
+    public static final String EDIT_PHRASAL_VERB_TITLE = "Редактирование фразового глагола";
+    public static final String ADD_NEW_WORD_TITLE = "Добавление нового слова";
+    public static final String EDIT_WORD_TITLE = "Редактирование слова";
 
-    public static final String TITLE_MAIN_PAGE = "Главная страница";
+    public static final String MAIN_PAGE_TITLE = "Главная страница";
 
-    public static final String TITLE_ = "";
+    public static final String _TITLE = "";
 
     //ATTRIBUTES NAMES
     public static final String ATTRIBUTE_USERS_WORDS = "usersWords";
@@ -41,7 +41,7 @@ public final class StaticStrings {
 
     //ATTRIBUTES VALUES
     public static final String VALUE_ALERT_SUCCESS = "alert-success";
-    public static final String VALUE_ALERT_DANGER = "alert-success";
+    public static final String VALUE_ALERT_DANGER = "alert-danger";
 
     public static final String VALUE_ = "";
 

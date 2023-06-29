@@ -1,6 +1,5 @@
 package com.kenguru.demowebapp.services;
 
-import ch.qos.logback.core.util.COWArrayList;
 import com.kenguru.demowebapp.dto.SearchingObjects;
 import com.kenguru.demowebapp.dto.UsersPhrasalVerb;
 import com.kenguru.demowebapp.dto.UsersWord;
@@ -58,7 +57,7 @@ public class SearchingService {
         this.usersWordsService = usersWordsService;
     }
 
-    public List<UsersWord> findWords_(Users usr, String searchStr){
+    public List<UsersWord> findWordsV2(Users usr, String searchStr){
         List<UsersWords> searchUsersWords = new ArrayList<>();
 
         // поиск по английскому переводу

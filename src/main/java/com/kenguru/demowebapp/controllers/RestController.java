@@ -1,13 +1,10 @@
 package com.kenguru.demowebapp.controllers;
 
-import com.kenguru.demowebapp.dto.SearchingObjects;
 import com.kenguru.demowebapp.dto.UsersPhrasalVerb;
 import com.kenguru.demowebapp.dto.UsersWord;
 import com.kenguru.demowebapp.entities.*;
-import com.kenguru.demowebapp.repositories.*;
 import com.kenguru.demowebapp.services.SearchingService;
 import com.kenguru.demowebapp.services.UsersWordsService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -59,7 +56,7 @@ public class RestController {
             @RequestParam String word){
 
         //Users usr  = usersRepository.getById(1L);
-        return searchingService.findWords_(usr,word);
+        return searchingService.findWordsV2(usr,word);
     }
 
     @GetMapping("/find/phrasal-verbs")

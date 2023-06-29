@@ -33,7 +33,7 @@ public class UsersWordsController {
             @AuthenticationPrincipal Users usr,
             Model model
     ) {
-        model.addAttribute("title", TITLE_ADD_NEW_WORD);
+        model.addAttribute("title", ADD_NEW_WORD_TITLE);
 
         List<PartsOfSpeech> partOfSpeech = service.getAllPartsOfSpeech();
         model.addAttribute(ATTRIBUTE_PART_OF_SPEECH, partOfSpeech);
@@ -86,7 +86,7 @@ public class UsersWordsController {
             @AuthenticationPrincipal Users usr,
             @RequestParam Long userWordId,
             Model model){
-        model.addAttribute("title", TITLE_EDIT_WORD);
+        model.addAttribute("title", EDIT_WORD_TITLE);
 
         UsersWords usersWord = service.getUsersWord(userWordId);
 
