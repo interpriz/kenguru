@@ -50,6 +50,7 @@ public class RestController {
         return searchingService.findWords(usr,word);
     }*/
 
+    // новая версия
     @GetMapping("/find/words")
     public List<UsersWord> findWords(
             @AuthenticationPrincipal Users usr,
