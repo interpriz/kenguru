@@ -1,28 +1,58 @@
 package com.kenguru.demowebapp.entities;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import java.util.Collection;
 import java.util.Set;
+
+import static com.kenguru.demowebapp.StaticStrings.*;
 
 @Entity
 @Table(name = "users")
-public class Users {
+public class Users implements UserDetails {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name", unique = true)
-    private String name;
+    @NotBlank(message = MESSAGE_EMPTY_USER_NAME)
+    @Column(name = "name")
+    private String username;
+
+    @NotBlank(message = MESSAGE_EMPTY_PASSWORD)
+    @Column(name = "password")
+    private String password;
+
+    @Column(name = "active")
+    private boolean active;
+
+    @Email(message = MESSAGE_ERROR_EMAIL)
+    @NotBlank(message = MESSAGE_EMPTY_EMAIL)
+    private String email;
+
+    private String activationCode;
+
+    @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "users_roles", joinColumns = @JoinColumn(name = "id_user"))
+    @Enumerated(EnumType.STRING)
+    private Set<Role> roles;
 
     @OneToMany(mappedBy = "user")
-    private Set<UsersWords> uw;
+    private Set<UsersWords> usersWords;
 
     @OneToMany(mappedBy = "user")
-    private Set<UsersIrregularVerbsScores> uivs;
+    private Set<UsersIrregularVerbsScores> usersIrrVerbsScores;
 
     @OneToMany(mappedBy = "user")
-    private Set<UsersComparativeAdjectivesScores> ucas;
+    private Set<UsersComparativeAdjectivesScores> usersCompAdjScores;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user")
+    private Set<UsersPhrasalVerbsScores> phrasVerbsScores;
+
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "users_groups",
             joinColumns = { @JoinColumn(name = "id_user") },
             inverseJoinColumns = { @JoinColumn(name = "id_group") })
@@ -31,15 +61,22 @@ public class Users {
     public Users() {
     }
 
-    public Users(Long id, String name) {
+    public Users(Long id, String username) {
         this.id = id;
-        this.name = name;
+        this.username = username;
     }
 
-    public Users(String name, Set<UsersWords> uwt, Set<Groups> groups) {
-        this.name = name;
-        this.uw = uwt;
+    public Users(String username, Set<UsersWords> uwt, Set<Groups> groups) {
+        this.username = username;
+        this.usersWords = uwt;
         this.groups = groups;
+    }
+
+    public Users(String username, String password, boolean active, Set<Role> roles) {
+        this.username = username;
+        this.password = password;
+        this.active = active;
+        this.roles = roles;
     }
 
     public Long getId() {
@@ -50,20 +87,20 @@ public class Users {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getUsername() {
+        return username;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUsername(String name) {
+        this.username = name;
     }
 
-    public Set<UsersWords> getUw() {
-        return uw;
+    public Set<UsersWords> getUsersWords() {
+        return usersWords;
     }
 
-    public void setUw(Set<UsersWords> uwt) {
-        this.uw = uwt;
+    public void setUsersWords(Set<UsersWords> usersWords) {
+        this.usersWords = usersWords;
     }
 
     public Set<Groups> getGroups() {
@@ -74,11 +111,92 @@ public class Users {
         this.groups = groups;
     }
 
-    public Set<UsersIrregularVerbsScores> getUivs() {
-        return uivs;
+    public Set<UsersIrregularVerbsScores> getUsersIrrVerbsScores() {
+        return usersIrrVerbsScores;
     }
 
-    public void setUivs(Set<UsersIrregularVerbsScores> uivs) {
-        this.uivs = uivs;
+    public void setUsersIrrVerbsScores(Set<UsersIrregularVerbsScores> uivs) {
+        this.usersIrrVerbsScores = uivs;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public Set<UsersComparativeAdjectivesScores> getUsersCompAdjScores() {
+        return usersCompAdjScores;
+    }
+
+    public void setUsersCompAdjScores(Set<UsersComparativeAdjectivesScores> usersCompAdjScores) {
+        this.usersCompAdjScores = usersCompAdjScores;
+    }
+
+    public Set<UsersPhrasalVerbsScores> getPhrasVerbsScores() {
+        return phrasVerbsScores;
+    }
+
+    public void setPhrasVerbsScores(Set<UsersPhrasalVerbsScores> phrasVerbsScores) {
+        this.phrasVerbsScores = phrasVerbsScores;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getActivationCode() {
+        return activationCode;
+    }
+
+    public void setActivationCode(String activationCode) {
+        this.activationCode = activationCode;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return isActive();
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return getRoles();
     }
 }

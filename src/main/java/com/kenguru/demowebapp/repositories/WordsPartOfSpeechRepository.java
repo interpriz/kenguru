@@ -7,9 +7,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface WordsPartOfSpeechRepository extends JpaRepository<WordsPartOfSpeech, Long> {
-    List<WordsPartOfSpeech> findWordsPartOfSpeechByPartOfSpeechAndWord(PartsOfSpeech pos, Words word);
-    List<WordsPartOfSpeech> findByWord(Words word);
+    Optional<WordsPartOfSpeech> findByPartOfSpeechAndWord(PartsOfSpeech pos, Words word);
+    Optional<List<WordsPartOfSpeech>> findByWord(Words word);
 }

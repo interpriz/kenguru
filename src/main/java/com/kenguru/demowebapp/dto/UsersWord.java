@@ -1,9 +1,16 @@
 package com.kenguru.demowebapp.dto;
 
 import com.kenguru.demowebapp.entities.*;
+import org.hibernate.validator.constraints.Length;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static com.kenguru.demowebapp.StaticStrings.*;
+
 
 public class UsersWord {
 
@@ -11,12 +18,20 @@ public class UsersWord {
 
     private int score;
 
-    private String word;
+    @NotBlank(message = MESSAGE_ENTER_WORD)
+    @Length(max = 100, message = MESSAGE_LONG_WORD)
+    private String wordName;
 
+    @NotBlank(message = MESSAGE_ENTER_TRANSCRIPTION)
+    @Length(max = 100, message = MESSAGE_LONG_TRANSCRIPTION)
+    private String transcription;
+
+    @NotBlank(message = MESSAGE_CHOOSE_PART_OF_SPEECH)
     private String partOfSpeech;
 
     private List<String> topics;
 
+    @NotEmpty(message = MESSAGE_ADD_TRANSLATION)
     private List<String> translations;
 
     public UsersWord() {
@@ -25,18 +40,41 @@ public class UsersWord {
     public UsersWord(UsersWords usersWord) {
         this.id = usersWord.getId();
         this.score = usersWord.getScore();
-        this.word = usersWord.getWps().getWord().getName();
-        this.partOfSpeech = usersWord.getWps().getPartOfSpeech().getName();
-        this.topics = new ArrayList<>();
-        for(Topics top : usersWord.getTopics()){
+        this.wordName = usersWord.getWps()
+                .getWord()
+                .getName();
+        this.transcription = usersWord.getWps()
+                .getWord()
+                .getTranscription();
+        this.partOfSpeech = usersWord.getWps()
+                .getPartOfSpeech()
+                .getName();
+        /*this.topics = new ArrayList<>();
+        for (Topics top : usersWord.getTopics()) {
             this.topics.add(top.getName());
-        }
-        this.translations = new ArrayList<>();
-        for(WordsTranslations trans : usersWord.getTranslations()){
+        }*/
+        this.topics = usersWord.getTopics()
+                .stream()
+                .map(Topics::getName)
+                .collect(Collectors.toList());
+        /*this.translations = new ArrayList<>();
+        for (WordsTranslations trans : usersWord.getTranslations()) {
             this.translations.add(trans.getName());
-        }
+        }*/
+        this.translations = usersWord.getTranslations()
+                .stream()
+                .map(WordsTranslations::getName)
+                .collect(Collectors.toList());
     }
 
+
+    public String getTranscription() {
+        return transcription;
+    }
+
+    public void setTranscription(String transcription) {
+        this.transcription = transcription;
+    }
 
     public Long getId() {
         return id;
@@ -54,12 +92,12 @@ public class UsersWord {
         this.score = score;
     }
 
-    public String getWord() {
-        return word;
+    public String getWordName() {
+        return wordName;
     }
 
-    public void setWord(String word) {
-        this.word = word;
+    public void setWordName(String wordName) {
+        this.wordName = wordName;
     }
 
     public String getPartOfSpeech() {
@@ -71,7 +109,10 @@ public class UsersWord {
     }
 
     public List<String> getTopics() {
-        return topics;
+        if (topics != null)
+            return topics;
+        else return new ArrayList<>();
+
     }
 
     public void setTopics(List<String> topics) {

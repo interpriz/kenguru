@@ -1,0 +1,10 @@
+.nav li a
+{
+    color: #7A7A7A;
+    font-size: 26px;
+    font-weight: bold;
+}
+.nav > li > a.active {
+    color:black !important;
+    /*background-color: transparent !important;*/
+}

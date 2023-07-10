@@ -1,7 +1,22 @@
-<div th:fragment="footer">
+<div th:fragment="footer" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <link rel="stylesheet"  th:href="@{/style/StyleSheets/Footer.css}"/>
     <footer class="text-muted py-5">
         <div class="container justify-content-center">
             Собственность Гаврилова Александра
+        </div>
+        Пользователь:
+        <div sec:authentication="principal.username"></div>
+        <div>
+            <a href="/user/profile" >Профиль пользователя</a>
+        </div>
+        <!--<div sec:authorize="hasRole('USER')">Text visible to user.</div>
+        <div sec:authorize="hasRole('ADMIN')">Text visible to admin.</div>
+        <div sec:authorize="isAuthenticated()">Text visible only to authenticated users.</div>-->
+        <div>
+            <form th:action="@{/logout}" method="post">
+                <input class="btn" type="submit" value="Sign Out"/>
+            </form>
+            <span sec:authorize="hasAuthority('ADMIN')"><a href="/user" >Список пользователей</a></span>
         </div>
     </footer>
 </div>

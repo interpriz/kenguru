@@ -10,22 +10,22 @@ public class Topics {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name", unique = true)
+    @Column(name = "name")
     private String name;
 
     @Column(name = "description")
     private String description;
 
     @ManyToMany(mappedBy = "topics",fetch = FetchType.LAZY)
-    private Set<UsersWords> uw;
+    private Set<UsersWords> usersWords;
 
     public Topics() {
     }
 
-    public Topics(String name, String description, Set<UsersWords> uwt) {
+    public Topics(String name, String description, Set<UsersWords> uw) {
         this.name = name;
         this.description = description;
-        this.uw = uwt;
+        this.usersWords = uw;
     }
 
     public Topics(String name) {
@@ -56,11 +56,11 @@ public class Topics {
         this.description = description;
     }
 
-    public Set<UsersWords> getUw() {
-        return uw;
+    public Set<UsersWords> getUsersWords() {
+        return usersWords;
     }
 
-    public void setUw(Set<UsersWords> uwt) {
-        this.uw = uwt;
+    public void setUsersWords(Set<UsersWords> uwt) {
+        this.usersWords = uwt;
     }
 }

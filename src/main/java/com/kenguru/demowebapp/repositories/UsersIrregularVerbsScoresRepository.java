@@ -7,9 +7,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface UsersIrregularVerbsScoresRepository extends JpaRepository<UsersIrregularVerbsScores, Long> {
-    List<UsersIrregularVerbsScores> findByUser(Users usr);
-    List<UsersIrregularVerbsScores> findByUserAndIrregularVerb(Users usr, IrregularVerbs irregularVerb);
+    Optional<List<UsersIrregularVerbsScores>> findByUser(Users usr);
+    Optional<UsersIrregularVerbsScores> findByUserAndIrregularVerb(Users usr, IrregularVerbs irregularVerb);
 }

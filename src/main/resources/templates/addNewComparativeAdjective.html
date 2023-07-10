@@ -8,7 +8,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
     <link rel="stylesheet"  th:href="@{/style/StyleSheets/MainStyle.css}"/>
 
-    <script src=https://code.jquery.com/jquery-3.6.0.js></script>
     <script src="js/main.js"></script>
 
 </head>
@@ -22,14 +21,14 @@
 
 <div class="container mt-5 mb-5" style="border-radius:15px; background-color: white; width: 730px; high: 200px;">
     <h3>Добавление сравнительных степеней прилагательного</h3>
-    <form action="/addNewComparativeAdjective" method = "post">
+    <form th:action="@{/add/new-comparative-adjective}" method = "post">
         <p>
         <input type="text"  id="wordName"         name="wordName"      placeholder="Введите прилагательное на английском"                   class = "form-control mt-1 mb-1" onchange="change()">
         <input type="text"  id="transcription"    name="transcription" placeholder="Введите транскрипцию"                       class = "form-control mt-1 mb-1">
         <input type="text"  id="comparative"      name="comparative"   placeholder="Введите сравнительную степень"                            class = "form-control mt-1 mb-1">
         <input type="text"  id="superlative"      name="superlative"   placeholder="Введите превосходную степень"                            class = "form-control mt-1 mb-1">
 
-        <button type="submit" class = "btn btn-success">Добавить сранительные степени прилагательного</button>
+        <button type="submit" class = "btn btn-success">Добавить сравнительные степени прилагательного</button>
     </form>
 
 </div>

@@ -1,0 +1,21 @@
+h1
+{
+    font-family: 'Source Code Pro', monospace;
+    font-size: 96px;
+    line-height: 121px;
+    text-align: center;
+    font-weight: 800;
+    -webkit-text-stroke-width: 3px;
+    -webkit-text-stroke-color: #F9661E;
+}
+
+
+
+.btn
+{
+    background-color: #FA6D1C;
+    color: white;
+    font-weight: bold;
+    font-size: 26px;
+    border-radius:0px 15px 15px 0px;
+}

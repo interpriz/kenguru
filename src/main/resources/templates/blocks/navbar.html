@@ -1,0 +1,40 @@
+<div th:fragment="navbar">
+
+  <link rel="stylesheet"  th:href="@{/style/StyleSheets/NavBar.css}"/>
+
+  <!--<nav class="navbar navbar-expand-lg">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+    </div>
+
+  </nav>-->
+
+  <ul class="nav justify-content-center" >
+    <li class="nav-item"><a href="/history" class="nav-link active">История</a></li>
+    <li class="nav-item dropdown">
+      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        Добавить
+      </a>
+      <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+        <li><a class="dropdown-item" href="/add/new-word">Слово</a></li>
+        <li><a class="dropdown-item" href="/add/new-phrasal-verb">Фразовый глагол</a></li>
+        <li><a class="dropdown-item" href="/add/new-irregular-verb">Формы неправильного глагола</a></li>
+        <li><a class="dropdown-item" href="/add/new-comparative-adjective">Сравнительные степени прилагательного</a></li>
+      </ul>
+    </li>
+    <li class="nav-item"><a href="#" class="nav-link">Тесты</a></li>
+    <li class="nav-item"><a href="#" class="nav-link">Библиотека</a></li>
+    <li class="nav-item"><a href="#" class="nav-link">Статистика</a></li>
+  </ul>
+
+   <!-- <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+        </li>-->
+
+
+</div>

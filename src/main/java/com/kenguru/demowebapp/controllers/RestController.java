@@ -1,9 +1,11 @@
 package com.kenguru.demowebapp.controllers;
 
+import com.kenguru.demowebapp.dto.UsersPhrasalVerb;
 import com.kenguru.demowebapp.dto.UsersWord;
 import com.kenguru.demowebapp.entities.*;
-import com.kenguru.demowebapp.repositories.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.kenguru.demowebapp.services.SearchingService;
+import com.kenguru.demowebapp.services.UsersWordsService;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -13,24 +15,14 @@ import java.util.List;
 @org.springframework.web.bind.annotation.RestController
 public class RestController {
 
-    @Autowired
-    private WordsPartOfSpeechRepository words_parts_of_speechRepository;
 
-    @Autowired
-    private UsersWordsRepository users_wordsRepository;
+    private final SearchingService searchingService;
+    private final UsersWordsService usersWordsService;
 
-    @Autowired
-    private WordsRepository wordsRepository;
-
-
-    @Autowired
-    private UsersRepository usersRepository;
-
-
-    @Autowired
-    private WordsTranslationsRepository words_translationsRepository;
-
-    @Autowired
+    public RestController(SearchingService searchingService, UsersWordsService usersWordsService) {
+        this.searchingService = searchingService;
+        this.usersWordsService = usersWordsService;
+    }
 
     @GetMapping("/hellow")
     public List<String> hellowWorld(){
@@ -39,42 +31,41 @@ public class RestController {
         list.add("world");
         return list;
     }
-    @GetMapping(value = "/findTranscriptionByWord")
+
+    @GetMapping(value = "/find/transcription-by-word")
     public String findTranscriptionByWord(@RequestParam String name){
 
-        List<Words> words= wordsRepository.findWordsByName(name);
+        Words word= usersWordsService.getWordByName(name);
 
-        return words.get(0).getTranscription();
+        return word.getTranscription();
     }
 
-    @GetMapping("/findWords")
-    public List<UsersWord> findWords(
+
+    /*@GetMapping("/find/words")
+    public SearchingObjects findWords(
+            @AuthenticationPrincipal Users usr,
             @RequestParam String word){
 
+        //Users usr  = usersRepository.getById(1L);
+        return searchingService.findWords(usr,word);
+    }*/
 
-        Users usr  = usersRepository.getById(1L);
-        List<UsersWords> searchWords = new ArrayList<>();
-        if(word.matches("[a-zA-Z]+"))
-        {
-            Words wrd = wordsRepository.findByName(word);
-            List<WordsPartOfSpeech> wps = words_parts_of_speechRepository.findByWord(wrd);
-            searchWords = users_wordsRepository.findByUserAndWpsIn(usr,wps);
-        }else
-        if(word.matches("[а-яА-Я]+"))
-        {
-            WordsTranslations wordTranslation = words_translationsRepository.findByName(word);
-            if(wordTranslation!=null)
-            searchWords.addAll(wordTranslation.getUw());
-        }
-        List<UsersWord> searchUserWords = new ArrayList<>();
-        for(int i=0; i< searchWords.size(); i++){
-            searchUserWords.add(new UsersWord(searchWords.get(i)));
-        }
+    // новая версия
+    @GetMapping("/find/words")
+    public List<UsersWord> findWords(
+            @AuthenticationPrincipal Users usr,
+            @RequestParam String word){
 
+        //Users usr  = usersRepository.getById(1L);
+        return searchingService.findWordsV2(usr,word);
+    }
 
-        //model.addAttribute("usersWords", searchWords);
+    @GetMapping("/find/phrasal-verbs")
+    public List<UsersPhrasalVerb> findPhrasalVerbs(
+            @AuthenticationPrincipal Users usr,
+            @RequestParam String word){
 
-
-        return searchUserWords;
+        //Users usr  = usersRepository.getById(1L);
+        return searchingService.findPhrasalVerbs(usr,word);
     }
 }

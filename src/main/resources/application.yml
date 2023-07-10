@@ -1,0 +1,37 @@
+spring:
+  datasource:
+    url: "jdbc:postgresql://localhost:5432/postgres"
+    username: "postgres"
+    password: 7723
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    show-sql: true
+    generate-ddl: true
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        default_schema: "kenguru"
+        jdbc:
+          lob:
+            non_contextual_creation: true
+    database: postgresql
+    database-platform: "org.hibernate.dialect.PostgreSQL10Dialect"
+  mail:
+    host: smtp.yandex.ru
+    username: "kenguru.main@yandex.ru"
+    password: "rauehmtsvgmmuzxz"
+    port: 465
+    protocol: "smtps"
+    properties:
+      mail:
+        debug: true
+
+
+
+
+
+
+
+
+
