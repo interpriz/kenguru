@@ -2,9 +2,15 @@ package com.kenguru.demowebapp.dto;
 
 import com.kenguru.demowebapp.entities.PhrasalVerbsTranslations;
 import com.kenguru.demowebapp.entities.UsersPhrasalVerbsScores;
+import org.hibernate.validator.constraints.Length;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.kenguru.demowebapp.StaticStrings.*;
 
 public class UsersPhrasalVerb {
 
@@ -12,14 +18,24 @@ public class UsersPhrasalVerb {
 
     private int score;
 
+    @NotBlank(message = MESSAGE_ENTER_WORD)
+    @Length(max = 100, message = MESSAGE_LONG_WORD)
+    @Pattern(regexp = "^[a-zA-Z]+$", message = MESSAGE_ONLY_ENGLISH_LETTERS)
     private String word;
 
+    @NotBlank(message = MESSAGE_ENTER_PREPOSITION)
+    //@Length(max = 10, message = MESSAGE_LONG_PREPOSITION)
+    @Pattern(regexp = "^[a-zA-Z]{1,10}$", message = MESSAGE_ONLY_ENGLISH_LETTERS)
     private String preposition;
 
+    @NotBlank(message = MESSAGE_ENTER_TRANSCRIPTION)
+    @Length(max = 100, message = MESSAGE_LONG_TRANSCRIPTION)
     private String transcription;
 
+    @NotEmpty(message = MESSAGE_ADD_TRANSLATION)
     private List<String> translations;
 
+    @Length(max = 500, message = MESSAGE_LONG_DESCRIPTION)
     private String description;
 
     public UsersPhrasalVerb(UsersPhrasalVerbsScores usersPhrasalVerb) {
@@ -45,6 +61,9 @@ public class UsersPhrasalVerb {
                 .collect(Collectors.toList());
 
         description = usersPhrasalVerb.getDescription();
+    }
+
+    public UsersPhrasalVerb() {
     }
 
     public Long getId() {

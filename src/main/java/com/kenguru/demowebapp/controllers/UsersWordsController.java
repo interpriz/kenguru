@@ -90,7 +90,9 @@ public class UsersWordsController {
 
         UsersWords usersWord = service.getUsersWord(userWordId);
 
-        model.addAttribute(ATTRIBUTE_USERS_WORD, usersWord);
+        UsersWord userWordDTO = new UsersWord(usersWord);
+
+        model.addAttribute(ATTRIBUTE_NEW_WORD, userWordDTO);
 
         List<PartsOfSpeech> ps = service.getAllPartsOfSpeech();
         model.addAttribute(ATTRIBUTE_PART_OF_SPEECH, ps);
@@ -105,22 +107,36 @@ public class UsersWordsController {
 
     @PostMapping("/edit/word")
     public String editWord(
-            @RequestParam Long userWordId,
-            @RequestParam String wordName,
-            @RequestParam String partOfSpeech,
-            @RequestParam String transcription,
-            @RequestParam(required = false) List<String> translations,
-            @RequestParam(required = false) List<String> topics,
+            //AuthenticationPrincipal Users usr,
+            @Valid UsersWord newWord,
+            BindingResult bindingResult,
             Model model) {
-        service.saveEditedOldUsersWord(
-                userWordId,
-                wordName,
-                partOfSpeech,
-                transcription,
-                translations,
-                topics);
 
 
-        return "redirect:/history";
+        if (bindingResult.hasErrors()) {
+            Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
+
+            model.mergeAttributes(errorsMap);
+            model.addAttribute(ATTRIBUTE_NEW_WORD, newWord);
+
+            List<PartsOfSpeech> ps = service.getAllPartsOfSpeech();
+            model.addAttribute(ATTRIBUTE_PART_OF_SPEECH, ps);
+
+            //Users usr  = usersRepository.getById(1L);
+            Users usr  = service.getUsersWord(newWord.getId()).getUser();
+            List<Topics> topics = service.getAllUsersTopics(usr);
+            model.addAttribute(ATTRIBUTE_TOPICS, topics);
+
+            return "editWord";
+        }else {
+            service.saveEditedOldUsersWord(
+                    newWord.getId(),
+                    newWord.getWordName(),
+                    newWord.getPartOfSpeech(),
+                    newWord.getTranscription(),
+                    newWord.getTranslations(),
+                    newWord.getTopics());
+            return "redirect:/history";
+        }
     }
 }

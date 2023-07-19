@@ -36,6 +36,7 @@ public final class StaticStrings {
     public static final String ATTRIBUTE_PART_OF_SPEECH = "partOfSpeech";
     public static final String ATTRIBUTE_TOPICS = "topics";
     public static final String ATTRIBUTE_NEW_WORD = "newWord";
+    public static final String ATTRIBUTE_NEW_PHRASAL_VERB = "newPhrasalVerb";
 
     public static final String ATTRIBUTE_ = "";
 
@@ -53,14 +54,19 @@ public final class StaticStrings {
     public static final String MESSAGE_USER_ACTIVATION_ERROR = "Код активации не найден!";
     public static final String MESSAGE_ENTER_WORD = "Пожалуйста введите слово";
     public static final String MESSAGE_LONG_WORD = "Слово слишком длинное";
+    public static final String MESSAGE_LONG_PREPOSITION = "Предлог слишком длиный";
+    public static final String MESSAGE_ENTER_PREPOSITION = "Пожалуйста введите предлог";
     public static final String MESSAGE_ENTER_TRANSCRIPTION = "Пожалуйста введите транскрипцию";
     public static final String MESSAGE_LONG_TRANSCRIPTION = "Транскрипция слишком длинная";
+    public static final String MESSAGE_LONG_DESCRIPTION = "Описание слишком длинное";
     public static final String MESSAGE_CHOOSE_PART_OF_SPEECH = "Пожалуйста выберите часть речи";
     public static final String MESSAGE_ADD_TRANSLATION = "Пожалуйста добавьте перевод";
     public static final String MESSAGE_EMPTY_USER_NAME = "Имя пользователя не может быть пустым";
     public static final String MESSAGE_EMPTY_PASSWORD = "Пароль не может быть пустым";
     public static final String MESSAGE_ERROR_EMAIL = "Email не верен";
     public static final String MESSAGE_EMPTY_EMAIL = "Email не может быть пустым";
+    public static final String MESSAGE_ONLY_ENGLISH_LETTERS = "Только английские буквы!";
+
 
     public static final String MESSAGE_ = "";
 

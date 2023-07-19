@@ -5,6 +5,7 @@ import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,7 +20,8 @@ public class UsersWord {
     private int score;
 
     @NotBlank(message = MESSAGE_ENTER_WORD)
-    @Length(max = 100, message = MESSAGE_LONG_WORD)
+    //@Length(max = 100, message = MESSAGE_LONG_WORD)
+    @Pattern(regexp = "^[a-zA-Z]{1,100}$", message = MESSAGE_ONLY_ENGLISH_LETTERS)
     private String wordName;
 
     @NotBlank(message = MESSAGE_ENTER_TRANSCRIPTION)

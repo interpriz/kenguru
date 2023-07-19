@@ -20,33 +20,49 @@
     <h3>Редактирование слова</h3>
     <form th:action="@{/edit/word}" method = "post">
         <!--        <input type="text" name="partOfSpeech" placeholder="Выберите часть речи" class = "form-control">-->
-        <input type="hidden" name="userWordId" th:value="${usersWord.id}">
+        <input type="hidden" name="id" th:value="${newWord.id}">
             <div class="mb-3">
                 <label for="wordName" class="form-label">Английское слово</label>
-                <input type="text"   id="wordName"        name="wordName"        th:value="${usersWord.wps.word.name}"            placeholder="Введите английское слово" class = "form-control mt-1 mb-1">
+                <input type="text"   id="wordName"        name="wordName"     placeholder="Введите английское слово" class = "form-control mt-1 mb-1"
+                       th:classappend="${wordNameError} ? 'is-invalid' : ''" th:value="${newWord} ? ${newWord.wordName} : ''">
+                <div class="invalid-feedback"
+                     th:if="${wordNameError}" th:text="${wordNameError}">
+                </div>
             </div>
             <div class="mb-3">
                 <label for="partOfSpeech" class="form-label">Часть речи</label>
-                <select id="partOfSpeech" name="partOfSpeech"  class="form-select mt-1 mb-1" aria-label="Default select example">
-                    <option value="0" >Выберите часть речи</option>
-                    <option th:each="el : ${partOfSpeech}" th:value="${el.name}" th:text="${el.name}" th:selected="${el.name==usersWord.wps.partOfSpeech.name}">
+                <select id="partOfSpeech" name="partOfSpeech"  class="form-select mt-1 mb-1" th:classappend="${partOfSpeechError} ? 'is-invalid' : ''"
+                        aria-label="Default select example">
+                    <option value="" >Выберите часть речи</option>
+                    <option th:each="el : ${partOfSpeech}" th:value="${el.name}" th:text="${el.name}" th:selected="${newWord} ? ${el.name==newWord.partOfSpeech} : ${false}">
                     </option>
                 </select>
+                <div class="invalid-feedback"
+                     th:if="${partOfSpeechError}" th:text="${partOfSpeechError}">
+                </div>
             </div>
             <div class="mb-3">
                 <label for="transcription" class="form-label">Транскрипция</label>
-                <input type="text"   id="transcription"   name="transcription"   th:value="${usersWord.wps.word.transcription}"   placeholder="Введите транскрипцию" class = "form-control mt-1 mb-1" readonly>
+                <input type="text"   id="transcription"   name="transcription"   placeholder="Введите транскрипцию" class = "form-control mt-1 mb-1"
+                       th:classappend="${transcriptionError} ? 'is-invalid' : ''" th:value="${newWord} ? ${newWord.transcription} : ''">
+                <div class="invalid-feedback"
+                     th:if="${transcriptionError}" th:text="${transcriptionError}">
+                </div>
             </div>
             <div class="mb-3">
                 <label for="translation" class="form-label">Переводы</label>
                 <div class="input-group mb-3">
-                    <input id="translation" name="newTranslation" type="text" class="form-control" placeholder="Добавьте новый перевод">
+                    <input id="translation" name="newTranslation" type="text" class="form-control" placeholder="Добавьте новый перевод"
+                           th:classappend="${translationsError} ? 'is-invalid' : ''">
                     <button class="btn btn-outline-secondary" type="button" onclick="addNewTranslation()">+</button>
+                    <div class="invalid-feedback"
+                         th:if="${translationsError}" th:text="${translationsError}">
+                    </div>
                 </div>
                 <ul class="list-group" id = "translationsList" >
-                    <li class="list-group list-group-flush" th:each="el : ${usersWord.translations}">
+                    <li class="list-group list-group-flush" th:each="el : ${newWord.translations}">
                         <div class="input-group mb-3">
-                            <input name="translations" type="text" class="form-control"  aria-describedby="button-addon2" th:value="${el.name}">
+                            <input name="translations" type="text" class="form-control"  aria-describedby="button-addon2" th:value="${el}">
                             <button class="btn btn-outline-secondary" type="button" onclick="deleteListElem()">x</button>
                         </div>
                     </li>
@@ -63,9 +79,9 @@
                     <button class="btn btn-outline-secondary" type="button" onclick="addNewTopic()">+</button>
                 </div>
                 <ul class="list-group" id = "topicsList" >
-                    <li class="list-group list-group-flush" th:each="el : ${usersWord.topics}">
+                    <li class="list-group list-group-flush" th:each="el : ${newWord.topics}">
                         <div class="input-group mb-3 ">
-                            <input name="topics" type="text" class="form-control"  aria-describedby="button-addon2" th:value="${el.name} ">
+                            <input name="topics" type="text" class="form-control"  aria-describedby="button-addon2" th:value="${el} ">
                             <button class="btn btn-outline-secondary" type="button" onclick="deleteListElem()">x</button>
                         </div>
                     </li>
